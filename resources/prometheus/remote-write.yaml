@@ -1,0 +1,13 @@
+writeRelabelConfigs:
+  - action: replace
+    replacement: 'true'
+    sourceLabels:
+      - __name__
+    targetLabel: __tmp_keep
+  # LEAVE THIS AT BOTTOM OF FILE
+  - action: keep
+    regex: true$
+    sourceLabels:
+      - __tmp_keep
+  - action: labeldrop
+    regex: __tmp_keep
