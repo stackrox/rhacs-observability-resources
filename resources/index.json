@@ -13,6 +13,7 @@
       "remoteWrite": "prometheus/remote-write.yaml",
       "overridePrometheusPvcSize": "250Gi"
     },
+    "alertmanager": {},
     "grafana": {
       "dashboards": [
         "grafana/rhacs-central-overview-dashboard.yaml"
