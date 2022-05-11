@@ -1,4 +1,5 @@
 writeRelabelConfigs:
+  # all metrics are written to Observatorium
   - action: replace
     replacement: 'true'
     sourceLabels:
