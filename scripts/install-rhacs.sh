@@ -20,14 +20,10 @@ function validate() {
     export OBSERVATORIUM_GATEWAY=${OBSERVATORIUM_GATEWAY:-""}
     export OBSERVATORIUM_RHSSO_METRICS_CLIENT_ID=${OBSERVATORIUM_RHSSO_METRICS_CLIENT_ID:-""}
     export OBSERVATORIUM_RHSSO_METRICS_SECRET=${OBSERVATORIUM_RHSSO_METRICS_SECRET:-""}
-    export OBSERVATORIUM_RHSSO_LOGS_CLIENT_ID=${OBSERVATORIUM_RHSSO_LOGS_CLIENT_ID:-""}
-    export OBSERVATORIUM_RHSSO_LOGS_SECRET=${OBSERVATORIUM_RHSSO_LOGS_SECRET:-""}
 
     [[ ${OBSERVATORIUM_GATEWAY} == "" ]] && echo 'Please set "OBSERVATORIUM_GATEWAY" environment variable' && exit 1
     [[ ${OBSERVATORIUM_RHSSO_METRICS_CLIENT_ID} == "" ]] && echo 'Please set "OBSERVATORIUM_RHSSO_METRICS_CLIENT_ID" environment variable' && exit 1
     [[ ${OBSERVATORIUM_RHSSO_METRICS_SECRET} == "" ]] && echo 'Please set "OBSERVATORIUM_RHSSO_METRICS_SECRET" environment variable' && exit 1
-    [[ ${OBSERVATORIUM_RHSSO_LOGS_CLIENT_ID} == "" ]] && echo 'Please set "OBSERVATORIUM_RHSSO_LOGS_CLIENT_ID" environment variable' && exit 1
-    [[ ${OBSERVATORIUM_RHSSO_LOGS_SECRET} == "" ]] && echo 'Please set "OBSERVATORIUM_RHSSO_LOGS_SECRET" environment variable' && exit 1
 
     return 0
 }

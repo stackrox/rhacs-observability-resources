@@ -48,10 +48,6 @@ export OBSERVATORIUM_GATEWAY="https://observatorium-mst.api.stage.openshift.com"
 # Metrics client and secret for Red Hat Advanced Cluster Security
 export OBSERVATORIUM_RHSSO_METRICS_CLIENT_ID="observatorium-rhacs-metrics-staging"
 export OBSERVATORIUM_RHSSO_METRICS_SECRET="<rhacs-metrics-secret>"
-
-# Logs client and secret for Red Hat Advanced Cluster Security
-export OBSERVATORIUM_RHSSO_LOGS_CLIENT_ID="observatorium-rhacs-logs-staging"
-export OBSERVATORIUM_RHSSO_LOGS_SECRET="<rhacs-logs-secret>"
 ```
 
 4. Execute the install script
