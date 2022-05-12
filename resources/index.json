@@ -1,0 +1,36 @@
+{
+  "id": "managed-rhacs",
+  "config": {
+    "prometheus": {
+      "pod_monitors": [
+        "prometheus/pod_monitors/rhacs-central-metrics.yaml"
+      ],
+      "rules": [
+        "prometheus/prometheus-rules.yaml"
+      ],
+      "federation": "prometheus/federation-config.yaml",
+      "observatorium": "rhacs-observatorium",
+      "remoteWrite": "prometheus/remote-write.yaml",
+      "overridePrometheusPvcSize": "250Gi"
+    },
+    "alertmanager": {},
+    "grafana": {
+      "dashboards": [
+        "grafana/rhacs-central-overview-dashboard.yaml"
+      ]
+    },
+    "promtail": {
+      "enabled": false,
+      "observatorium": "rhacs-observatorium",
+      "namespaceLabelSelector": {
+        "observability-operator/scrape-logging": "true"
+      }
+    },
+    "observatoria": [
+      {
+        "id": "rhacs-observatorium",
+        "secretName": "rhacs-observatorium"
+      }
+    ]
+  }
+}

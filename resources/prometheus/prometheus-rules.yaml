@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: strimzi
+  name: rhacs-central-prometheus-rules
+spec:
+  groups:
+    - name: rhacs-central-alerts
+      rules:
+        - alert: 'RHACS Central Big Index'
+          annotations:
+            message: >
+              This is a test alert. We should include relevant information in message. i.e. namespace, pod, actual value, etc.
+            description: "We should describe what the problem is. i.e., Bleve index uses more than expected disk space for more than 5 mins."
+            summary: "We should put general information about the problem here and links to additional resources."
+            # We should provide SOP (standard operation procedure). Here is an example.
+            sop_url: "https://red-hat-storage.github.io/ocs-sop/sop/alerts/CephClusterCriticallyFull.html"
+          expr: rox_central_bleve_index_num_bytes_used_disk > 15500000
+          labels:
+            name: AcsCentralBigIndexAlert
+        - alert: 'RHACS Central Small Index'
+          annotations:
+            message: >
+              This is a test alert. We should include relevant information in message. i.e. namespace, pod, actual value, etc.
+            description: "We should describe what the problem is. i.e., Bleve index uses more than expected disk space for more than 5 mins."
+            summary: "We should put general information about the problem here and links to additional resources."
+            # We should provide SOP (standard operation procedure). Here is an example.
+            sop_url: "https://red-hat-storage.github.io/ocs-sop/sop/alerts/CephClusterCriticallyFull.html"
+          expr: rox_central_bleve_index_num_bytes_used_disk < 15000000
+          labels:
+            name: AcsCentralSmallIndexAlert
