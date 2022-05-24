@@ -47,7 +47,7 @@ function install_rhacs_observability() {
     local -r secret_yaml=$(envsubst < "${root_dir}/resources/template/01-operator-03-secret-github.yaml") || true
     echo "${secret_yaml}" | oc apply --filename -
 
-    # Deplot secret to access Observatorium.
+    # Deploy secret to access Observatorium.
     export OBSERVATORIUM_TENANT="rhacs"
     export OBSERVATORIUM_AUTH_TYPE="redhat"
     export OBSERVATORIUM_RHSSO_URL="https://sso.redhat.com/auth/"
