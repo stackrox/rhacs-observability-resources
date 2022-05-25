@@ -2,6 +2,39 @@
 
 set -eu
 
+function waitForDefaultCRD() {
+    # Since we have to poll and errors are expected, we have to allow errors on this specific command.
+    set +e
+    local crdFound=0
+    for i in {1..240}; do
+        oc get -n "rhacs-observability" observabilities.observability.redhat.com observability-stack /dev/null 2>&1
+        status=$?
+        if [[ $status -eq 0 ]]; then
+            crdFound=1
+            break
+        fi
+        sleep 5
+    done
+    
+    set -e
+
+    [[ ${crdFound} == 0 ]] && echo 'CRD observability-stack was not found' && exit 1
+
+    local crdSuccess=0
+    for i in {1..240}; do
+        status=$(oc get -n rhacs-observability observabilities.observability.redhat.com observability-stack -o jsonpath="{.status.stage}{.status.stageStatus}")
+        if [[ $status == "configurationsuccess" ]]; then
+            crdSuccess=1
+            break
+        fi
+        sleep 5
+    done
+
+    [[ ${crdSuccess} == 0 ]] && echo 'CRD observability-stack did not reach stage configuration with status success' && exit 1
+
+    return 0
+}
+
 function validate() {
     # Ensure required commands are available on system.
     command -v envsubst || { echo 'Missing required command "envsubst"' && exit 1; }
@@ -59,6 +92,17 @@ function install_rhacs_observability() {
     # Install observability operator.
     oc apply --filename "${root_dir}/resources/template/01-operator-04-operator-group.yaml"
     oc apply --filename "${root_dir}/resources/template/01-operator-05-subscription.yaml"
+
+    # Wait until the default CRD is available and the CRD has reached stage "configuration" with status "success". If we were to delete
+    # it beforehand, the operator would not be able to recover.
+    waitForDefaultCRD
+
+    # Delete the default CRD. We do not need to specifically wait here since the finalizer of the CRD will handle the cleanup and only return
+    # once it is completed.
+    oc delete observabilities.observability.redhat.com observability-stack
+
+    # Install our CRD, which contains different default names and label selectors.
+    oc apply --filename "${root_dir}/resources/template/01-operator-06-custom-resource.yaml"
 
     return 0
 }
