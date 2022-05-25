@@ -24,6 +24,9 @@ spec:
     ruleLabelSelector:
       matchLabels:
         app: rhacs
+    serviceMonitorLabelSelector:
+      matchLabels:
+        app: rhacs
     grafanaDashboardLabelSelector:
       matchLabels:
         app: rhacs
