@@ -2,6 +2,24 @@
 
 set -eu
 
+function wait_for_default_crd() {
+    # Since we have to poll and errors are expected, we have to allow errors on this specific command.
+    set +e
+
+    local crd_success=0
+    for i in {1..240}; do
+        status=$(oc get -n rhacs-observability observabilities.observability.redhat.com observability-stack --ignore-not-found=true -o jsonpath="{.status.stage}{.status.stageStatus}")
+        [[ ${status} == "configurationsuccess" ]] && crd_success=1 && break
+        sleep 5
+    done
+
+    [[ ${crd_success} == 0 ]] && echo 'CRD observability-stack did not reach stage configuration with status success' && exit 1
+
+    set -e
+
+    return 0
+}
+
 function validate() {
     # Ensure required commands are available on system.
     command -v envsubst || { echo 'Missing required command "envsubst"' && exit 1; }
@@ -47,7 +65,7 @@ function install_rhacs_observability() {
     local -r secret_yaml=$(envsubst < "${root_dir}/resources/template/01-operator-03-secret-github.yaml") || true
     echo "${secret_yaml}" | oc apply --filename -
 
-    # Deplot secret to access Observatorium.
+    # Deploy secret to access Observatorium.
     export OBSERVATORIUM_TENANT="rhacs"
     export OBSERVATORIUM_AUTH_TYPE="redhat"
     export OBSERVATORIUM_RHSSO_URL="https://sso.redhat.com/auth/"
@@ -59,6 +77,17 @@ function install_rhacs_observability() {
     # Install observability operator.
     oc apply --filename "${root_dir}/resources/template/01-operator-04-operator-group.yaml"
     oc apply --filename "${root_dir}/resources/template/01-operator-05-subscription.yaml"
+
+    # Wait until the default CRD is available and the CRD has reached stage "configuration" with status "success". If we were to delete
+    # it beforehand, the operator would not be able to recover.
+    wait_for_default_crd
+
+    # Delete the default CRD. We do not need to specifically wait here since the finalizer of the CRD will handle the cleanup and only return
+    # once it is completed.
+    oc delete observabilities.observability.redhat.com observability-stack
+
+    # Install our CRD, which contains different default names and label selectors.
+    oc apply --filename "${root_dir}/resources/template/01-operator-06-custom-resource.yaml"
 
     return 0
 }
