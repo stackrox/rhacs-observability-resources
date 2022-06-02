@@ -7,12 +7,12 @@ metadata:
 spec:
   groups:
     - name: rhacs-central-aggregate-billing
-      interval: 1h
+      interval: 2m
       rules:
       - expr: "avg_over_time(rox_central_cluster_metrics_cpu_capacity{}[1h])"
         record: "rhacs:rox_central_cluster_metrics_cpu_capacity:avg_over_time1h"
     - name: rhacs-tmp-test
-      interval: 1h
+      interval: 2m
       rules:
       - expr: "avg_over_time(rox_central_bleve_index_analysis_time{}[1h])"
         record: "rhacs:rox_central_bleve_index_analysis_time:avg_over_time1h"
