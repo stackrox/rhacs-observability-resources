@@ -6,7 +6,8 @@
         "prometheus/pod_monitors/rhacs-central-metrics.yaml"
       ],
       "rules": [
-        "prometheus/prometheus-rules.yaml"
+        "prometheus/prometheus-rules.yaml",
+        "prometheus/billing-rules.yaml"
       ],
       "podMonitorLabelSelector": {
         "matchLabels": {
