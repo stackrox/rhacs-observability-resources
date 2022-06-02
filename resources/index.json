@@ -9,16 +9,24 @@
         "prometheus/prometheus-rules.yaml"
       ],
       "podMonitorLabelSelector": {
-        "app": "rhacs"
+        "matchLabels": {
+          "app": "rhacs"
+        }
       },
       "serviceMonitorLabelSelector": {
-        "app": "rhacs"
+        "matchLabels": {
+          "app": "rhacs"
+        }
       },
       "ruleLabelSelector": {
-        "app": "rhacs"
+        "matchLabels": {
+          "app": "rhacs"
+        }
       },
       "probeSelector": {
-        "app": "rhacs"
+        "matchLabels": {
+          "app": "rhacs"
+        }
       },
       "federation": "prometheus/federation-config.yaml",
       "observatorium": "rhacs-observatorium",
