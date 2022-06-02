@@ -6,6 +6,16 @@ metadata:
   name: rhacs-central-prometheus-rules
 spec:
   groups:
+    - name: rhacs-central-aggregate-billing
+      interval: 1h
+      rules:
+      - expr: "avg_over_time(rox_central_cluster_metrics_cpu_capacity{}[1h])"
+        record: "rhacs:rox_central_cluster_metrics_cpu_capacity:avg_over_time1h"
+    - name: rhacs-tmp-test
+      interval: 1h
+      rules:
+      - expr: "avg_over_time(rox_central_bleve_index_analysis_time{}[1h])"
+        record: "rhacs:rox_central_bleve_index_analysis_time:avg_over_time1h"
     - name: rhacs-central-alerts
       rules:
         - alert: 'RHACS Central Big Index'
