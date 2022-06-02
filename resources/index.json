@@ -8,6 +8,18 @@
       "rules": [
         "prometheus/prometheus-rules.yaml"
       ],
+      "podMonitorLabelSelector": {
+        "app": "rhacs"
+      },
+      "serviceMonitorLabelSelector": {
+        "app": "rhacs"
+      },
+      "ruleLabelSelector": {
+        "app": "rhacs"
+      },
+      "probeSelector": {
+        "app": "rhacs"
+      },
       "federation": "prometheus/federation-config.yaml",
       "observatorium": "rhacs-observatorium",
       "remoteWrite": "prometheus/remote-write.yaml",
