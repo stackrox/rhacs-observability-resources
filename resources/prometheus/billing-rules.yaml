@@ -8,5 +8,6 @@ spec:
   groups:
     - name: rhacs-cluster-billing
       rules:
-        - expr: "sum(avg_over_time(rox_central_cluster_metrics_cpu_capacity{ClusterID!=""}[1h])) by(ClusterID)"
+        - expr: |
+            sum(avg_over_time(rox_central_cluster_metrics_cpu_capacity{ClusterID!=""}[1h])) by(ClusterID)
           record: "rhacs:rox_central_cluster_metrics_cpu_capacity:avg_over_time1h"
