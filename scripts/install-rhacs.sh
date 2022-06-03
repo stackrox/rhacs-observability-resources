@@ -7,6 +7,7 @@ function wait_for_default_crd() {
     set +e
 
     local crd_success=0
+    # shellcheck disable=SC2034
     for i in {1..240}; do
         status=$(oc get -n rhacs-observability observabilities.observability.redhat.com observability-stack --ignore-not-found=true -o jsonpath="{.status.stage}{.status.stageStatus}")
         [[ ${status} == "configurationsuccess" ]] && crd_success=1 && break

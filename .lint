@@ -1,0 +1,5 @@
+exclusions:
+  template-datasource-rule:
+    reason: "Templated datasources not required"
+  panel-datasource-rule:
+    reason: "Templated datasource not required"
