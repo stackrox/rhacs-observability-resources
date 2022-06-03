@@ -6,8 +6,29 @@
         "prometheus/pod_monitors/rhacs-central-metrics.yaml"
       ],
       "rules": [
-        "prometheus/prometheus-rules.yaml"
+        "prometheus/prometheus-rules.yaml",
+        "prometheus/billing-rules.yaml"
       ],
+      "podMonitorLabelSelector": {
+        "matchLabels": {
+          "app": "rhacs"
+        }
+      },
+      "serviceMonitorLabelSelector": {
+        "matchLabels": {
+          "app": "rhacs"
+        }
+      },
+      "ruleLabelSelector": {
+        "matchLabels": {
+          "app": "rhacs"
+        }
+      },
+      "probeSelector": {
+        "matchLabels": {
+          "app": "rhacs"
+        }
+      },
       "federation": "prometheus/federation-config.yaml",
       "observatorium": "rhacs-observatorium",
       "remoteWrite": "prometheus/remote-write.yaml",
