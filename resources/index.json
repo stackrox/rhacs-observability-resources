@@ -38,7 +38,12 @@
     "grafana": {
       "dashboards": [
         "grafana/rhacs-central-overview-dashboard.yaml"
-      ]
+      ],
+      "dashboardLabelSelector": {
+        "matchLabels": {
+          "app": "rhacs"
+        }
+      }
     },
     "promtail": {
       "enabled": false,
