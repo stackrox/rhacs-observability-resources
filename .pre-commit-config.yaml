@@ -9,6 +9,7 @@ repos:
   - id: trailing-whitespace
   - id: check-json
     files: resources/index.json
+  - id: end-of-file-fixer
 - repo: local
   hooks:
   - id: grafana-lint
@@ -20,7 +21,7 @@ repos:
     name: prometheus rules test
     entry: ./scripts/test-prom-rules.sh
     language: script
-    files: resources/prometheus/*
+    files: resources/prometheus/prometheus-rules.yaml
   - id: kube-linter
     name: kube-linter
     entry: ./scripts/run-kube-linter.sh

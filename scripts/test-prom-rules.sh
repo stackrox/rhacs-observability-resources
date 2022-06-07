@@ -12,4 +12,4 @@ yq eval '.spec' "${SCRIPT_DIR}"/../resources/prometheus/prometheus-rules.yaml > 
 
 promtool test rules "${SCRIPT_DIR}"/../resources/prometheus/rules-test.yaml
 
-rm "${SCRIPT_DIR}"/../resources/prometheus/rules.yaml
+rm -f "${SCRIPT_DIR}"/../resources/prometheus/rules.yaml || true

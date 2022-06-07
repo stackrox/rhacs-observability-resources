@@ -2,58 +2,19 @@ name: Lint
 
 on:
   push:
+    branches: [main]
   pull_request:
 jobs:
-  trailing-whitespace:
-    name: Check for trailing whitespaces and newlines.
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: harupy/find-trailing-whitespace@master
-      - name: Check for trailing newlines
-        uses: fernandrone/linelint@0.0.4
-  shell-check:
-    name: Check scripts with shell check.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ludeeus/action-shellcheck@1.1.0
-        with:
-          scandir: scripts/
-  grafana-dashboard-lint:
-    name: Lint grafana dashboard.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
       - uses: actions/setup-go@v3
-      - name: Run dashboard-lint
-        run: |
-          export PATH=$PATH:/home/runner/go/bin
-          scripts/lint-grafana.sh
-  kube-linter:
-    name: Lint kubernetes resources.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: stackrox/kube-linter-action@v1.0.4
-        name: Run kube-linter
-        with:
-          directory: resources/
-  validate-json:
-    name: Check JSON file syntax.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check index.json file
-        run: python -mjson.tool resources/index.json > /dev/null
-  promtool:
-    name: Run unit tests for prometheus rules.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
       - name: Install promtool
         run: |
           curl -s -S -L -o /tmp/promtool https://github.com/prometheus/prometheus/releases/download/v2.36.0/prometheus-2.36.0.linux-amd64.tar.gz
           tar -zxf /tmp/promtool --strip-components=1 --directory /usr/local/bin &> /dev/null
-      - name: Run prometheus rule tests
-        run: scripts/test-prom-rules.sh
+      - name: Patch PATH to include GOBIN
+        run: echo "PATH=$(echo $PATH):/home/runner/go/bin" >> $GITHUB_ENV
+      - uses: pre-commit/action@v3.0.0

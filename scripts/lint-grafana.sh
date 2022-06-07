@@ -10,8 +10,12 @@ fi
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 
-yq eval '.spec.json' "${SCRIPT_DIR}"/../resources/grafana/rhacs-central-overview-dashboard.yaml > "${SCRIPT_DIR}"/dashboard.json
+TEMP_DIR="$(mktemp -d)"
 
-dashboard-linter lint "${SCRIPT_DIR}"/dashboard.json --strict --verbose
+yq eval '.spec.json' "${SCRIPT_DIR}"/../resources/grafana/rhacs-central-overview-dashboard.yaml > "${TEMP_DIR}"/dashboard.json
 
-rm "${SCRIPT_DIR}"/dashboard.json
+cp "${SCRIPT_DIR}"/.lint "${TEMP_DIR}"/.lint
+
+dashboard-linter lint "${TEMP_DIR}"/dashboard.json --strict --verbose
+
+rm -rf "${TEMP_DIR}"
