@@ -26,12 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v3
-      - name: Install grafana dashboard linter
-        run: go install github.com/grafana/dashboard-linter@latest
-      - name: Retrieve dashboard.json from YAML
-        run: cat resources/grafana/rhacs-central-overview-dashboard.yaml | yq eval '.spec.json' - > dashboard.json
-      - name: Run linter
-        run: /home/runner/go/bin/dashboard-linter lint dashboard.json --strict --verbose
+      - name: Run dashboard-lint
+        run: |
+          export PATH=$PATH:/home/runner/go/bin
+          scripts/lint-grafana.sh
   kube-linter:
     name: Lint kubernetes resources.
     runs-on: ubuntu-latest
@@ -57,7 +55,5 @@ jobs:
         run: |
           curl -s -S -L -o /tmp/promtool https://github.com/prometheus/prometheus/releases/download/v2.36.0/prometheus-2.36.0.linux-amd64.tar.gz
           tar -zxf /tmp/promtool --strip-components=1 --directory /usr/local/bin &> /dev/null
-      - name: Retrieve rules.yaml from YAML
-        run: cat resources/prometheus/prometheus-rules.yaml | yq eval '.spec' - > resources/prometheus/rules.yaml
-      - name: Run promtool checks
-        run: promtool test rules resources/prometheus/rules-test.yaml
+      - name: Run prometheus rule tests
+        run: scripts/test-prom-rules.sh

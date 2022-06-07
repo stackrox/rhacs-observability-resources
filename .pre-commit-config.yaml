@@ -1,0 +1,28 @@
+repos:
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.8.0.4
+  hooks:
+  - id: shellcheck
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.2.0
+  hooks:
+  - id: trailing-whitespace
+  - id: check-json
+    files: resources/index.json
+- repo: local
+  hooks:
+  - id: grafana-lint
+    name: grafana lint
+    entry: ./scripts/lint-grafana.sh
+    language: script
+    files: resources/grafana/rhacs-central-overview-dashboard.yaml
+  - id: prom-rule-test
+    name: prometheus rules test
+    entry: ./scripts/test-prom-rules.sh
+    language: script
+    files: resources/prometheus/*
+  - id: kube-linter
+    name: kube-linter
+    entry: ./scripts/run-kube-linter.sh
+    language: script
+    files: resources/*
