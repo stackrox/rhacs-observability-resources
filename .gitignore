@@ -1,2 +1,1 @@
-scripts/dashboard.json
-resources/prometheus/rules.yaml
+resources/prometheus/prometheus-rules-test.yaml

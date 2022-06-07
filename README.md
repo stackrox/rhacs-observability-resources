@@ -59,7 +59,7 @@ After that, open `<Cluster_URL>/k8s/ns/rhacs-observability/routes` in your brows
 
 ## Contributing
 
-This repository makes use of [pre-commit](https://pre-commit.com/) framework.
+This repository makes use of [pre-commit](https://pre-commit.com/) framework. Refer to the [installation instructions](https://pre-commit.com/#installation) for further information.
 To enable pre-commits, run the following in the root of the repository:
 ```bash
 $ pre-commit install
