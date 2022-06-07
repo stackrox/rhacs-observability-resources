@@ -56,3 +56,15 @@ export OBSERVATORIUM_RHSSO_METRICS_SECRET="<rhacs-metrics-secret>"
 ```
 
 After that, open `<Cluster_URL>/k8s/ns/rhacs-observability/routes` in your browser. Wait for Prometheus and Grafana routes to be up and ready for use. Enjoy!
+
+## Contributing
+
+This repository makes use of [pre-commit](https://pre-commit.com/) framework. Refer to the [installation instructions](https://pre-commit.com/#installation) for further information.
+To enable pre-commits, run the following in the root of the repository:
+```bash
+$ pre-commit install
+```
+
+The repository specifies a few local hooks. The hooks themselves have dependencies, which are required. Make sure you have the following installed:
+- yq
+- promtool

@@ -1,0 +1,38 @@
+rule_files:
+  - prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'rox_central_bleve_index_num_bytes_used_disk{}'
+        values: '14000000 14000000 14000000 14000000 14000000'
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACS Central Small Index
+        exp_alerts:
+          - exp_labels:
+              name: AcsCentralSmallIndexAlert
+            exp_annotations:
+              summary: We should put general information about the problem here and links to additional resources.
+              description: We should describe what the problem is. i.e., Bleve index uses more than expected disk space for more than 5 mins.
+              sop_url: "https://red-hat-storage.github.io/ocs-sop/sop/alerts/CephClusterCriticallyFull.html"
+              message: >
+                This is a test alert. We should include relevant information in message. i.e. namespace, pod, actual value, etc.
+  - interval: 1m
+    input_series:
+      - series: 'rox_central_bleve_index_num_bytes_used_disk{}'
+        values: '16500000 16500000 16500000 16500000 16500000'
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACS Central Big Index
+        exp_alerts:
+          - exp_labels:
+              name: AcsCentralBigIndexAlert
+            exp_annotations:
+              summary: We should put general information about the problem here and links to additional resources.
+              description: We should describe what the problem is. i.e., Bleve index uses more than expected disk space for more than 5 mins.
+              sop_url: "https://red-hat-storage.github.io/ocs-sop/sop/alerts/CephClusterCriticallyFull.html"
+              message: >
+                This is a test alert. We should include relevant information in message. i.e. namespace, pod, actual value, etc.

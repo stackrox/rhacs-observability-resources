@@ -1,0 +1,20 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+      - uses: actions/setup-go@v3
+      - name: Install promtool
+        run: |
+          curl -s -S -L -o /tmp/promtool https://github.com/prometheus/prometheus/releases/download/v2.36.0/prometheus-2.36.0.linux-amd64.tar.gz
+          tar -zxf /tmp/promtool --strip-components=1 --directory /usr/local/bin &> /dev/null
+      - name: Patch PATH to include GOBIN
+        run: echo "PATH=$(echo $PATH):/home/runner/go/bin" >> $GITHUB_ENV
+      - uses: pre-commit/action@v3.0.0
