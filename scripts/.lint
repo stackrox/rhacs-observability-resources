@@ -3,3 +3,13 @@ exclusions:
     reason: "Templated datasources not required"
   panel-datasource-rule:
     reason: "Templated datasource not required"
+  panel-title-description-rule:
+    reason: "Leads to duplicated information in title and descriptions."
+  panel-units-rule:
+    reason: "Not every panel has a unit. For example 'number of instances'."
+  target-job-rule:
+    reason: "Sometimes it makes sense to fix the job in a query."
+  target-instance-rule:
+    reason: "OpenShift platform metrics do not necessarily have instance lables."
+  target-rate-interval-rule:
+    reason: "Rate interval does not produce data for all queries."

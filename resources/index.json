@@ -2,9 +2,7 @@
   "id": "managed-rhacs",
   "config": {
     "prometheus": {
-      "pod_monitors": [
-        "prometheus/pod_monitors/rhacs-central-metrics.yaml"
-      ],
+      "pod_monitors": ["prometheus/pod_monitors/rhacs-central-metrics.yaml"],
       "rules": [
         "prometheus/prometheus-rules.yaml",
         "prometheus/billing-rules.yaml"
@@ -16,9 +14,7 @@
     },
     "alertmanager": {},
     "grafana": {
-      "dashboards": [
-        "grafana/rhacs-central-overview-dashboard.yaml"
-      ]
+      "dashboards": ["grafana/rhacs-central-dashboard.yaml"]
     },
     "promtail": {
       "enabled": false,
