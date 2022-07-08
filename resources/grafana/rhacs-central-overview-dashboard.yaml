@@ -193,7 +193,7 @@ spec:
           "description": "Central CPU",
           "fieldConfig": {
             "defaults": {
-              "unit": "short"
+              "unit": "none"
             }
           },
           "tooltip": {
