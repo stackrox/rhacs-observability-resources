@@ -10,6 +10,6 @@ exclusions:
   target-job-rule:
     reason: "Sometimes it makes sense to fix the job in a query."
   target-instance-rule:
-    reason: "OpenShift platform metrics do not necessarily have instance lables."
+    reason: "OpenShift platform metrics do not necessarily have instance labels."
   target-rate-interval-rule:
     reason: "Rate interval does not produce data for all queries."
