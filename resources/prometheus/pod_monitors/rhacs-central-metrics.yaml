@@ -16,3 +16,7 @@ spec:
       relabelings:
         - action: labeldrop
           regex: endpoint
+
+        - sourceLabels: [container]
+          action: replace
+          targetLabel: job
