@@ -14,7 +14,10 @@
     },
     "alertmanager": {},
     "grafana": {
-      "dashboards": ["grafana/rhacs-central-dashboard.yaml"]
+      "dashboards": [
+        "grafana/rhacs-central-dashboard.yaml",
+        "grafana/rhacs-cluster-overview-dashboard"
+      ]
     },
     "promtail": {
       "enabled": false,
