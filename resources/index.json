@@ -16,7 +16,7 @@
     "grafana": {
       "dashboards": [
         "grafana/rhacs-central-dashboard.yaml",
-        "grafana/rhacs-cluster-overview-dashboard"
+        "grafana/rhacs-cluster-overview-dashboard.yaml"
       ]
     },
     "promtail": {
