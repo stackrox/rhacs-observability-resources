@@ -68,7 +68,7 @@ If a metric is being sent to observatorium and the time series in the metric nee
 
 Filtering the metrics time series is a very similar process to non filtering metrics. The only difference is the extra drop rule. The drop rule works by looking at the specified source labels and seeing if any metrics satisfy the specified regex. For example above the drop label is looking for the metric name `node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate` with a `namespace` matching regex `openshift.*` and dropping the time series if these both match.
 
-*NOTE:* If using multiple regex a `;` is needed to separate them. Also wildcards can be used in drop rules if multiple time series from the same types of metric are being removed. For example:
+*NOTE:* When using multiple regex a `;` is needed to separate them. Also wildcards can be used in drop rules if multiple time series from the same types of metric are being removed. For example:
 
 ```
   - action: drop
