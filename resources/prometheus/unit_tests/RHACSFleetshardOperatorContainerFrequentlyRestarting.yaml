@@ -1,0 +1,39 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs", pod="fleetshard-1234-5678", container="manager"}
+        values: "0+0x30 1+1x10 4+1x10"
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs", pod="fleetshard-1234-5678", container="kube-rbac-proxy"}
+        values: "0+0x30 1+1x10 4+1x10"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: RHACSFleetshardOperatorContainerFrequentlyRestarting
+        exp_alerts: []
+      - eval_time: 60m
+        alertname: RHACSFleetshardOperatorContainerFrequentlyRestarting
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSFleetshardOperatorContainerFrequentlyRestarting
+              container: manager
+              namespace: rhacs
+              pod: fleetshard-1234-5678
+              severity: warning
+            exp_annotations:
+              summary: "Fleetshard operator container `manager` in namespace `rhacs` restarted more than 3 times."
+              description: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` has restarted more than 3 times during the last 60 minutes."
+              sop_url: ""
+          - exp_labels:
+              alertname: RHACSFleetshardOperatorContainerFrequentlyRestarting
+              container: kube-rbac-proxy
+              namespace: rhacs
+              pod: fleetshard-1234-5678
+              severity: warning
+            exp_annotations:
+              summary: "Fleetshard operator container `kube-rbac-proxy` in namespace `rhacs` restarted more than 3 times."
+              description: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` has restarted more than 3 times during the last 60 minutes."
+              sop_url: ""

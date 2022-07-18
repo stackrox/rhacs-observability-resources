@@ -1,0 +1,27 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs", pod="fleetshard-1234-5678", container="fleetshard-sync"}
+        values: "0+0x30 1+1x10 4+1x10"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: RHACSFleetshardSyncContainerFrequentlyRestarting
+        exp_alerts: []
+      - eval_time: 60m
+        alertname: RHACSFleetshardSyncContainerFrequentlyRestarting
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSFleetshardSyncContainerFrequentlyRestarting
+              container: fleetshard-sync
+              namespace: rhacs
+              pod: fleetshard-1234-5678
+              severity: warning
+            exp_annotations:
+              summary: "Fleetshard synchronizer container `fleetshard-sync` in namespace `rhacs` restarted more than 3 times."
+              description: "Fleetshard synchronizer container `fleetshard-1234-5678/fleetshard-sync` in namespace `rhacs` has restarted more than 3 times during the last 60 minutes."
+              sop_url: ""

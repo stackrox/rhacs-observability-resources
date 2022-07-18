@@ -21,7 +21,7 @@ repos:
     name: prometheus rules test
     entry: ./scripts/test-prom-rules.sh
     language: script
-    files: resources/prometheus/prometheus-rules.yaml
+    files: resources/prometheus
   - id: kube-linter
     name: kube-linter
     entry: ./scripts/run-kube-linter.sh

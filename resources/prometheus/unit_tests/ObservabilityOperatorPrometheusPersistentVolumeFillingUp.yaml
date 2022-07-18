@@ -1,0 +1,27 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kubelet_volume_stats_available_bytes{persistentvolumeclaim="managed-services-prometheus-kafka-prometheus-0", namespace="rhacs-observability"}
+        # Simulating the PVC availability is less than zero: Initial time series value is 10GiB, it is decremented by 2.32MiB every minute for 360 minutes.
+        values: "10737418240+0x30 10737418240-2435512x360"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+        exp_alerts: []
+      - eval_time: 340m # Predicting the probable free space in 3 days based on the past 340mins.
+        alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+        exp_alerts:
+          - exp_labels:
+              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+              severity: critical
+              persistentvolumeclaim: managed-services-prometheus-kafka-prometheus-0
+              namespace: rhacs-observability
+            exp_annotations:
+              summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `rhacs-observability` is filling up."
+              description: "Based on recent sampling, the Observability Operators Prometheus persistent volume claimed by `managed-services-prometheus-kafka-prometheus-0` in the namespace `rhacs-observability` is expected to fill up within three days. In three days time there will be `-264.6MiB` available."
+              sop_url: ""

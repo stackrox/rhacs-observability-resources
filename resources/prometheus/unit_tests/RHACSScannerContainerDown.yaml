@@ -1,0 +1,26 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_ready{namespace="rhacs-1234", container="scanner"}
+        values: "1+0x5 0+0x25"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACSScannerContainerDown
+        exp_alerts: []
+      - eval_time: 16m
+        alertname: RHACSScannerContainerDown
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSScannerContainerDown
+              container: scanner
+              namespace: rhacs-1234
+              severity: critical
+            exp_annotations:
+              summary: "Scanner container in namespace `rhacs-1234` is down or in a CrashLoopBackOff status."
+              description: "Scanner container in namespace `rhacs-1234` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              sop_url: ""

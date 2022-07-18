@@ -1,0 +1,27 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="scanner-1234-5678", container="scanner"}
+        values: "0+0x5 1+1x10 4+1x10"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSScannerContainerFrequentlyRestarting
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: RHACSScannerContainerFrequentlyRestarting
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSScannerContainerFrequentlyRestarting
+              container: scanner
+              namespace: rhacs-1234
+              pod: scanner-1234-5678
+              severity: warning
+            exp_annotations:
+              summary: "Scanner container `scanner` in namespace `rhacs-1234` restarted more than 3 times."
+              description: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` has restarted more than 3 times during the last 10 minutes."
+              sop_url: ""

@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: prometheus-self-metrics
+  labels:
+    app: strimzi
+  namespace: rhacs-observability
+spec:
+  namespaceSelector:
+    any: true
+  podMetricsEndpoints:
+    - path: /metrics
+      port: web
+  selector:
+    matchLabels:
+      prometheus: kafka-prometheus

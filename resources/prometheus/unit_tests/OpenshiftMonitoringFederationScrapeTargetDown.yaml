@@ -1,0 +1,49 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      # 0m - 5m container is up
+      # 5m - 20m container is down
+      - series: up{job="openshift-monitoring-federation"}
+        values: "1+0x5 0+0x15"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: OpenshiftMonitoringFederationScrapeTargetDown
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: OpenshiftMonitoringFederationScrapeTargetDown
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: openshift-monitoring-federation
+              alertname: OpenshiftMonitoringFederationScrapeTargetDown
+            exp_annotations:
+              summary: "Openshift monitoring federation scrape target is down."
+              description: "The Openshift monitoring federation scrape target has been down for longer than 10 minutes."
+              sop_url: "" # TODO: Add SOP
+
+  - interval: 1m
+    input_series:
+      # 0m - 5m container is up
+      # 5m - 20m container is down
+      - series: up{job="openshift-monitoring-federation"}
+        values: "1+0x5 stale"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: OpenshiftMonitoringFederationScrapeTargetDown
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: OpenshiftMonitoringFederationScrapeTargetDown
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: openshift-monitoring-federation
+              alertname: OpenshiftMonitoringFederationScrapeTargetDown
+            exp_annotations:
+              summary: "Openshift monitoring federation scrape target is down."
+              description: "The Openshift monitoring federation scrape target has been down for longer than 10 minutes."
+              sop_url: "" # TODO: Add SOP

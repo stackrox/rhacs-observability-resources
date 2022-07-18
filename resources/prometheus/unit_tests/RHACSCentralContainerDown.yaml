@@ -1,0 +1,26 @@
+rule_files:
+  - ../__prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_ready{namespace="rhacs-1234", container="central"}
+        values: "1+0x5 0+0x25"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACSCentralContainerDown
+        exp_alerts: []
+      - eval_time: 16m
+        alertname: RHACSCentralContainerDown
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSCentralContainerDown
+              container: central
+              namespace: rhacs-1234
+              severity: critical
+            exp_annotations:
+              summary: "Central container in namespace `rhacs-1234` is down or in a CrashLoopBackOff status."
+              description: "Central container in namespace `rhacs-1234` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              sop_url: ""
