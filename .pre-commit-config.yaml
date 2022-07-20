@@ -16,7 +16,7 @@ repos:
     name: grafana lint
     entry: ./scripts/lint-grafana.sh
     language: script
-    files: resources/grafana/rhacs-central-overview-dashboard.yaml
+    files: resources/grafana
   - id: prom-rule-test
     name: prometheus rules test
     entry: ./scripts/test-prom-rules.sh
