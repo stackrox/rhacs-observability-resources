@@ -174,7 +174,7 @@ spec:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=\"rhacs-.*\",job=~\"central\"}) by (namespace)",
+              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-.*\",job=~\"central\"}) by (namespace)",
               "interval": "",
               "legendFormat": "{{namespace}}",
               "refId": "A"
@@ -608,7 +608,9 @@ spec:
       ],
       "schemaVersion": 26,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "rhacs"
+      ],
       "templating": {
         "list": []
       },
