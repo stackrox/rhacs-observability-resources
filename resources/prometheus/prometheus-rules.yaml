@@ -10,17 +10,17 @@ spec:
       rules:
         - alert: RHACSCentralScrapeFailed
           expr: |
-            avg_over_time(up{namespace=~"rhacs-.*", pod=~"central-.*"}[10m]) < 0.25
+            avg_over_time(up{pod=~"central-.*"}[10m]) < 0.25
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}/{{ $labels.instance }}` in namespace `{{ $labels.namespace }}`."
-            description: 'During the last 10 minutes, only `{{ printf "%.4g" $value }}%` of scrapes of target `{{ $labels.pod }}/{{ $labels.instance }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: 'During the last 10 minutes, only `{{ printf "%.4g" $value }}%` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{namespace=~"rhacs-.*", container="central"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{container="central"}[10m]) < 0.5
           for: 5m
           labels:
             severity: critical
@@ -30,16 +30,16 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*", container="central"}[10m]) > 3
+            increase(kube_pod_container_status_restarts_total{container="central"}[10m]) > 3
           for: 5m
           labels:
             severity: warning
           annotations:
-            summary: "Central container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralDatabasePersistentVolumeFillingUp
-          expr: kubelet_volume_stats_available_bytes{namespace=~"rhacs-.*", persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{namespace=~"rhacs-.*", persistentvolumeclaim="stackrox-db"} < 0.1
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
           for: 5m
           labels:
             severity: critical
@@ -48,7 +48,7 @@ spec:
             description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralDatabasePersistentVolumeFillingUp
-          expr: kubelet_volume_stats_available_bytes{namespace=~"rhacs-.*", persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{namespace=~"rhacs-.*", persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{namespace=~"rhacs-.*", persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
           for: 5m
           labels:
             severity: warning
@@ -61,17 +61,17 @@ spec:
       rules:
         - alert: RHACSScannerScrapeFailed
           expr: |
-            avg_over_time(up{namespace=~"rhacs-.*", pod=~"scanner-.*"}[10m]) < 0.25
+            avg_over_time(up{pod=~"scanner-.*"}[10m]) < 0.25
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}/{{ $labels.instance }}` in namespace `{{ $labels.namespace }}`."
-            description: 'During the last 10 minutes, only `{{ printf "%.4g" $value }}%` of scrapes of target `{{ $labels.pod }}/{{ $labels.instance }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: 'During the last 10 minutes, only `{{ printf "%.4g" $value }}%` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{namespace=~"rhacs-.*", container=~"scanner(-db)?"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{container=~"scanner(-db)?"}[10m]) < 0.5
           for: 5m
           labels:
             severity: critical
@@ -81,12 +81,12 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*", container=~"scanner(-db)?"}[10m]) > 3
+            increase(kube_pod_container_status_restarts_total{container=~"scanner(-db)?"}[10m]) > 3
           for: 5m
           labels:
             severity: warning
           annotations:
-            summary: "Scanner container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 10 minutes."
             sop_url: "" # TODO: Add SOP
 
@@ -99,8 +99,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Fleetshard operator container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Fleetshard operator container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
           expr: |
@@ -109,7 +109,7 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "Fleetshard operator container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerDown
@@ -119,15 +119,15 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Fleetshard synchronizer container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Fleetshard synchronizer container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
           expr: increase(kube_pod_container_status_restarts_total{namespace="rhacs", container="fleetshard-sync"}[60m]) > 3
           labels:
             severity: warning
           annotations:
-            summary: "Fleetshard synchronizer container `{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
             sop_url: "" # TODO: Add SOP
 

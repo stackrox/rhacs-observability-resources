@@ -24,7 +24,7 @@ tests:
               pod: fleetshard-1234-5678
               severity: warning
             exp_annotations:
-              summary: "Fleetshard operator container `manager` in namespace `rhacs` restarted more than 3 times."
+              summary: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` restarted more than 3 times."
               description: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` has restarted more than 3 times during the last 60 minutes."
               sop_url: ""
           - exp_labels:
@@ -34,6 +34,6 @@ tests:
               pod: fleetshard-1234-5678
               severity: warning
             exp_annotations:
-              summary: "Fleetshard operator container `kube-rbac-proxy` in namespace `rhacs` restarted more than 3 times."
+              summary: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` restarted more than 3 times."
               description: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` has restarted more than 3 times during the last 60 minutes."
               sop_url: ""

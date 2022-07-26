@@ -4,7 +4,6 @@ metadata:
   name: prometheus-self-metrics
   labels:
     app: strimzi
-  namespace: rhacs-observability
 spec:
   namespaceSelector:
     any: true

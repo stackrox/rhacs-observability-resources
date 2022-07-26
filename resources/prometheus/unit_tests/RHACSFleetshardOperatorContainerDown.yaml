@@ -24,8 +24,8 @@ tests:
               pod: "fleetshard-1234-5678"
               severity: critical
             exp_annotations:
-              summary: "Fleetshard operator container `manager` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard operator container `manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              summary: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` is down or in a CrashLoopBackOff status."
+              description: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
               sop_url: ""
           - exp_labels:
               alertname: RHACSFleetshardOperatorContainerDown
@@ -34,6 +34,6 @@ tests:
               pod: "fleetshard-1234-5678"
               severity: critical
             exp_annotations:
-              summary: "Fleetshard operator container `kube-rbac-proxy` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard operator container `kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              summary: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` is down or in a CrashLoopBackOff status."
+              description: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
               sop_url: ""

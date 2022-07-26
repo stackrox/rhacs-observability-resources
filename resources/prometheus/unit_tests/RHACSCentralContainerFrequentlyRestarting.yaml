@@ -22,6 +22,6 @@ tests:
               pod: central-1234-5678
               severity: warning
             exp_annotations:
-              summary: "Central container `central` in namespace `rhacs-1234` restarted more than 3 times."
+              summary: "Central container `central-1234-5678/central` in namespace `rhacs-1234` restarted more than 3 times."
               description: "Central container `central-1234-5678/central` in namespace `rhacs-1234` has restarted more than 3 times during the last 10 minutes."
               sop_url: ""

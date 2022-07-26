@@ -22,6 +22,6 @@ tests:
               pod: central-1234-5678
               severity: critical
             exp_annotations:
-              summary: "Prometheus unable to scrape metrics from target `central-1234-5678/1.2.3.4:9090` in namespace `rhacs-1234`."
-              description: "During the last 10 minutes, only `0%` of scrapes of target `central-1234-5678/1.2.3.4:9090` in namespace `rhacs-1234` were successful. This alert is raised when less than 25% of scrapes are successful."
+              summary: "Prometheus unable to scrape metrics from target `central-1234-5678` in namespace `rhacs-1234`."
+              description: "During the last 10 minutes, only `0%` of scrapes of target `central-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 25% of scrapes are successful."
               sop_url: ""
