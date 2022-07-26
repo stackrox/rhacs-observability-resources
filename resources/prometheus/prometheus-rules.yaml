@@ -71,7 +71,7 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{container=~"scanner(-db)?"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"}[10m]) < 0.5
           for: 5m
           labels:
             severity: critical
@@ -81,7 +81,7 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{container=~"scanner(-db)?"}[10m]) > 3
+            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[10m]) > 3
           for: 5m
           labels:
             severity: warning
