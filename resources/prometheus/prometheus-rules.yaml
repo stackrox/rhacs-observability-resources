@@ -92,6 +92,16 @@ spec:
 
     - name: rhacs-fleetshard
       rules:
+        - alert: RHACSFleetshardOperatorScrapeFailed
+          expr: |
+            avg_over_time(up{namespace="rhacs", pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.25 or absent(up{namespace="rhacs", pod=~"rhacs-operator-controller-manager-.*"})
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: "The scrape target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` is either down, or during the last 10 minutes less than 25% of scrapes were successful."
+            sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardOperatorContainerDown
           expr: |
             avg_over_time(kube_pod_container_status_ready{namespace="rhacs", container=~"(manager|kube-rbac-proxy)"}[10m]) < 0.5
@@ -111,6 +121,16 @@ spec:
           annotations:
             summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardSyncScrapeFailed
+          expr: |
+            avg_over_time(up{namespace="rhacs", pod=~"fleetshard-sync-.*"}[10m]) < 0.25 or absent(up{namespace="rhacs", pod=~"fleetshard-sync-.*"})
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: "The scrape target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` is either down, or during the last 10 minutes less than 25% of scrapes were successful."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerDown
           expr: |
