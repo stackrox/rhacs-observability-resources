@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
@@ -12,7 +12,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2
 
 TMPDIR="${TMPDIR:-/tmp}"
 cp "${SCRIPT_DIR}"/.lint "${TMPDIR}"/.lint
-for f in "${SCRIPT_DIR}"/../resources/grafana/*.yaml; do
-	yq eval '.spec.json' "$f" >"${TMPDIR}"/dashboard.json
+for var in "$@"; do
+	yq eval '.spec.json' "$var" >"${TMPDIR}"/dashboard.json
 	dashboard-linter lint "${TMPDIR}"/dashboard.json --strict --verbose
 done

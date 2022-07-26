@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
@@ -8,12 +8,7 @@ set -eu
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2>/dev/null)"
 
-if [[ ! -f "${SCRIPT_DIR}"/../resources/prometheus/__prometheus-rules-test.yaml ]]; then
-	yq eval '.spec' "${SCRIPT_DIR}"/../resources/prometheus/prometheus-rules.yaml >"${SCRIPT_DIR}"/../resources/prometheus/__prometheus-rules-test.yaml
-fi
+yq eval '.spec' "${SCRIPT_DIR}"/../resources/prometheus/prometheus-rules.yaml >/tmp/prometheus-rules-test.yaml
 for var in "$@"; do
-	echo "$var"
 	promtool test rules "${var}"
 done
-
-# rm -f "${SCRIPT_DIR}"/../resources/prometheus/__prometheus-rules-test.yaml || true
