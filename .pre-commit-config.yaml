@@ -21,10 +21,9 @@ repos:
         name: prometheus rules test
         entry: ./scripts/test-prom-rules.sh
         language: script
-        files: resources/prometheus/unit_tests
-        always_run: true
+        pass_filenames: false
       - id: kube-linter
         name: kube-linter
         entry: ./scripts/run-kube-linter.sh
         language: script
-        files: resources/*
+        files: resources
