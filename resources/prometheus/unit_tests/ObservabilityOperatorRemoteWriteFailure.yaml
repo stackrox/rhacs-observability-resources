@@ -7,11 +7,11 @@ tests:
     input_series:
       - series: prometheus_remote_storage_failed_samples_total
         values: "1+0x12 1+2.5x12"
-      - series: prometheus_remote_storage_succeeded_samples_total
+      - series: prometheus_remote_storage_samples_in_total
         values: "1+1x12 11+9.5x12"
       - series: prometheus_remote_storage_retried_samples_total
         values: "1+0x12 1+2.5x12"
-      - series: prometheus_remote_storage_succeeded_samples_total
+      - series: prometheus_remote_storage_samples_in_total
         values: "1+1x12 11+9.5x12"
     alert_rule_test:
       - eval_time: 12m

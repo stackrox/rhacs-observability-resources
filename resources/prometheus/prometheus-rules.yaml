@@ -172,10 +172,10 @@ spec:
         - alert: ObservabilityOperatorRemoteWriteFailure
           expr: >-
             (sum(rate(prometheus_remote_storage_retried_samples_total[5m])) /
-            sum(rate(prometheus_remote_storage_succeeded_samples_total[5m])) > 0.1)
+            sum(rate(prometheus_remote_storage_samples_in_total[5m])) > 0.1)
             OR
             (sum(rate(prometheus_remote_storage_failed_samples_total[5m])) /
-            sum(rate(prometheus_remote_storage_succeeded_samples_total[5m])) > 0.1)
+            sum(rate(prometheus_remote_storage_samples_in_total[5m])) > 0.1)
           for: 10m
           labels:
             severity: critical
