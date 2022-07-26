@@ -25,8 +25,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Central container in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Central container in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerFrequentlyRestarting
           expr: |
@@ -76,8 +76,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Scanner container in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Scanner container in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |

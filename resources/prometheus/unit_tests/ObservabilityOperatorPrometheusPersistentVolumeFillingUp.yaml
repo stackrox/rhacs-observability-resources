@@ -23,5 +23,5 @@ tests:
               namespace: rhacs-observability
             exp_annotations:
               summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `rhacs-observability` is filling up."
-              description: "Based on recent sampling, the Observability Operators Prometheus persistent volume claimed by `managed-services-prometheus-kafka-prometheus-0` in the namespace `rhacs-observability` is expected to fill up within three days. In three days time there will be `-264.6MiB` available."
+              description: "Based on recent sampling, the Observability Operators Prometheus persistent volume claimed by `managed-services-prometheus-kafka-prometheus-0` in the namespace `rhacs-observability` is expected to fill up within three days."
               sop_url: ""
