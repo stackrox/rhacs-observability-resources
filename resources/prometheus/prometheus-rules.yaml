@@ -166,7 +166,7 @@ spec:
             severity: critical
           annotations:
             summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `{{ $labels.namespace }}` is filling up."
-            description: "Based on recent sampling, the Observability Operators Prometheus persistent volume claimed by `{{ $labels.persistentvolumeclaim }}` in the namespace `{{ $labels.namespace }}` is expected to fill up within three days. In three days time there will be `{{ $value | humanize1024 }}B` available."
+            description: "Based on recent sampling, the Observability Operators Prometheus persistent volume claimed by `{{ $labels.persistentvolumeclaim }}` in the namespace `{{ $labels.namespace }}` is expected to fill up within three days."
             sop_url: "" # TODO: Add SOP
 
         - alert: ObservabilityOperatorRemoteWriteFailure
