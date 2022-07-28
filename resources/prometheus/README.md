@@ -24,16 +24,16 @@ A list of references on good alerting practices:
 ### Alert Ownership
 
 RHACS engineering teams are responsible for writing and maintaining alerting
-rules and SOPs for their components, i.e. their operators and operands.
+rules and SOPs for their components, which include operators and operands.
 CSSRE are available for the consulting and review of alerts & SOPS.
 CSSRE may also contribute alerting changes, though this should be done in
 collaboration with RHACS engineering. Both warning and critical alerts are required to have a corresponding SOP.
 
 ### Style Guide
 
-- Alert names MUST be CamelCase, e.g.: `StrimziKafkaStuck`
-- Alert names SHOULD be prefixed with a component, e.g.: `ZookeeperPersistentVolumeFillingUp`
-  - There may be exceptions for some broadly scoped alerts, e.g.: `TargetDown`
+- Alert names MUST be CamelCase, for example `RHACSCentralScrapeFailed`.
+- Alert names SHOULD be prefixed with a component, for example `ObservabilityOperatorRemoteWriteFailure`.
+  - There may be exceptions for some broadly scoped alerts like `TargetDown`.
 - Alerts MUST include a `severity` label indicating the alert's urgency.
   - Valid severities are: `critical` or `warning` — see below for
     guidelines on writing alerts of each severity.
@@ -67,23 +67,16 @@ alerts, so they fire before the situation becomes irrecoverable.
 Example critical alert:
 
 ```yaml
-- alert: StrimziKafkaStuck
-  expr: strimzi_resource_state != 1
-  for: 10m
+- alert: RHACSCentralDatabasePersistentVolumeFillingUp
+  expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
+  for: 5m
   labels:
     severity: critical
   annotations:
-    summary: "Strimzi Kafka is stuck in a non-ready state"
-    description: "The Strimzi Kafka {{ $labels.name }} in the {{ $labels.resource_namespace }} namespace, managed by Strimzi pod {{ $labels.pod }} has been in a non-ready state for 10 minutes"
-    sop_url: "https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/strimzi_kafka_stuck.asciidoc"
+    summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
+    description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
+    sop_url: "" # TODO: Add SOP
 ```
-
-This alert fires if a Kafka instance has _not_ been ready for
-the last 10 minutes. This is a clear example of a critical
-data-plane issue that represents a threat to the operability of a kafka instance,
-and likely warrants paging someone. The alert has a clear summary and
-description annotations, and it links to a SOP with information on
-investigating and resolving the issue.
 
 The group of critical alerts should be small, very well-defined, highly
 documented, polished and with a high bar set for entry. This includes a
@@ -110,21 +103,16 @@ but for them _not_ to respond with corrective action immediately.
 Example warning alert:
 
 ```yaml
-- alert: ZookeeperPersistentVolumeFillingUp
-  expr: (kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"} < 0.15) and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"data-(.+)-zookeeper-[0-9]+"}[6h], 4 * 24 * 3600) < 0
-  for: 1h
+- alert: RHACSCentralDatabasePersistentVolumeFillingUp
+  expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
+  for: 5m
   labels:
     severity: warning
   annotations:
-    summary: "Zookeeper PersistentVolume is filling up."
-    description: "Based on recent sampling, the Zookeeper PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available."
-    sop_url: "https://github.com/bf2fc6cc711aee1a0c2a/kas-sre-sops/blob/main/sops/alerts/persistent_volume_filling.asciidoc"
+    summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
+    description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
+    sop_url: "" # TODO: Add SOP
 ```
-
-This alert fires if one or more Zookeeper volumes are getting close to filling up.
-The alert has a clear name and informative summary and description annotations,
-and it links to a SOP with information on investigating and resolving the issue.
-The timeline is appropriate for allowing the service to resolve the issue itself, avoiding the need to alert SRE.
 
 ## Federation Configuration
 
@@ -145,7 +133,7 @@ There are plenty of examples in the yaml file already of how to filter to specif
 ## Prometheus Remote Write to Observatorium
 
 A subset of metrics from the kafka prometheus instance in each OSD cluster are remote written to Observatorium for fleet management purposes.
-Observatorium is also used for exposing user metrics via the kafka control plane APIs and UI.
+Observatorium is also used for exposing user metrics via the control plane APIs and UI.
 
 The configuration for remote write is defined in ./remote-write.yaml.
 The below sections give more detail on how to make sense of this file and update it.
@@ -213,5 +201,5 @@ Most of the same points are relevant:
 
 - use full metric names where possible instead of wildcards that could included a lot of unnecessary metrics or even future defined metrics without realising
 - filter by labels as much as possible. Label combinations are the main cause of cardinality explosion as each new combination results in a new metrics series on disk. See the article [Cardinality is key](https://www.robustperception.io/cardinality-is-key#:~:text=Cardinality%20is%20how%20many%20unique,the%20cardinality%20would%20be%203.) for a good explanation of this
-- consider linear growth in size & scrape duration. For example, when there are a lot of kafka instances in an OSD cluster.
-- consider undeterministic user impacted growth in metrics. For example, number of kafka topics created.
+- consider linear growth in size & scrape duration. For example, when there are a lot of RHACS instances in an OSD cluster.
+- consider undeterministic user impacted growth in metrics. For example, when customers increase the size of their secured clusters.
