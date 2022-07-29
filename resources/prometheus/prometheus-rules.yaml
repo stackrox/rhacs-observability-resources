@@ -94,7 +94,7 @@ spec:
       rules:
         - alert: RHACSFleetshardOperatorScrapeFailed
           expr: |
-            avg_over_time(up{namespace="rhacs", pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.25 or absent(up{namespace="rhacs", pod=~"rhacs-operator-controller-manager-.*"})
+            avg_over_time(up{pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.25 or absent(up{pod=~"rhacs-operator-controller-manager-.*"})
           for: 5m
           labels:
             severity: critical
@@ -104,7 +104,7 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardOperatorContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{namespace="rhacs", container=~"(manager|kube-rbac-proxy)"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.5
           for: 5m
           labels:
             severity: critical
@@ -114,7 +114,7 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{namespace="rhacs", container=~"(manager|kube-rbac-proxy)"}[60m]) > 3
+            increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-controller-manager-.*"}[60m]) > 3
           for: 5m
           labels:
             severity: warning
@@ -124,7 +124,7 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncScrapeFailed
           expr: |
-            avg_over_time(up{namespace="rhacs", pod=~"fleetshard-sync-.*"}[10m]) < 0.25 or absent(up{namespace="rhacs", pod=~"fleetshard-sync-.*"})
+            avg_over_time(up{pod=~"fleetshard-sync-.*"}[10m]) < 0.25 or absent(up{pod=~"fleetshard-sync-.*"})
           for: 5m
           labels:
             severity: critical
@@ -134,7 +134,7 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{namespace="rhacs", container="fleetshard-sync"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"}[10m]) < 0.5
           for: 5m
           labels:
             severity: critical
@@ -143,7 +143,7 @@ spec:
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
-          expr: increase(kube_pod_container_status_restarts_total{namespace="rhacs", container="fleetshard-sync"}[60m]) > 3
+          expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[60m]) > 3
           labels:
             severity: warning
           annotations:

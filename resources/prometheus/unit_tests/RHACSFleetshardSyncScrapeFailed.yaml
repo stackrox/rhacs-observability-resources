@@ -6,22 +6,22 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: up{namespace="rhacs-1234", pod="central-1234-5678", instance="1.2.3.4:9090"}
+      - series: up{namespace="rhacs", pod="fleetshard-sync-1234", instance="1.2.3.4:9090"}
         values: "0+0x18 1+0x15"
     alert_rule_test:
       - eval_time: 3m
-        alertname: RHACSCentralScrapeFailed
+        alertname: RHACSFleetshardSyncScrapeFailed
         exp_alerts: []
       - eval_time: 10m
-        alertname: RHACSCentralScrapeFailed
+        alertname: RHACSFleetshardSyncScrapeFailed
         exp_alerts:
           - exp_labels:
-              alertname: RHACSCentralScrapeFailed
+              alertname: RHACSFleetshardSyncScrapeFailed
               instance: 1.2.3.4:9090
-              namespace: rhacs-1234
-              pod: central-1234-5678
+              namespace: rhacs
+              pod: fleetshard-sync-1234
               severity: critical
             exp_annotations:
-              summary: "Prometheus unable to scrape metrics from target `central-1234-5678` in namespace `rhacs-1234`."
-              description: "During the last 10 minutes, only `0%` of scrapes of target `central-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 25% of scrapes are successful."
+              summary: "Prometheus unable to scrape metrics from target `fleetshard-sync-1234` in namespace `rhacs`."
+              description: "The scrape target `fleetshard-sync-1234` in namespace `rhacs` is either down, or during the last 10 minutes less than 25% of scrapes were successful."
               sop_url: ""

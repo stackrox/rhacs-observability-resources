@@ -6,9 +6,9 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: kube_pod_container_status_ready{namespace="rhacs", pod="fleetshard-1234-5678", container="manager"}
+      - series: kube_pod_container_status_ready{namespace="rhacs", pod="rhacs-operator-controller-manager-1234", container="manager"}
         values: "1+0x5 0+0x25"
-      - series: kube_pod_container_status_ready{namespace="rhacs", pod="fleetshard-1234-5678", container="kube-rbac-proxy"}
+      - series: kube_pod_container_status_ready{namespace="rhacs", pod="rhacs-operator-controller-manager-1234", container="kube-rbac-proxy"}
         values: "1+0x5 0+0x25"
     alert_rule_test:
       - eval_time: 5m
@@ -21,19 +21,19 @@ tests:
               alertname: RHACSFleetshardOperatorContainerDown
               container: manager
               namespace: rhacs
-              pod: "fleetshard-1234-5678"
+              pod: rhacs-operator-controller-manager-1234
               severity: critical
             exp_annotations:
-              summary: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard operator container `fleetshard-1234-5678/manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              summary: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` is down or in a CrashLoopBackOff status."
+              description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
               sop_url: ""
           - exp_labels:
               alertname: RHACSFleetshardOperatorContainerDown
               container: kube-rbac-proxy
               namespace: rhacs
-              pod: "fleetshard-1234-5678"
+              pod: rhacs-operator-controller-manager-1234
               severity: critical
             exp_annotations:
-              summary: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard operator container `fleetshard-1234-5678/kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              summary: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` is down or in a CrashLoopBackOff status."
+              description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
               sop_url: ""
