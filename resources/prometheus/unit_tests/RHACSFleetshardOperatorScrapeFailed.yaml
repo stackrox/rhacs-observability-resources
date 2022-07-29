@@ -7,7 +7,7 @@ tests:
   - interval: 1m
     input_series:
       - series: up{namespace="rhacs", pod="rhacs-operator-controller-manager-1234", instance="1.2.3.4:9090"}
-        values: "0+0x18 1+0x15"
+        values: "0+0x8 1+0x15"
     alert_rule_test:
       - eval_time: 3m
         alertname: RHACSFleetshardOperatorScrapeFailed
