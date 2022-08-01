@@ -16,7 +16,7 @@ spec:
             severity: critical
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
-            description: 'During the last 10 minutes, only `{{ printf "%.4g" $value }}%` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
+            description: 'During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerDown
           expr: |
@@ -67,7 +67,7 @@ spec:
             severity: critical
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
-            description: 'During the last 10 minutes, only `{{ printf "%.4g" $value }}%` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
+            description: 'During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerDown
           expr: |
