@@ -2,7 +2,10 @@
   "id": "managed-rhacs",
   "config": {
     "prometheus": {
-      "pod_monitors": ["prometheus/pod_monitors/rhacs-central-metrics.yaml"],
+      "pod_monitors": [
+        "prometheus/pod_monitors/rhacs-central-metrics.yaml",
+        "prometheus/pod_monitors/prometheus-self-metrics.yaml"
+      ],
       "rules": [
         "prometheus/prometheus-rules.yaml",
         "prometheus/billing-rules.yaml"

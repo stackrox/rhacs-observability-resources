@@ -1,0 +1,27 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: up{namespace="rhacs-1234", pod="central-1234-5678", instance="1.2.3.4:9090"}
+        values: "0+0x8 1+0x15"
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: RHACSCentralScrapeFailed
+        exp_alerts: []
+      - eval_time: 10m
+        alertname: RHACSCentralScrapeFailed
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSCentralScrapeFailed
+              instance: 1.2.3.4:9090
+              namespace: rhacs-1234
+              pod: central-1234-5678
+              severity: critical
+            exp_annotations:
+              summary: "Prometheus unable to scrape metrics from target `central-1234-5678` in namespace `rhacs-1234`."
+              description: "During the last 10 minutes, only `18.18%` of scrapes of target `central-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 25% of scrapes are successful."
+              sop_url: ""

@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: rhacs-fleetshard-metrics
+  labels:
+    app: strimzi
+spec:
+  selector:
+    matchLabels:
+      app: "fleetshard-sync"
+  namespaceSelector:
+    any: true
+  podMetricsEndpoints:
+    - path: /metrics
+      port: monitoring
+      relabelings:
+        - action: labeldrop
+          regex: endpoint
+
+        - sourceLabels: [container]
+          action: replace
+          targetLabel: job

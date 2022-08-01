@@ -6,27 +6,210 @@ metadata:
   name: rhacs-central-prometheus-rules
 spec:
   groups:
-    - name: rhacs-central-alerts
+    - name: rhacs-central
       rules:
-        - alert: 'RHACS Central Big Index'
+        - alert: RHACSCentralScrapeFailed
+          expr: |
+            avg_over_time(up{pod=~"central-.*"}[10m]) < 0.25
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: 'During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSCentralContainerDown
+          expr: |
+            avg_over_time(kube_pod_container_status_ready{container="central"}[10m]) < 0.5
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSCentralContainerFrequentlyRestarting
+          expr: |
+            increase(kube_pod_container_status_restarts_total{container="central"}[10m]) > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 10 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSCentralDatabasePersistentVolumeFillingUp
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
+            description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSCentralDatabasePersistentVolumeFillingUp
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
+            description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
+            sop_url: "" # TODO: Add SOP
+
+    - name: rhacs-scanner
+      rules:
+        - alert: RHACSScannerScrapeFailed
+          expr: |
+            avg_over_time(up{pod=~"scanner-.*"}[10m]) < 0.25
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: 'During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 25% of scrapes are successful.'
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSScannerContainerDown
+          expr: |
+            avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"}[10m]) < 0.5
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSScannerContainerFrequentlyRestarting
+          expr: |
+            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[10m]) > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 10 minutes."
+            sop_url: "" # TODO: Add SOP
+
+    - name: rhacs-fleetshard
+      rules:
+        - alert: RHACSFleetshardOperatorScrapeFailed
+          expr: |
+            avg_over_time(up{pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.25 or absent(up{pod=~"rhacs-operator-controller-manager-.*"})
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: "The scrape target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` is either down, or during the last 10 minutes less than 25% of scrapes were successful."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardOperatorContainerDown
+          expr: |
+            avg_over_time(kube_pod_container_status_ready{pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.5
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
+          expr: |
+            increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-controller-manager-.*"}[60m]) > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardSyncScrapeFailed
+          expr: |
+            avg_over_time(up{pod=~"fleetshard-sync-.*"}[10m]) < 0.25 or absent(up{pod=~"fleetshard-sync-.*"})
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: "The scrape target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` is either down, or during the last 10 minutes less than 25% of scrapes were successful."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardSyncContainerDown
+          expr: |
+            avg_over_time(kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"}[10m]) < 0.5
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
+          expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[60m]) > 3
+          labels:
+            severity: warning
+          annotations:
+            summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
+            sop_url: "" # TODO: Add SOP
+
+    - name: deadmanssnitch
+      rules:
+        - alert: DeadMansSwitch
           annotations:
             message: >
-              This is a test alert. We should include relevant information in message. i.e. namespace, pod, actual value, etc.
-            description: "We should describe what the problem is. i.e., Bleve index uses more than expected disk space for more than 5 mins."
-            summary: "We should put general information about the problem here and links to additional resources."
-            # We should provide SOP (standard operation procedure). Here is an example.
-            sop_url: "https://red-hat-storage.github.io/ocs-sop/sop/alerts/CephClusterCriticallyFull.html"
-          expr: rox_central_bleve_index_num_bytes_used_disk > 15500000
+              This is an alert meant to ensure that the entire alerting pipeline is functional.
+              This alert is always firing, therefore it should always be firing in Alertmanager
+              and always fire against a receiver. There are integrations with various notification
+              mechanisms that send a notification when this alert is not firing. For example the
+              "DeadMansSnitch" integration in PagerDuty.
+          expr: vector(1)
           labels:
-            name: AcsCentralBigIndexAlert
-        - alert: 'RHACS Central Small Index'
+            name: DeadMansSwitchAlert
+
+    - name: federation
+      rules:
+        - alert: OpenshiftMonitoringFederationScrapeTargetDown
+          expr: up{job="openshift-monitoring-federation"} != 1 or absent(up{job="openshift-monitoring-federation"})
+          for: 10m
+          labels:
+            severity: critical
           annotations:
-            message: >
-              This is a test alert. We should include relevant information in message. i.e. namespace, pod, actual value, etc.
-            description: "We should describe what the problem is. i.e., Bleve index uses more than expected disk space for more than 5 mins."
-            summary: "We should put general information about the problem here and links to additional resources."
-            # We should provide SOP (standard operation procedure). Here is an example.
-            sop_url: "https://red-hat-storage.github.io/ocs-sop/sop/alerts/CephClusterCriticallyFull.html"
-          expr: rox_central_bleve_index_num_bytes_used_disk < 15000000
+            summary: "Openshift monitoring federation scrape target is down."
+            description: "The Openshift monitoring federation scrape target has been down for longer than 10 minutes."
+            sop_url: "" # TODO: Add SOP
+
+    - name: observability-operator
+      rules:
+        - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} < 0.1
+          for: 5m
           labels:
-            name: AcsCentralSmallIndexAlert
+            severity: critical
+          annotations:
+            summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `{{ $labels.namespace }}` is filling up."
+            description: "The Observability Operator's Prometheus storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
+            sop_url: "" # TODO: Add SOP
+
+        - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"}[6h], 4 * 24 * 3600) < 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `{{ $labels.namespace }}` is filling up."
+            description: "The Observability Operator's Prometheus storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
+            sop_url: "" # TODO: Add SOP
+
+        - alert: ObservabilityOperatorRemoteWriteFailure
+          expr: >-
+            (sum(rate(prometheus_remote_storage_retried_samples_total[5m])) /
+            sum(rate(prometheus_remote_storage_samples_in_total[5m])) > 0.1)
+            OR
+            (sum(rate(prometheus_remote_storage_failed_samples_total[5m])) /
+            sum(rate(prometheus_remote_storage_samples_in_total[5m])) > 0.1)
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
+            description: "The Prometheus remote write had a failure rate above 10% for more than 10 minutes."
+            sop_url: "" # TODO: Add SOP

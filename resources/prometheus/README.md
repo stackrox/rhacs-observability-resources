@@ -1,3 +1,119 @@
+## Alerts Policy
+
+### Summary
+
+This policy is originally based on the [Alerting Consistency][3] proposal for OpenShift alerts.
+
+Clear and actionable alerts are a key component of a smooth operational
+experience. Ensuring we have clear and concise guidelines for engineers and
+SRE creating new alerts for RHACS will result in a better
+experience for end users. This policy aims to outline the collective wisdom
+of the RHACS engineer, CSSRE and wider monitoring communities, and how it
+relates to RHACS alerting.
+
+> **_Important:_** Every alert regardless of severity is required to have a corresponding SOP.
+
+### Recommended Reading
+
+A list of references on good alerting practices:
+
+- [Google SRE Book - Monitoring Distributed Systems][4]
+- [Prometheus Alerting Documentation][5]
+- [Alerting for Distributed Systems][1]
+
+### Alert Ownership
+
+RHACS engineering teams are responsible for writing and maintaining alerting
+rules and SOPs for their components, which include operators and operands.
+CSSRE are available for the consulting and review of alerts & SOPS.
+CSSRE may also contribute alerting changes, though this should be done in
+collaboration with RHACS engineering. Both warning and critical alerts are required to have a corresponding SOP.
+
+### Style Guide
+
+- Alert names MUST be CamelCase, for example `RHACSCentralScrapeFailed`.
+- Alert names SHOULD be prefixed with a component, for example `ObservabilityOperatorRemoteWriteFailure`.
+  - There may be exceptions for some broadly scoped alerts like `TargetDown`.
+- Alerts MUST include a `severity` label indicating the alert's urgency.
+  - Valid severities are: `critical` or `warning` — see below for
+    guidelines on writing alerts of each severity.
+- Alerts MUST include `summary` and `description` annotations.
+  - Think of `summary` as the first line of a commit message, or an email
+    subject line. It should be brief but informative. The `description` is the
+    longer, more detailed explanation of the alert.
+- Alerts SHOULD include a `namespace` label indicating the source of the alert.
+  - Many alerts will include this by virtue of the fact that their PromQL
+    expressions result in a namespace label. Others may require a static
+    namespace label.
+- All alerts MUST include a `sop_url` annotation.
+  - SOP style documentation for resolving alerts is required.
+    These runbooks are reviewed by CSSRE and currently live in the
+    [TODO: add link once rhacs repo exists] repository.
+
+### Critical Alerts
+
+TL/DR: For alerting current and impending disaster situations. These alerts
+page an SRE. The situation should warrant waking someone in the middle of the
+night.
+
+Timeline: ~5 minutes.
+
+Reserve critical level alerts only for reporting conditions that may lead to
+service unavailability for one or more Central instances.
+Failures of most individual components should not trigger critical level alerts,
+unless they would result in that condition. Configure critical level
+alerts, so they fire before the situation becomes irrecoverable.
+
+Example critical alert:
+
+```yaml
+- alert: RHACSCentralDatabasePersistentVolumeFillingUp
+  expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
+  for: 5m
+  labels:
+    severity: critical
+  annotations:
+    summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
+    description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
+    sop_url: "" # TODO: Add SOP
+```
+
+The group of critical alerts should be small, very well-defined, highly
+documented, polished and with a high bar set for entry. This includes a
+mandatory review of a proposed critical alert by the CSSRE team.
+
+### Warning Alerts
+
+TL/DR: The vast majority of alerts should use this severity. Issues at the
+warning level should be addressed in a timely manner, but don't pose an
+immediate threat to the operation of the service as a whole.
+
+Timeline: ~60 minutes
+
+If your alert does not meet the criteria in "Critical Alerts" above, it belongs
+to the warning level or lower.
+
+Use warning level alerts for reporting conditions that may lead to inability to
+deliver individual features of the service, but not the service as a
+whole. Most alerts are likely to be warnings. Configure warning level alerts so
+that they do not fire until components have sufficient time to try to recover
+from the interruption automatically. Expect CSSRE to periodically check for warnings,
+but for them _not_ to respond with corrective action immediately.
+
+Example warning alert:
+
+```yaml
+- alert: RHACSCentralDatabasePersistentVolumeFillingUp
+  expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
+    description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
+    sop_url: "" # TODO: Add SOP
+```
+
 ## Federation Configuration
 
 OpenShift runs cAdvisor to scrape cpu, memory, network, and kube-state metrics for any namespace.
@@ -17,7 +133,7 @@ There are plenty of examples in the yaml file already of how to filter to specif
 ## Prometheus Remote Write to Observatorium
 
 A subset of metrics from the kafka prometheus instance in each OSD cluster are remote written to Observatorium for fleet management purposes.
-Observatorium is also used for exposing user metrics via the kafka control plane APIs and UI.
+Observatorium is also used for exposing user metrics via the control plane APIs and UI.
 
 The configuration for remote write is defined in ./remote-write.yaml.
 The below sections give more detail on how to make sense of this file and update it.
@@ -26,10 +142,10 @@ The below sections give more detail on how to make sense of this file and update
 
 There are two ways of specifying metrics:
 
-* Non filtering
-* Filtering
+- Non filtering
+- Filtering
 
-For both types a temporary label is added to the metrics called `__tmp_keep`.  For filtering metrics an extra rule is needed specifying what time series you want to drop. From there a rule at the end specifies to keep all the time series with the `__tmp_keep` label and then drop the temp label. What's left is sent to observatorium.
+For both types a temporary label is added to the metrics called `__tmp_keep`. For filtering metrics an extra rule is needed specifying what time series you want to drop. From there a rule at the end specifies to keep all the time series with the `__tmp_keep` label and then drop the temp label. What's left is sent to observatorium.
 
 ### Adding metrics without filtering:
 
@@ -68,7 +184,7 @@ If a metric is being sent to observatorium and the time series in the metric nee
 
 Filtering the metrics time series is a very similar process to non filtering metrics. The only difference is the extra drop rule. The drop rule works by looking at the specified source labels and seeing if any metrics satisfy the specified regex. For example above the drop label is looking for the metric name `node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate` with a `namespace` matching regex `openshift.*` and dropping the time series if these both match.
 
-*NOTE:* When using multiple regex a `;` is needed to separate them. Also wildcards can be used in drop rules if multiple time series from the same types of metric are being removed. For example:
+_NOTE:_ When using multiple regex a `;` is needed to separate them. Also wildcards can be used in drop rules if multiple time series from the same types of metric are being removed. For example:
 
 ```
   - action: drop
@@ -85,5 +201,5 @@ Most of the same points are relevant:
 
 - use full metric names where possible instead of wildcards that could included a lot of unnecessary metrics or even future defined metrics without realising
 - filter by labels as much as possible. Label combinations are the main cause of cardinality explosion as each new combination results in a new metrics series on disk. See the article [Cardinality is key](https://www.robustperception.io/cardinality-is-key#:~:text=Cardinality%20is%20how%20many%20unique,the%20cardinality%20would%20be%203.) for a good explanation of this
-- consider linear growth in size & scrape duration. For example, when there are a lot of kafka instances in an OSD cluster.
-- consider undeterministic user impacted growth in metrics. For example, number of kafka topics created.
+- consider linear growth in size & scrape duration. For example, when there are a lot of RHACS instances in an OSD cluster.
+- consider undeterministic user impacted growth in metrics. For example, when customers increase the size of their secured clusters.
