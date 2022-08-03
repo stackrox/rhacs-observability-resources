@@ -9,5 +9,12 @@ spec:
     - name: rhacs-cluster-billing
       rules:
         - expr: |
-            sum(avg_over_time(rox_central_cluster_metrics_cpu_capacity{ClusterID!=""}[1h])) by(ClusterID)
+            label_replace(
+              sum by (rhacs_instance_id) (
+                avg by (ClusterID, rhacs_instance_id) (
+                  avg_over_time(rox_central_cluster_metrics_cpu_capacity{ClusterID!=""}[1h])
+                )
+              ),
+              "_id", "$1", "rhacs_instance_id", "(.*)"
+            )
           record: "rhacs:rox_central_cluster_metrics_cpu_capacity:avg_over_time1h"

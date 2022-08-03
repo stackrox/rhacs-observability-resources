@@ -20,3 +20,8 @@ spec:
         - sourceLabels: [container]
           action: replace
           targetLabel: job
+
+        - sourceLabels: [namespace]
+          action: replace
+          regex: .+-(.+)
+          targetLabel: rhacs_instance_id
