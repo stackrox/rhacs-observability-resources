@@ -15,7 +15,9 @@
       "remoteWrite": "prometheus/remote-write.yaml",
       "overridePrometheusPvcSize": "250Gi"
     },
-    "alertmanager": {},
+    "alertmanager": {
+      "pagerDutySecretName": "rhacs-pagerduty"
+    },
     "grafana": {
       "dashboards": [
         "grafana/rhacs-central-dashboard.yaml",
