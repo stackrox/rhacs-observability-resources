@@ -22,7 +22,8 @@
       "dashboards": [
         "grafana/rhacs-central-dashboard.yaml",
         "grafana/rhacs-cluster-overview-dashboard.yaml"
-      ]
+      ],
+      "grafanaVersion": "9.1.0"
     },
     "promtail": {
       "enabled": false,
