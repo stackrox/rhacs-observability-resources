@@ -10,8 +10,9 @@
         "prometheus/pod_monitors/rhacs-scanner-metrics.yaml"
       ],
       "rules": [
+        "prometheus/billing-rules.yaml",
         "prometheus/prometheus-rules.yaml",
-        "prometheus/billing-rules.yaml"
+        "prometheus/rhacs-recording-rules.yaml"
       ],
       "federation": "prometheus/federation-config.yaml",
       "observatorium": "rhacs-observatorium",
