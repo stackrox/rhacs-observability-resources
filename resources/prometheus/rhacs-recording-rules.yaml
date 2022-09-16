@@ -3,7 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     app: strimzi
-  name: rhacs-prometheus-recording-rules
+  name: rhacs-recording-rules
 spec:
   groups:
     - name: rhacs-fleetshard-recording-rules
