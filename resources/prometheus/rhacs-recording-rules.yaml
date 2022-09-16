@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: strimzi
+  name: rhacs-prometheus-recording-rules
+spec:
+  groups:
+    - name: rhacs-fleetshard-recording-rules
+      rules:
+        - expr: |2
+              rate(acs_fleetshard_total_central_reconcilation_errors[10m])
+            /
+              rate(acs_fleetshard_total_central_reconcilations[10m])
+          labels:
+          record: acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m
+        - expr: |2
+              rate(acs_fleetshard_total_fleet_manager_request_errors[10m])
+            /
+              rate(acs_fleetshard_total_fleet_manager_requests[10m])
+          labels:
+          record: acs_fleetshard_fleet_manager_errors_per_requests:ratio_rate10m

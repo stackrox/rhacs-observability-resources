@@ -1,0 +1,27 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: acs_fleetshard_fleet_manager_errors_per_requests:ratio_rate10m{namespace="rhacs", pod="fleetshard-sync-1234", container="fleetshard-sync"}
+        values: "0+0x5 0+0.01x15"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACSFleetshardSyncFleetManagerRequestErrors
+        exp_alerts: []
+      - eval_time: 15m
+        alertname: RHACSFleetshardSyncFleetManagerRequestErrors
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSFleetshardSyncFleetManagerRequestErrors
+              container: fleetshard-sync
+              namespace: rhacs
+              pod: fleetshard-sync-1234
+              severity: critical
+            exp_annotations:
+              summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` failed to reach fleet manager."
+              description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has a fleet manager request error rate of 9% over the last 10 minutes."
+              sop_url: ""
