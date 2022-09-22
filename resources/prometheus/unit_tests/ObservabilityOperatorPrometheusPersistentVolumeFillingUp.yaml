@@ -19,7 +19,7 @@ tests:
         alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
         exp_alerts:
           - exp_labels:
-              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (~4 days left)
               severity: warning
               persistentvolumeclaim: managed-services-prometheus-kafka-prometheus-0
               namespace: rhacs-observability
@@ -31,7 +31,7 @@ tests:
         alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
         exp_alerts:
           - exp_labels:
-              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (< 10% left)
               severity: critical
               persistentvolumeclaim: managed-services-prometheus-kafka-prometheus-0
               namespace: rhacs-observability
@@ -40,7 +40,7 @@ tests:
               description: "The Observability Operator's Prometheus storage in namespace `rhacs-observability` is filling up for PVC `managed-services-prometheus-kafka-prometheus-0`. Available storage quota is `3.32%`."
               sop_url: ""
           - exp_labels:
-              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+              alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (~4 days left)
               severity: warning
               persistentvolumeclaim: managed-services-prometheus-kafka-prometheus-0
               namespace: rhacs-observability
