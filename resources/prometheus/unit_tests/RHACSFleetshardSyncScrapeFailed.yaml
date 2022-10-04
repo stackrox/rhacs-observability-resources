@@ -7,12 +7,14 @@ tests:
   - interval: 1m
     input_series:
       - series: up{namespace="rhacs", pod="fleetshard-sync-1234", instance="1.2.3.4:9090"}
-        values: "0+0x8 1+0x15"
+        values: "0+0x4 1+0x6"
+      - series: kube_pod_container_status_ready{namespace="rhacs", pod="fleetshard-sync-1234"}
+        values: "1+0x10"
     alert_rule_test:
       - eval_time: 3m
         alertname: RHACSFleetshardSyncScrapeFailed
         exp_alerts: []
-      - eval_time: 10m
+      - eval_time: 5m
         alertname: RHACSFleetshardSyncScrapeFailed
         exp_alerts:
           - exp_labels:
@@ -23,5 +25,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Prometheus unable to scrape metrics from target `fleetshard-sync-1234` in namespace `rhacs`."
-              description: "The scrape target `fleetshard-sync-1234` in namespace `rhacs` is either down, or during the last 10 minutes less than 25% of scrapes were successful."
+              description: "The scrape target `fleetshard-sync-1234` in namespace `rhacs` is either down, or during the last 3 minutes less than 50% of scrapes were successful."
               sop_url: ""

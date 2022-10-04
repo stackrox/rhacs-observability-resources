@@ -23,5 +23,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes."
               sop_url: ""
