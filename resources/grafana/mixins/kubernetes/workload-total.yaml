@@ -1,0 +1,262 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: strimzi
+    monitoring-key: middleware
+  name: kubernetes-mixin-workload-total
+  namespace: <namespace>
+spec:
+  name: kubernetes-mixin-workload-total.json
+  json: |
+    {
+       "__inputs": [ ],
+       "__requires": [ ],
+       "annotations": {
+          "list": [
+             {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+             }
+          ]
+       },
+       "editable": true,
+       "gnetId": null,
+       "graphTooltip": 0,
+       "hideControls": false,
+       "id": null,
+       "links": [ ],
+       "panels": [
+          {
+             "collapse": false,
+             "collapsed": false,
+             "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+             },
+             "id": 2,
+             "panels": [ ],
+             "repeat": null,
+             "repeatIteration": null,
+             "repeatRowId": null,
+             "showTitle": true,
+             "title": "Current Bandwidth",
+             "titleSize": "h6",
+             "type": "row"
+          },
+          {
+             "aliasColors": { },
+             "bars": true,
+             "dashLength": 10,
+             "dashes": false,
+             "datasource": "$datasource",
+             "fill": 2,
+             "fillGradient": 0,
+             "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 1
+             },
+             "id": 3,
+             "legend": {
+                "alignAsTable": true,
+                "avg": false,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": false,
+                "min": false,
+                "rightSide": true,
+                "show": true,
+                "sideWidth": null,
+                "sort": "current",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+             },
+             "lines": false,
+             "linewidth": 1,
+             "links": [ ],
+             "minSpan": 24,
+             "nullPointMode": "null",
+             "paceLength": 10,
+             "percentage": false,
+             "pointradius": 5,
+             "points": false,
+             "renderer": "flot",
+             "repeat": null,
+             "seriesOverrides": [ ],
+             "spaceLength": 10,
+             "span": 24,
+             "stack": false,
+             "steppedLine": false,
+             "targets": [
+                {
+                   "expr": "sort_desc(sum(irate(container_network_receive_bytes_total{job=\"cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$interval:$resolution])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=\"$type\"}) by (pod))\n",
+                   "format": "time_series",
+                   "intervalFactor": 1,
+                   "legendFormat": "{{ pod }}",
+                   "refId": "A",
+                   "step": 10
+                }
+             ],
+             "thresholds": [ ],
+             "timeFrom": null,
+             "timeShift": null,
+             "title": "Current Rate of Bytes Received",
+             "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+             },
+             "type": "graph",
+             "xaxis": {
+                "buckets": null,
+                "mode": "series",
+                "name": null,
+                "show": false,
+                "values": [
+                   "current"
+                ]
+             },
+             "yaxes": [
+                {
+                   "format": "Bps",
+                   "label": null,
+                   "logBase": 1,
+                   "max": null,
+                   "min": 0,
+                   "show": true
+                },
+                {
+                   "format": "Bps",
+                   "label": null,
+                   "logBase": 1,
+                   "max": null,
+                   "min": 0,
+                   "show": true
+                }
+             ]
+          },
+          {
+             "aliasColors": { },
+             "bars": true,
+             "dashLength": 10,
+             "dashes": false,
+             "datasource": "$datasource",
+             "fill": 2,
+             "fillGradient": 0,
+             "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 1
+             },
+             "id": 4,
+             "legend": {
+                "alignAsTable": true,
+                "avg": false,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": false,
+                "min": false,
+                "rightSide": true,
+                "show": true,
+                "sideWidth": null,
+                "sort": "current",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+             },
+             "lines": false,
+             "linewidth": 1,
+             "links": [ ],
+             "minSpan": 24,
+             "nullPointMode": "null",
+             "paceLength": 10,
+             "percentage": false,
+             "pointradius": 5,
+             "points": false,
+             "renderer": "flot",
+             "repeat": null,
+             "seriesOverrides": [ ],
+             "spaceLength": 10,
+             "span": 24,
+             "stack": false,
+             "steppedLine": false,
+             "targets": [
+                {
+                   "expr": "sort_desc(sum(irate(container_network_transmit_bytes_total{job=\"cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$interval:$resolution])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=\"$type\"}) by (pod))\n",
+                   "format": "time_series",
+                   "intervalFactor": 1,
+                   "legendFormat": "{{ pod }}",
+                   "refId": "A",
+                   "step": 10
+                }
+             ],
+             "thresholds": [ ],
+             "timeFrom": null,
+             "timeShift": null,
+             "title": "Current Rate of Bytes Transmitted",
+             "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+             },
+             "type": "graph",
+             "xaxis": {
+                "buckets": null,
+                "mode": "series",
+                "name": null,
+                "show": false,
+                "values": [
+                   "current"
+                ]
+             },
+             "yaxes": [
+                {
+                   "format": "Bps",
+                   "label": null,
+                   "logBase": 1,
+                   "max": null,
+                   "min": 0,
+                   "show": true
+                },
+                {
+                   "format": "Bps",
+                   "label": null,
+                   "logBase": 1,
+                   "max": null,
+                   "min": 0,
+                   "show": true
+                }
+             ]
+          },
+          {
+             "collapse": true,
+             "collapsed": true,
+             "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 10
+             },
+             "id": 5,
+             "panels": [
+                {
+                   "aliasColors": { },
+                   "bars": true,
+                   "dashLength": 10,
+                   "dashes": false,
+                   "datasource": "$datasource",
+                   "fill": 2,
+                   "fillGradient": 0,
