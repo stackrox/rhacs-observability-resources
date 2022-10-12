@@ -7,14 +7,14 @@ tests:
   - interval: 1m
     input_series:
       - series: kube_pod_container_status_ready{namespace="rhacs", pod="rhacs-operator-controller-manager-1234", container="manager"}
-        values: "1+0x5 0+0x25"
+        values: "1+0x10 0+0x50"
       - series: kube_pod_container_status_ready{namespace="rhacs", pod="rhacs-operator-controller-manager-1234", container="kube-rbac-proxy"}
-        values: "1+0x5 0+0x25"
+        values: "1+0x10 0+0x50"
     alert_rule_test:
-      - eval_time: 5m
+      - eval_time: 15m
         alertname: RHACSFleetshardOperatorContainerDown
         exp_alerts: []
-      - eval_time: 16m
+      - eval_time: 40m
         alertname: RHACSFleetshardOperatorContainerDown
         exp_alerts:
           - exp_labels:
@@ -25,7 +25,7 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes."
+              description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 10 minutes."
               sop_url: ""
           - exp_labels:
               alertname: RHACSFleetshardOperatorContainerDown
@@ -35,5 +35,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` is down or in a CrashLoopBackOff status."
-              description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 5 minutes."
+              description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 10 minutes."
               sop_url: ""
