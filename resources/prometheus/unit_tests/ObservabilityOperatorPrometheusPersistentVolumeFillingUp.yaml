@@ -16,7 +16,7 @@ tests:
         alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
         exp_alerts: []
       - eval_time: 100m
-        alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+        alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (~4 days left)
         exp_alerts:
           - exp_labels:
               alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (~4 days left)
