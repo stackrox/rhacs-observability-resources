@@ -7,12 +7,14 @@ tests:
   - interval: 1m
     input_series:
       - series: up{namespace="rhacs-1234", pod="scanner-1234-5678", instance="1.2.3.4:9090"}
-        values: "0+0x8 1+0x15"
+        values: "0+0x20 1+0x20"
+      - series: kube_pod_container_status_ready{namespace="rhacs-1234", pod="scanner-1234-5678", container="scanner"}
+        values: "1+0x40"
     alert_rule_test:
-      - eval_time: 3m
+      - eval_time: 10m
         alertname: RHACSScannerScrapeFailed
         exp_alerts: []
-      - eval_time: 10m
+      - eval_time: 25m
         alertname: RHACSScannerScrapeFailed
         exp_alerts:
           - exp_labels:
@@ -23,5 +25,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Prometheus unable to scrape metrics from target `scanner-1234-5678` in namespace `rhacs-1234`."
-              description: "During the last 10 minutes, only `18.18%` of scrapes of target `scanner-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 25% of scrapes are successful."
+              description: "During the last 10 minutes, only `45.45%` of scrapes of target `scanner-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 50% of scrapes are successful."
               sop_url: ""

@@ -7,12 +7,12 @@ tests:
   - interval: 1m
     input_series:
       - series: kube_pod_container_status_ready{namespace="rhacs-1234", pod="scanner-1234", container="scanner"}
-        values: "1+0x5 0+0x25"
+        values: "1+0x10 0+0x50"
     alert_rule_test:
-      - eval_time: 5m
+      - eval_time: 15m
         alertname: RHACSScannerContainerDown
         exp_alerts: []
-      - eval_time: 16m
+      - eval_time: 40m
         alertname: RHACSScannerContainerDown
         exp_alerts:
           - exp_labels:
@@ -23,5 +23,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Scanner container `scanner-1234/scanner` in namespace `rhacs-1234` is down or in a CrashLoopBackOff status."
-              description: "Scanner container `scanner-1234/scanner` in namespace `rhacs-1234` has been down or in a CrashLoopBackOff status for at least 5 minutes of the last 10 minutes."
+              description: "Scanner container `scanner-1234/scanner` in namespace `rhacs-1234` has been down or in a CrashLoopBackOff status for at least 10 minutes."
               sop_url: ""

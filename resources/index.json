@@ -19,6 +19,7 @@
       "overridePrometheusPvcSize": "250Gi"
     },
     "alertmanager": {
+      "deadmansSnitchSecretName": "rhacs-dead-mans-switch",
       "pagerDutySecretName": "rhacs-pagerduty"
     },
     "grafana": {
