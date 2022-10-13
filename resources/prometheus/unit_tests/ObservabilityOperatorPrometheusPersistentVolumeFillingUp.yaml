@@ -28,7 +28,7 @@ tests:
               description: "The Observability Operator's Prometheus storage in namespace `rhacs-observability` is filling up for PVC `managed-services-prometheus-kafka-prometheus-0`. Available storage quota is `13.09%`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
               sop_url: ""
       - eval_time: 110m
-        alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+        alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (< 10% left)
         exp_alerts:
           - exp_labels:
               alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (< 10% left)
