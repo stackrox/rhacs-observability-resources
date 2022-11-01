@@ -10,7 +10,7 @@ spec:
       "rules":
         - "alert": "KubePodCrashLooping"
           "annotations":
-            "description": 'Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in waiting state (reason: "CrashLoopBackOff").'
+            "description": "Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in waiting state (reason: \"CrashLoopBackOff\")."
             "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping"
             "summary": "Pod is crash looping."
           "expr": |
@@ -186,7 +186,7 @@ spec:
             "severity": "warning"
         - "alert": "KubeJobNotCompleted"
           "annotations":
-            "description": 'Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than {{ "43200" | humanizeDuration }} to complete.'
+            "description": "Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than {{ \"43200\" | humanizeDuration }} to complete."
             "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobnotcompleted"
             "summary": "Job did not complete in time"
           "expr": |

@@ -1,0 +1,11 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: strimzi
+    monitoring-key: middleware
+  name: kubernetes-mixin-k8s-resources-pod
+  namespace: <namespace>
+spec:
+  name: kubernetes-mixin-k8s-resources-pod.json
+  json: |
