@@ -10,6 +10,8 @@
       ],
       "rules": [
         "prometheus/billing-rules.yaml",
+        "prometheus/kubernetes-mixin-alerts.yaml",
+        "prometheus/kubernetes-mixin-rules.yaml",
         "prometheus/prometheus-rules.yaml",
         "prometheus/rhacs-recording-rules.yaml"
       ],
@@ -24,6 +26,23 @@
     },
     "grafana": {
       "dashboards": [
+        "grafana/mixins/kubernetes/apiserver.yaml",
+        "grafana/mixins/kubernetes/cluster-total.yaml",
+        "grafana/mixins/kubernetes/controller-manager.yaml",
+        "grafana/mixins/kubernetes/k8s-resources-cluster.yaml",
+        "grafana/mixins/kubernetes/k8s-resources-namespace.yaml",
+        "grafana/mixins/kubernetes/k8s-resources-node.yaml",
+        "grafana/mixins/kubernetes/k8s-resources-pod.yaml",
+        "grafana/mixins/kubernetes/k8s-resources-workload.yaml",
+        "grafana/mixins/kubernetes/k8s-resources-workloads-namespace.yaml",
+        "grafana/mixins/kubernetes/kubelet.yaml",
+        "grafana/mixins/kubernetes/namespace-by-pod.yaml",
+        "grafana/mixins/kubernetes/namespace-by-workload.yaml",
+        "grafana/mixins/kubernetes/persistentvolumesusage.yaml",
+        "grafana/mixins/kubernetes/pod-total.yaml",
+        "grafana/mixins/kubernetes/proxy.yaml",
+        "grafana/mixins/kubernetes/scheduler.yaml",
+        "grafana/mixins/kubernetes/workload-total.yaml",
         "grafana/rhacs-central-dashboard.yaml",
         "grafana/rhacs-cluster-overview-dashboard.yaml"
       ],

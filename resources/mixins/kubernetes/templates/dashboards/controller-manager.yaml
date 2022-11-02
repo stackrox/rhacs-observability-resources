@@ -1,0 +1,11 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: strimzi
+    monitoring-key: middleware
+  name: kubernetes-mixin-controller-manager
+  namespace: <namespace>
+spec:
+  name: kubernetes-mixin-controller-manager.json
+  json: |
