@@ -1,4 +1,4 @@
-resources/mixins/kubernetes/generated
+resources/mixins/kubernetes/generated linguist-generated=true
 resources/grafana/mixins linguist-generated=true
 resources/prometheus/kubernetes-mixin-alerts.yaml linguist-generated=true
 resources/prometheus/kubernetes-mixin-rules.yaml linguist-generated=true
