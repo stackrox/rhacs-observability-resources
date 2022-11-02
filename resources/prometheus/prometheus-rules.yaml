@@ -10,23 +10,23 @@ spec:
       rules:
         - alert: RHACSCentralScrapeFailed
           expr: |
-            avg_over_time(up{pod=~"central-.*"}[3m]) < 0.5 and ON(pod) kube_pod_container_status_ready{container="central"} == 1
-          for: 5m
+            avg_over_time(up{pod=~"central-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{container="central"} == 1
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
-            description: "During the last 3 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
+            description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{container="central"}[3m]) < 0.5
-          for: 5m
+            avg_over_time(kube_pod_container_status_ready{container="central"}[10m]) < 0.5
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes."
+            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerFrequentlyRestarting
           expr: |
@@ -61,23 +61,23 @@ spec:
       rules:
         - alert: RHACSScannerScrapeFailed
           expr: |
-            avg_over_time(up{pod=~"scanner-.*"}[3m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"} == 1
-          for: 5m
+            avg_over_time(up{pod=~"scanner-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"} == 1
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
-            description: "During the last 3 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
+            description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"}[3m]) < 0.5
-          for: 5m
+            avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"}[10m]) < 0.5
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes."
+            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
@@ -94,13 +94,13 @@ spec:
       rules:
         - alert: RHACSFleetshardOperatorContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{pod=~"rhacs-operator-controller-manager-.*"}[3m]) < 0.5
-          for: 5m
+            avg_over_time(kube_pod_container_status_ready{pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.5
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes."
+            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
           expr: |
@@ -115,23 +115,23 @@ spec:
 
         - alert: RHACSFleetshardSyncScrapeFailed
           expr: |
-            (avg_over_time(up{pod=~"fleetshard-sync-.*"}[3m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"} == 1) or absent(up{pod=~"fleetshard-sync-.*"})
-          for: 5m
+            (avg_over_time(up{pod=~"fleetshard-sync-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"} == 1) or absent(up{pod=~"fleetshard-sync-.*"})
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
-            description: "The scrape target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` is either down, or during the last 3 minutes less than 50% of scrapes were successful."
+            description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"}[3m]) < 0.5
-          for: 5m
+            avg_over_time(kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"}[10m]) < 0.5
+          for: 20m
           labels:
             severity: critical
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
-            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 5 minutes."
+            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
           expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[60m]) > 3
