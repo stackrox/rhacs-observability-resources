@@ -18,6 +18,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubePodNotReady"
           "annotations":
             "description": "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state for longer than 15 minutes."
@@ -34,6 +35,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeDeploymentGenerationMismatch"
           "annotations":
             "description": "Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment }} does not match, this indicates that the Deployment has failed but has not been rolled back."
@@ -46,6 +48,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeDeploymentReplicasMismatch"
           "annotations":
             "description": "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than 15 minutes."
@@ -64,6 +67,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeStatefulSetReplicasMismatch"
           "annotations":
             "description": "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched the expected number of replicas for longer than 15 minutes."
@@ -82,6 +86,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeStatefulSetGenerationMismatch"
           "annotations":
             "description": "StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset }} does not match, this indicates that the StatefulSet has failed but has not been rolled back."
@@ -94,6 +99,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeStatefulSetUpdateNotRolledOut"
           "annotations":
             "description": "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} update has not been rolled out."
@@ -120,6 +126,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeDaemonSetRolloutStuck"
           "annotations":
             "description": "DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has not finished or progressed for at least 15 minutes."
@@ -152,6 +159,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeContainerWaiting"
           "annotations":
             "description": "pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour."
@@ -162,6 +170,7 @@ spec:
           "for": "1h"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeDaemonSetNotScheduled"
           "annotations":
             "description": "{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are not scheduled."
@@ -174,6 +183,7 @@ spec:
           "for": "10m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeDaemonSetMisScheduled"
           "annotations":
             "description": "{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are running where they are not supposed to run."
@@ -184,6 +194,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeJobNotCompleted"
           "annotations":
             "description": "Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than {{ \"43200\" | humanizeDuration }} to complete."
@@ -195,6 +206,7 @@ spec:
             kube_job_status_active{job="kube-state-metrics"} > 0) > 43200
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeJobFailed"
           "annotations":
             "description": "Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete. Removing failed job after investigation should clear this alert."
@@ -205,6 +217,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeHpaReplicasMismatch"
           "annotations":
             "description": "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has not matched the desired number of replicas for longer than 15 minutes."
@@ -227,6 +240,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeHpaMaxedOut"
           "annotations":
             "description": "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has been running at max replicas for longer than 15 minutes."
@@ -239,6 +253,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
     - "name": "kubernetes-resources"
       "rules":
         - "alert": "KubeCPUOvercommit"
@@ -253,6 +268,7 @@ spec:
           "for": "10m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeMemoryOvercommit"
           "annotations":
             "description": "Cluster has overcommitted memory resource requests for Pods by {{ $value | humanize }} bytes and cannot tolerate node failure."
@@ -265,6 +281,7 @@ spec:
           "for": "10m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeCPUQuotaOvercommit"
           "annotations":
             "description": "Cluster has overcommitted CPU resource requests for Namespaces."
@@ -278,6 +295,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeMemoryQuotaOvercommit"
           "annotations":
             "description": "Cluster has overcommitted memory resource requests for Namespaces."
@@ -291,6 +309,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeQuotaAlmostFull"
           "annotations":
             "description": "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota."
@@ -304,6 +323,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "info"
+            "source": "mixin"
         - "alert": "KubeQuotaFullyUsed"
           "annotations":
             "description": "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota."
@@ -317,6 +337,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "info"
+            "source": "mixin"
         - "alert": "KubeQuotaExceeded"
           "annotations":
             "description": "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota."
@@ -330,6 +351,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "CPUThrottlingHigh"
           "annotations":
             "description": "{{ $value | humanizePercentage }} throttling of CPU in namespace {{ $labels.namespace }} for container {{ $labels.container }} in pod {{ $labels.pod }}."
@@ -343,6 +365,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "info"
+            "source": "mixin"
     - "name": "kubernetes-storage"
       "rules":
         - "alert": "KubePersistentVolumeFillingUp"
@@ -365,6 +388,7 @@ spec:
           "for": "1m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
         - "alert": "KubePersistentVolumeFillingUp"
           "annotations":
             "description": "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available."
@@ -387,6 +411,7 @@ spec:
           "for": "1h"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubePersistentVolumeInodesFillingUp"
           "annotations":
             "description": "The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} only has {{ $value | humanizePercentage }} free inodes."
@@ -407,6 +432,7 @@ spec:
           "for": "1m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
         - "alert": "KubePersistentVolumeInodesFillingUp"
           "annotations":
             "description": "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to run out of inodes within four days. Currently {{ $value | humanizePercentage }} of its inodes are free."
@@ -429,6 +455,7 @@ spec:
           "for": "1h"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubePersistentVolumeErrors"
           "annotations":
             "description": "The persistent volume {{ $labels.persistentvolume }} has status {{ $labels.phase }}."
@@ -439,6 +466,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
     - "name": "kubernetes-system"
       "rules":
         - "alert": "KubeVersionMismatch"
@@ -451,6 +479,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeClientErrors"
           "annotations":
             "description": "Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance }}' is experiencing {{ $value | humanizePercentage }} errors.'"
@@ -464,6 +493,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
     - "name": "kube-apiserver-slos"
       "rules":
         - "alert": "KubeAPIErrorBudgetBurn"
@@ -480,6 +510,7 @@ spec:
             "long": "1h"
             "severity": "critical"
             "short": "5m"
+            "source": "mixin"
         - "alert": "KubeAPIErrorBudgetBurn"
           "annotations":
             "description": "The API server is burning too much error budget."
@@ -494,6 +525,7 @@ spec:
             "long": "6h"
             "severity": "critical"
             "short": "30m"
+            "source": "mixin"
         - "alert": "KubeAPIErrorBudgetBurn"
           "annotations":
             "description": "The API server is burning too much error budget."
@@ -508,6 +540,7 @@ spec:
             "long": "1d"
             "severity": "warning"
             "short": "2h"
+            "source": "mixin"
         - "alert": "KubeAPIErrorBudgetBurn"
           "annotations":
             "description": "The API server is burning too much error budget."
@@ -522,6 +555,7 @@ spec:
             "long": "3d"
             "severity": "warning"
             "short": "6h"
+            "source": "mixin"
     - "name": "kubernetes-system-apiserver"
       "rules":
         - "alert": "KubeClientCertificateExpiration"
@@ -534,6 +568,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeClientCertificateExpiration"
           "annotations":
             "description": "A client certificate used to authenticate to kubernetes apiserver is expiring in less than 24.0 hours."
@@ -544,6 +579,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
         - "alert": "KubeAggregatedAPIErrors"
           "annotations":
             "description": "Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace }} has reported errors. It has appeared unavailable {{ $value | humanize }} times averaged over the past 10m."
@@ -553,6 +589,7 @@ spec:
             sum by(name, namespace, cluster)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeAggregatedAPIDown"
           "annotations":
             "description": "Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace }} has been only {{ $value | humanize }}% available over the last 10m."
@@ -563,6 +600,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeAPIDown"
           "annotations":
             "description": "KubeAPI has disappeared from Prometheus target discovery."
@@ -573,6 +611,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
         - "alert": "KubeAPITerminatedRequests"
           "annotations":
             "description": "The kubernetes apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests."
@@ -583,6 +622,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
     - "name": "kubernetes-system-kubelet"
       "rules":
         - "alert": "KubeNodeNotReady"
@@ -595,6 +635,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeNodeUnreachable"
           "annotations":
             "description": "{{ $labels.node }} is unreachable and some workloads may be rescheduled."
@@ -605,6 +646,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletTooManyPods"
           "annotations":
             "description": "Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage }} of its Pod capacity."
@@ -621,6 +663,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "info"
+            "source": "mixin"
         - "alert": "KubeNodeReadinessFlapping"
           "annotations":
             "description": "The readiness status of node {{ $labels.node }} has changed {{ $value }} times in the last 15 minutes."
@@ -631,6 +674,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletPlegDurationHigh"
           "annotations":
             "description": "The Kubelet Pod Lifecycle Event Generator has a 99th percentile duration of {{ $value }} seconds on node {{ $labels.node }}."
@@ -641,6 +685,7 @@ spec:
           "for": "5m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletPodStartUpLatencyHigh"
           "annotations":
             "description": "Kubelet Pod startup 99th percentile latency is {{ $value }} seconds on node {{ $labels.node }}."
@@ -651,6 +696,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletClientCertificateExpiration"
           "annotations":
             "description": "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
@@ -660,6 +706,7 @@ spec:
             kubelet_certificate_manager_client_ttl_seconds < 604800
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletClientCertificateExpiration"
           "annotations":
             "description": "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
@@ -669,6 +716,7 @@ spec:
             kubelet_certificate_manager_client_ttl_seconds < 86400
           "labels":
             "severity": "critical"
+            "source": "mixin"
         - "alert": "KubeletServerCertificateExpiration"
           "annotations":
             "description": "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
@@ -678,6 +726,7 @@ spec:
             kubelet_certificate_manager_server_ttl_seconds < 604800
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletServerCertificateExpiration"
           "annotations":
             "description": "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
@@ -687,6 +736,7 @@ spec:
             kubelet_certificate_manager_server_ttl_seconds < 86400
           "labels":
             "severity": "critical"
+            "source": "mixin"
         - "alert": "KubeletClientCertificateRenewalErrors"
           "annotations":
             "description": "Kubelet on node {{ $labels.node }} has failed to renew its client certificate ({{ $value | humanize }} errors in the last 5 minutes)."
@@ -697,6 +747,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletServerCertificateRenewalErrors"
           "annotations":
             "description": "Kubelet on node {{ $labels.node }} has failed to renew its server certificate ({{ $value | humanize }} errors in the last 5 minutes)."
@@ -707,6 +758,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "warning"
+            "source": "mixin"
         - "alert": "KubeletDown"
           "annotations":
             "description": "Kubelet has disappeared from Prometheus target discovery."
@@ -717,6 +769,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
     - "name": "kubernetes-system-scheduler"
       "rules":
         - "alert": "KubeSchedulerDown"
@@ -729,6 +782,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
     - "name": "kubernetes-system-controller-manager"
       "rules":
         - "alert": "KubeControllerManagerDown"
@@ -741,6 +795,7 @@ spec:
           "for": "15m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
     - "name": "kubernetes-system-kube-proxy"
       "rules":
         - "alert": "KubeProxyDown"
@@ -753,3 +808,4 @@ spec:
           "for": "15m"
           "labels":
             "severity": "critical"
+            "source": "mixin"
