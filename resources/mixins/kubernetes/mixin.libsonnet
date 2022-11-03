@@ -37,8 +37,18 @@ kubernetes {
             group {
               rules: std.filter(
                 function(rule)
-                  // The client certificate is managed by OSD. A fresh cluster triggers this alert.
+                  // The certificates are managed by OSD. A fresh cluster triggers alerts.
                   rule.alert != 'KubeClientCertificateExpiration',
+                group.rules
+              ),
+            }
+          else if group.name == 'kubernetes-system-kubelet' then
+            group {
+              rules: std.filter(
+                function(rule)
+                  // The certificates are managed by OSD. A fresh cluster triggers alerts.
+                  rule.alert != 'KubeletClientCertificateExpiration'
+                  && rule.alert != 'KubeletServerCertificateExpiration',
                 group.rules
               ),
             }

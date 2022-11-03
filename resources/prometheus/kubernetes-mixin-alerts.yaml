@@ -675,46 +675,6 @@ spec:
           "labels":
             "severity": "warning"
             "source": "mixin/kubernetes"
-        - "alert": "KubeletClientCertificateExpiration"
-          "annotations":
-            "description": "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
-            "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletclientcertificateexpiration"
-            "summary": "Kubelet client certificate is about to expire."
-          "expr": |
-            kubelet_certificate_manager_client_ttl_seconds < 604800
-          "labels":
-            "severity": "warning"
-            "source": "mixin/kubernetes"
-        - "alert": "KubeletClientCertificateExpiration"
-          "annotations":
-            "description": "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
-            "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletclientcertificateexpiration"
-            "summary": "Kubelet client certificate is about to expire."
-          "expr": |
-            kubelet_certificate_manager_client_ttl_seconds < 86400
-          "labels":
-            "severity": "critical"
-            "source": "mixin/kubernetes"
-        - "alert": "KubeletServerCertificateExpiration"
-          "annotations":
-            "description": "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
-            "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletservercertificateexpiration"
-            "summary": "Kubelet server certificate is about to expire."
-          "expr": |
-            kubelet_certificate_manager_server_ttl_seconds < 604800
-          "labels":
-            "severity": "warning"
-            "source": "mixin/kubernetes"
-        - "alert": "KubeletServerCertificateExpiration"
-          "annotations":
-            "description": "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
-            "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletservercertificateexpiration"
-            "summary": "Kubelet server certificate is about to expire."
-          "expr": |
-            kubelet_certificate_manager_server_ttl_seconds < 86400
-          "labels":
-            "severity": "critical"
-            "source": "mixin/kubernetes"
         - "alert": "KubeletClientCertificateRenewalErrors"
           "annotations":
             "description": "Kubelet on node {{ $labels.node }} has failed to renew its client certificate ({{ $value | humanize }} errors in the last 5 minutes)."
