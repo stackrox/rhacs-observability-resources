@@ -161,6 +161,16 @@ spec:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` failed to reach fleet manager."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has a fleet manager request error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
             sop_url: "" # TODO: Add SOP
+        - alert: RHACSFleetshardSyncInvalidCentralCount
+          expr: |
+            sum(acs_fleetshard_total_centrals) <= 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Fleetshard synchronizer manages `{{ $value }}` centrals."
+            description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
+            sop_url: "" # TODO: Add SOP
 
     - name: deadmanssnitch
       rules:
