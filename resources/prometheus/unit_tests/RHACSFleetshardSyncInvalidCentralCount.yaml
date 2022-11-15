@@ -1,0 +1,24 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: acs_fleetshard_total_centrals
+        values: "1+0x5 0+0x25"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSFleetshardSyncInvalidCentralCount
+        exp_alerts: []
+      - eval_time: 25m
+        alertname: RHACSFleetshardSyncInvalidCentralCount
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSFleetshardSyncInvalidCentralCount
+              severity: critical
+            exp_annotations:
+              summary: "Fleetshard synchronizer manages `0` centrals."
+              description: "Fleetshard synchronizer manages `0` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
+              sop_url: ""
