@@ -172,6 +172,17 @@ spec:
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
             sop_url: "" # TODO: Add SOP
 
+    - name: rhacs-probe
+      rules:
+        - alert: RHACSProbeRunFailed
+          expr: acs_probe_last_failure_timestamp >= acs_probe_last_success_timestamp
+          labels:
+            severity: critical
+          annotations:
+            summary: "The latest probe run failed at `{{ $value | humanizeTimestamp }}`."
+            description: "The latest run of probe `{{ $labels.pod }}` failed at `{{ $value | humanizeTimestamp }}`."
+            sop_url: "" # TODO: Add SOP
+
     - name: deadmanssnitch
       rules:
         - alert: DeadMansSwitch
