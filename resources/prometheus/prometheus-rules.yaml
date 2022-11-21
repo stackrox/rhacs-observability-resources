@@ -181,7 +181,7 @@ spec:
           annotations:
             summary: "The latest probe run failed at `{{ $value | humanizeTimestamp }}`."
             description: "The latest run of probe `{{ $labels.pod }}` failed at `{{ $value | humanizeTimestamp }}`."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "" # TODO: Add SOP ([ROX-11888](https://issues.redhat.com/browse/ROX-11888]))
 
     - name: deadmanssnitch
       rules:
