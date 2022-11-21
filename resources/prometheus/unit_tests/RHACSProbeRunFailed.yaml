@@ -1,0 +1,28 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: acs_probe_last_failure_timestamp{namespace="rhacs-probe", pod="probe-1234"}
+        values: "0+0x5 7+0x15"
+      - series: acs_probe_last_success_timestamp{namespace="rhacs-probe", pod="probe-1234"}
+        values: "1+1x5 6+0x15"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACSProbeRunFailed
+        exp_alerts: []
+      - eval_time: 10m
+        alertname: RHACSProbeRunFailed
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSProbeRunFailed
+              severity: critical
+              namespace: rhacs-probe
+              pod: probe-1234
+            exp_annotations:
+              summary: "The latest probe run failed at `1970-01-01 00:00:07 +0000 UTC`."
+              description: "The latest run of probe `probe-1234` failed at `1970-01-01 00:00:07 +0000 UTC`."
+              sop_url: ""
