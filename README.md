@@ -16,6 +16,11 @@ Resources are maintained in the `/resources` folder. Sub folders contain the fol
 The observability stack is installed by the [data plane terraforming Helm chart](https://github.com/stackrox/acs-fleet-manager/tree/main/dp-terraform/helm/rhacs-terraform).
 Please follow the instructions in the fleet manager repository to install the Helm chart.
 
+## Branches
+
+The ACS cloud service data plane `stage` environment tracks the `master` branch. Conversely, the production environment tracks the `production` branch.
+Changes are merged from the `master` to the `production` branch after sufficient soak time on the stage environment.
+
 ## Contributing
 
 This repository makes use of [pre-commit](https://pre-commit.com/) framework. Refer to the [installation instructions](https://pre-commit.com/#installation) for further information.
