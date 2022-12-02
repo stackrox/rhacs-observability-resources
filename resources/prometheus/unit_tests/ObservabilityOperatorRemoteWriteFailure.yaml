@@ -6,7 +6,7 @@ tests:
   - interval: 1m
     input_series:
       - series: prometheus_remote_storage_failed_samples_total
-        values: "1+0x12 1+2.5x12"
+        values: "1+0x12 1+5x12"
       - series: prometheus_remote_storage_samples_in_total
         values: "1+1x12 11+9.5x12"
     alert_rule_test:
@@ -20,12 +20,12 @@ tests:
               severity: critical
             exp_annotations:
               summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
-              description: "The Prometheus remote write had a failure rate above 10% for more than 10 minutes."
+              description: "The Prometheus remote write had a failure rate above 20% for more than 10 minutes."
               sop_url: ""
   - interval: 1m
     input_series:
       - series: prometheus_remote_storage_retried_samples_total
-        values: "1+0x12 1+2.5x12"
+        values: "1+0x12 1+5x12"
       - series: prometheus_remote_storage_samples_in_total
         values: "1+1x12 11+9.5x12"
     alert_rule_test:
@@ -39,5 +39,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
-              description: "The Prometheus remote write had a failure rate above 10% for more than 10 minutes."
+              description: "The Prometheus remote write had a failure rate above 20% for more than 10 minutes."
               sop_url: ""
