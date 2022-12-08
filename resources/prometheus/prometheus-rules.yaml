@@ -234,15 +234,11 @@ spec:
 
         - alert: ObservabilityOperatorRemoteWriteFailure
           expr: >-
-            (sum(rate(prometheus_remote_storage_retried_samples_total[5m])) /
-            sum(rate(prometheus_remote_storage_samples_in_total[5m])) > 0.2)
-            OR
-            (sum(rate(prometheus_remote_storage_failed_samples_total[5m])) /
-            sum(rate(prometheus_remote_storage_samples_in_total[5m])) > 0.2)
-          for: 10m
+            obs_operator:prometheus_remote_storage_succeeded_samples:ratio_rate1h < 0.25
+          for: 1h
           labels:
             severity: critical
           annotations:
             summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
-            description: "The Prometheus remote write had a failure rate above 20% for more than 10 minutes."
+            description: "The Prometheus remote write success rate is `{{ $value | humanizePercentage }}`."
             sop_url: "" # TODO: Add SOP

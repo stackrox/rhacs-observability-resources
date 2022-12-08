@@ -1,43 +1,25 @@
 rule_files:
   - /tmp/prometheus-rules-test.yaml
+  - /tmp/recording-rules-test.yaml
 
 evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: prometheus_remote_storage_failed_samples_total
-        values: "1+0x12 1+5x12"
-      - series: prometheus_remote_storage_samples_in_total
-        values: "1+1x12 11+9.5x12"
+      - series: prometheus_remote_storage_succeeded_samples_total{namespace="rhacs-observability"}
+        values: "1+100x30 3000+10x150"
+      - series: prometheus_remote_storage_samples_in_total{namespace="rhacs-observability"}
+        values: "1+100x180"
     alert_rule_test:
-      - eval_time: 12m
+      - eval_time: 60m
         alertname: ObservabilityOperatorRemoteWriteFailure
         exp_alerts: []
-      - eval_time: 24m
+      - eval_time: 160m
         alertname: ObservabilityOperatorRemoteWriteFailure
         exp_alerts:
           - exp_labels:
               severity: critical
             exp_annotations:
               summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
-              description: "The Prometheus remote write had a failure rate above 20% for more than 10 minutes."
-              sop_url: ""
-  - interval: 1m
-    input_series:
-      - series: prometheus_remote_storage_retried_samples_total
-        values: "1+0x12 1+5x12"
-      - series: prometheus_remote_storage_samples_in_total
-        values: "1+1x12 11+9.5x12"
-    alert_rule_test:
-      - eval_time: 12m
-        alertname: ObservabilityOperatorRemoteWriteFailure
-        exp_alerts: []
-      - eval_time: 24m
-        alertname: ObservabilityOperatorRemoteWriteFailure
-        exp_alerts:
-          - exp_labels:
-              severity: critical
-            exp_annotations:
-              summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
-              description: "The Prometheus remote write had a failure rate above 20% for more than 10 minutes."
+              description: "The Prometheus remote write success rate is `10%`."
               sop_url: ""

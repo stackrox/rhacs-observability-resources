@@ -20,3 +20,11 @@ spec:
               rate(acs_fleetshard_total_fleet_manager_requests[10m])
           labels:
           record: acs_fleetshard_fleet_manager_errors_per_requests:ratio_rate10m
+
+    - name: observability-operator
+      rules:
+        - expr: |2
+              sum(rate(prometheus_remote_storage_succeeded_samples_total{namespace="rhacs-observability"}[1h]))
+            /
+              sum(rate(prometheus_remote_storage_samples_in_total{namespace="rhacs-observability"}[1h]))
+          record: obs_operator:prometheus_remote_storage_succeeded_samples:ratio_rate1h
