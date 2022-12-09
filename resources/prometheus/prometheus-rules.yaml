@@ -176,7 +176,7 @@ spec:
       rules:
         - alert: RHACSProbeRunFailed
           expr: acs_probe_last_failure_timestamp > 0 and acs_probe_last_failure_timestamp >= acs_probe_last_success_timestamp
-          for: 10m
+          for: 30m
           labels:
             severity: critical
           annotations:
