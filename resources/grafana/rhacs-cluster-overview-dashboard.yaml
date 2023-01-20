@@ -35,10 +35,23 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 3,
+      "id": 7,
       "links": [],
       "liveNow": false,
       "panels": [
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 14,
+          "panels": [],
+          "title": "Instances",
+          "type": "row"
+        },
         {
           "datasource": {
             "type": "prometheus",
@@ -102,7 +115,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 0
+            "y": 1
           },
           "id": 9,
           "options": {
@@ -125,14 +138,14 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "count(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-.*\", container=\"central\", job=~\"kube-state-metrics\"}))",
+              "expr": "count(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}))",
               "interval": "",
-              "legendFormat": "__auto",
+              "legendFormat": "Count",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "Central Count",
+          "title": "Total Central Count",
           "type": "timeseries"
         },
         {
@@ -198,9 +211,9 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 0
+            "y": 1
           },
-          "id": 10,
+          "id": 17,
           "options": {
             "legend": {
               "calcs": [],
@@ -220,13 +233,15 @@ spec:
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-.*\",job=~\"central\"}) by (namespace)",
+              "editorMode": "code",
+              "expr": "count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}) * on(namespace) group_left(rhacs_org_name) count by (namespace, rhacs_org_name) (process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"})",
               "interval": "",
-              "legendFormat": "{{namespace}}",
+              "legendFormat": "{{rhacs_org_name}}",
+              "range": true,
               "refId": "A"
             }
           ],
-          "title": "Secured Cores",
+          "title": "Central Count By Organisation",
           "type": "timeseries"
         },
         {
@@ -292,7 +307,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 8
+            "y": 9
           },
           "id": 11,
           "options": {
@@ -315,7 +330,7 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-.*\",job=~\"central\"}) or vector(0)",
+              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
               "interval": "",
               "legendFormat": "Cores",
               "range": true,
@@ -327,7 +342,7 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "sum(rox_central_cluster_metrics_node_count{namespace=~\"rhacs-.*\",job=~\"central\"}) or vector(0)",
+              "expr": "sum(rox_central_cluster_metrics_node_count{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
               "hide": false,
               "legendFormat": "Nodes",
               "range": true,
@@ -392,7 +407,7 @@ spec:
                   }
                 ]
               },
-              "unit": "percentunit"
+              "unit": "short"
             },
             "overrides": []
           },
@@ -400,7 +415,116 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 8
+            "y": 9
+          },
+          "id": 10,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) by (namespace)",
+              "interval": "",
+              "legendFormat": "{{rhacs_instance_id}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Secured Cores",
+          "type": "timeseries"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 17
+          },
+          "id": 16,
+          "panels": [],
+          "title": "Resources",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 18
           },
           "id": 12,
           "options": {
@@ -506,8 +630,8 @@ spec:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 0,
-            "y": 16
+            "x": 12,
+            "y": 18
           },
           "id": 6,
           "options": {
@@ -529,9 +653,12 @@ spec:
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "sum(container_memory_usage_bytes{namespace=~\"rhacs-.*\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-.*\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
+              "editorMode": "code",
+              "expr": "sum(container_memory_usage_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
+              "format": "time_series",
               "interval": "",
               "legendFormat": "{{namespace}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -599,8 +726,8 @@ spec:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 12,
-            "y": 16
+            "x": 0,
+            "y": 26
           },
           "id": 7,
           "options": {
@@ -622,9 +749,11 @@ spec:
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "sum(kubelet_volume_stats_used_bytes{namespace=~\"rhacs-.*\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"}) by (namespace) / sum(kubelet_volume_stats_capacity_bytes{namespace=~\"rhacs-.*\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"}) by (namespace)",
+              "editorMode": "code",
+              "expr": "sum(kubelet_volume_stats_used_bytes{namespace=~\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"}) by (namespace) / sum(kubelet_volume_stats_capacity_bytes{namespace=~\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"}) by (namespace)",
               "interval": "",
               "legendFormat": "{{namespace}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -692,10 +821,10 @@ spec:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 0,
-            "y": 24
+            "x": 12,
+            "y": 26
           },
-          "id": 4,
+          "id": 5,
           "options": {
             "legend": {
               "calcs": [],
@@ -715,13 +844,15 @@ spec:
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-.*\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "editorMode": "code",
+              "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
               "interval": "",
               "legendFormat": "{{namespace}}",
+              "range": true,
               "refId": "A"
             }
           ],
-          "title": "Network Received",
+          "title": "Network Transmitted",
           "type": "timeseries"
         },
         {
@@ -785,10 +916,10 @@ spec:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 12,
-            "y": 24
+            "x": 0,
+            "y": 34
           },
-          "id": 5,
+          "id": 4,
           "options": {
             "legend": {
               "calcs": [],
@@ -808,13 +939,15 @@ spec:
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-.*\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "editorMode": "code",
+              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
               "interval": "",
               "legendFormat": "{{namespace}}",
+              "range": true,
               "refId": "A"
             }
           ],
-          "title": "Network Transmitted",
+          "title": "Network Received",
           "type": "timeseries"
         }
       ],
@@ -824,7 +957,104 @@ spec:
         "rhacs"
       ],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values(rhacs_org_name)",
+            "description": "Red Hat SSO Organisation Name",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Organisation",
+            "multi": true,
+            "name": "org_name",
+            "options": [],
+            "query": {
+              "query": "label_values(rhacs_org_name)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values({rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
+            "description": "Red Hat SSO Organisation ID",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Organisation ID",
+            "multi": true,
+            "name": "org_id",
+            "options": [],
+            "query": {
+              "query": "label_values({rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values({rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
+            "description": "RHACS Central Instance ID",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Central",
+            "multi": true,
+            "name": "instance_id",
+            "options": [],
+            "query": {
+              "query": "label_values({rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          }
+        ]
       },
       "time": {
         "from": "now-7d",
@@ -834,6 +1064,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 1,
+      "version": 3,
       "weekStart": ""
     }
