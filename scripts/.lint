@@ -14,6 +14,6 @@ exclusions:
   target-rate-interval-rule:
     reason: "Rate interval does not produce data for all queries."
   template-job-rule:
-    reason: "We dashboards that mix several Prometheus jobs."
+    reason: "We have dashboards that mix several Prometheus jobs."
   template-instance-rule:
-    reason: "We dashboards that mix several Prometheus jobs - hence we aggregate instances."
+    reason: "We have dashboards that mix several Prometheus jobs - hence we aggregate instances."
