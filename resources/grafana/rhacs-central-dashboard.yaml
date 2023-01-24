@@ -37,7 +37,7 @@ spec:
       "fiscalYearStartMonth": 0,
       "gnetId": 14765,
       "graphTooltip": 0,
-      "id": 20,
+      "id": 11,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -437,8 +437,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -559,8 +558,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -680,8 +678,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -812,8 +809,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1192,8 +1188,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1317,8 +1312,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1447,8 +1441,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1548,8 +1541,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1675,8 +1667,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1803,8 +1794,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1901,8 +1891,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -1999,8 +1988,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2361,8 +2349,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2502,8 +2489,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2600,8 +2586,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2698,8 +2683,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3060,8 +3044,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3197,8 +3180,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3295,8 +3277,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3420,8 +3401,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3515,8 +3495,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3610,8 +3589,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4486,8 +4464,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": "All",
-              "value": "$__all"
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -4498,7 +4480,7 @@ spec:
             "hide": 0,
             "includeAll": true,
             "label": "Organisation",
-            "multi": false,
+            "multi": true,
             "name": "org_name",
             "options": [],
             "query": {
@@ -4514,23 +4496,27 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": "All",
-              "value": "$__all"
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values({rhacs_org_name=\"$org_name\"}, rhacs_org_id)",
+            "definition": "label_values({rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
             "description": "Red Hat SSO Organisation ID",
             "hide": 0,
             "includeAll": true,
             "label": "Organisation ID",
-            "multi": false,
+            "multi": true,
             "name": "org_id",
             "options": [],
             "query": {
-              "query": "label_values({rhacs_org_name=\"$org_name\"}, rhacs_org_id)",
+              "query": "label_values({rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 1,
@@ -4541,15 +4527,15 @@ spec:
           },
           {
             "current": {
-              "selected": false,
-              "text": "cf4tumu0dpens7p4ag9g",
-              "value": "cf4tumu0dpens7p4ag9g"
+              "selected": true,
+              "text": "ce90s406mnv90blbnu20",
+              "value": "ce90s406mnv90blbnu20"
             },
             "datasource": {
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values({rhacs_org_name=\"$org_name\", rhacs_org_id=\"$org_id\"}, rhacs_instance_id)",
+            "definition": "label_values({rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
             "description": "RHACS Central Instance ID",
             "hide": 0,
             "includeAll": false,
@@ -4558,7 +4544,7 @@ spec:
             "name": "instance_id",
             "options": [],
             "query": {
-              "query": "label_values({rhacs_org_name=\"$org_name\", rhacs_org_id=\"$org_id\"}, rhacs_instance_id)",
+              "query": "label_values({rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 1,
@@ -4664,6 +4650,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central Metrics",
       "uid": "gn38yKZnk",
-      "version": 5,
+      "version": 4,
       "weekStart": ""
     }
