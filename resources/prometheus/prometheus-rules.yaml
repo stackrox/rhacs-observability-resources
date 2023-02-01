@@ -30,13 +30,12 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{container="central"}[10m]) > 3
-          for: 5m
+            increase(kube_pod_container_status_restarts_total{container="central"}[30m]) > 3
           labels:
-            severity: warning
+            severity: critical
           annotations:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
-            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 10 minutes."
+            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSCentralDatabasePersistentVolumeFillingUp
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
@@ -81,13 +80,12 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[10m]) > 3
-          for: 5m
+            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[30m]) > 3
           labels:
-            severity: warning
+            severity: critical
           annotations:
             summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
-            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 10 minutes."
+            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "" # TODO: Add SOP
 
     - name: rhacs-fleetshard
@@ -104,13 +102,12 @@ spec:
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-controller-manager-.*"}[60m]) > 3
-          for: 5m
+            increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-controller-manager-.*"}[30m]) > 3
           labels:
-            severity: warning
+            severity: critical
           annotations:
             summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
-            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
+            description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "" # TODO: Add SOP
 
         - alert: RHACSFleetshardSyncScrapeFailed
@@ -134,12 +131,12 @@ spec:
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
-          expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[60m]) > 3
+          expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[30m]) > 3
           labels:
-            severity: warning
+            severity: critical
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
-            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 60 minutes."
+            description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "" # TODO: Add SOP
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
