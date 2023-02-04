@@ -19,7 +19,7 @@ tests:
         alertname: RHACSCentralDatabasePersistentVolumeFillingUp
         exp_alerts:
           - exp_labels:
-              alertname: RHACSCentralDatabasePersistentVolumeFillingUp
+              alertname: RHACSCentralDatabasePersistentVolumeFillingUp (~4 days left)
               severity: warning
               persistentvolumeclaim: stackrox-db
               namespace: rhacs-1234
@@ -31,7 +31,7 @@ tests:
         alertname: RHACSCentralDatabasePersistentVolumeFillingUp
         exp_alerts:
           - exp_labels:
-              alertname: RHACSCentralDatabasePersistentVolumeFillingUp
+              alertname: RHACSCentralDatabasePersistentVolumeFillingUp (< 10% left)
               severity: critical
               persistentvolumeclaim: stackrox-db
               namespace: rhacs-1234
@@ -40,7 +40,7 @@ tests:
               description: "Central database storage in namespace `rhacs-1234` is filling up for PVC `stackrox-db`. Available storage quota is `3.32%`."
               sop_url: ""
           - exp_labels:
-              alertname: RHACSCentralDatabasePersistentVolumeFillingUp
+              alertname: RHACSCentralDatabasePersistentVolumeFillingUp (~4 days left)
               severity: warning
               persistentvolumeclaim: stackrox-db
               namespace: rhacs-1234

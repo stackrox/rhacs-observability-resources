@@ -37,7 +37,7 @@ spec:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "" # TODO: Add SOP
-        - alert: RHACSCentralDatabasePersistentVolumeFillingUp
+        - alert: RHACSCentralDatabasePersistentVolumeFillingUp (< 10% left)
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
           for: 5m
           labels:
@@ -46,7 +46,7 @@ spec:
             summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
             description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
             sop_url: "" # TODO: Add SOP
-        - alert: RHACSCentralDatabasePersistentVolumeFillingUp
+        - alert: RHACSCentralDatabasePersistentVolumeFillingUp (~4 days left)
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
           for: 5m
           labels:
@@ -209,7 +209,7 @@ spec:
 
     - name: observability-operator
       rules:
-        - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+        - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (< 10% left)
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} < 0.1
           for: 5m
           labels:
@@ -219,7 +219,7 @@ spec:
             description: "The Observability Operator's Prometheus storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
             sop_url: "" # TODO: Add SOP
 
-        - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
+        - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp (~4 days left)
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"}[6h], 4 * 24 * 3600) < 0
           for: 5m
           labels:
