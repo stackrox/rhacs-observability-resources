@@ -210,7 +210,7 @@ spec:
     - name: observability-operator
       rules:
         - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
-          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} < 0.1
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"} < 0.1
           for: 5m
           labels:
             severity: critical
@@ -220,7 +220,7 @@ spec:
             sop_url: "" # TODO: Add SOP
 
         - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
-          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-kafka-prometheus-[0-9]"}[6h], 4 * 24 * 3600) < 0
+          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"}[6h], 4 * 24 * 3600) < 0
           for: 5m
           labels:
             severity: warning
