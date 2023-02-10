@@ -1037,6 +1037,22 @@ spec:
                     "value": "decbytes"
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU seconds"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "auto"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "s"
+                  }
+                ]
               }
             ]
           },
@@ -1101,13 +1117,28 @@ spec:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) by (namespace)",
+              "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace)",
               "format": "table",
               "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
               "refId": "Secured Cores"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(process_cpu_seconds_total{job=\"central\"}) by (namespace,rhacs_org_name)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "CPU seconds"
             }
           ],
           "title": "Central Overview Table",
@@ -1124,14 +1155,30 @@ spec:
                 "excludeByName": {
                   "Time 1": true,
                   "Time 2": true,
-                  "Time 3": true
+                  "Time 3": true,
+                  "Time 4": true
                 },
-                "indexByName": {},
+                "indexByName": {
+                  "Time 1": 6,
+                  "Time 2": 7,
+                  "Time 3": 8,
+                  "Time 4": 9,
+                  "Value #CPU seconds": 3,
+                  "Value #Memory consumption": 1,
+                  "Value #Memory total": 2,
+                  "Value #Secured Cores": 4,
+                  "namespace": 0,
+                  "rhacs_org_name": 5
+                },
                 "renameByName": {
                   "Time 2": "",
+                  "Time 4": "",
+                  "Value #A": "CPU seconds",
+                  "Value #CPU seconds": "CPU seconds",
                   "Value #Memory consumption": "Memory consumption",
                   "Value #Memory total": "Absolute memory usage",
-                  "Value #Secured Cores": "Secured Cores"
+                  "Value #Secured Cores": "Secured Cores",
+                  "rhacs_org_name": "Organisation"
                 }
               }
             }
