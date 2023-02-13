@@ -1041,16 +1041,40 @@ spec:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "CPU seconds"
+                  "options": "CPU consumption"
                 },
                 "properties": [
                   {
-                    "id": "custom.displayMode",
-                    "value": "auto"
+                    "id": "unit",
+                    "value": "percentunit"
                   },
                   {
-                    "id": "unit",
-                    "value": "s"
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": null
+                        },
+                        {
+                          "color": "orange",
+                          "value": 60
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
                   }
                 ]
               }
@@ -1132,13 +1156,28 @@ spec:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(process_cpu_seconds_total{job=\"central\"}) by (namespace,rhacs_org_name)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[5m])) by (namespace) /\nsum(container_spec_cpu_quota{namespace=~\"rhacs-$instance_id\", container=\"central\"} / container_spec_cpu_period{namespace=~\"rhacs-$instance_id\", container=\"central\"}) by (namespace)",
               "format": "table",
               "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
-              "refId": "CPU seconds"
+              "refId": "CPU consumption"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_org_name)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Organisation"
             }
           ],
           "title": "Central Overview Table",
@@ -1156,16 +1195,20 @@ spec:
                   "Time 1": true,
                   "Time 2": true,
                   "Time 3": true,
-                  "Time 4": true
+                  "Time 4": true,
+                  "Time 5": true,
+                  "Value #Organisation": true
                 },
                 "indexByName": {
                   "Time 1": 6,
                   "Time 2": 7,
                   "Time 3": 8,
                   "Time 4": 9,
-                  "Value #CPU seconds": 3,
+                  "Time 5": 10,
+                  "Value #CPU consumption": 3,
                   "Value #Memory consumption": 1,
                   "Value #Memory total": 2,
+                  "Value #Organisation": 11,
                   "Value #Secured Cores": 4,
                   "namespace": 0,
                   "rhacs_org_name": 5
@@ -1173,10 +1216,11 @@ spec:
                 "renameByName": {
                   "Time 2": "",
                   "Time 4": "",
-                  "Value #A": "CPU seconds",
-                  "Value #CPU seconds": "CPU seconds",
+                  "Value #A": "CPU consumption",
+                  "Value #CPU consumption": "CPU consumption",
                   "Value #Memory consumption": "Memory consumption",
                   "Value #Memory total": "Absolute memory usage",
+                  "Value #Organisation": "CPU seconds",
                   "Value #Secured Cores": "Secured Cores",
                   "rhacs_org_name": "Organisation"
                 }
