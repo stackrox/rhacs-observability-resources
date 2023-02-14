@@ -1228,6 +1228,193 @@ spec:
             }
           ],
           "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Memory consumption"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": null
+                        },
+                        {
+                          "color": "orange",
+                          "value": 69.9998
+                        },
+                        {
+                          "color": "red",
+                          "value": 90
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 55
+          },
+          "id": 21,
+          "options": {
+            "footer": {
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(container_memory_usage_bytes{namespace=~\"rhacs-$instance_id\", container=\"scanner\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"scanner\", job=~\"kubelet\"}) by (namespace)",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Memory consumption"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Network received"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Network Transmitted"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace) /\nsum(container_spec_cpu_quota{namespace=~\"rhacs-$instance_id\", container=\"scanner\"} / container_spec_cpu_period{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}) by (namespace)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "CPU consumption"
+            }
+          ],
+          "title": "Scanner Overview Table",
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "byField": "namespace"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "Value": false
+                },
+                "indexByName": {
+                  "Time": 2,
+                  "Value": 1,
+                  "namespace": 0
+                },
+                "renameByName": {
+                  "Time": "",
+                  "Value": "CPU consumption",
+                  "Value #A": "",
+                  "Value #CPU consumption": "CPU consumption",
+                  "Value #Memory consumption": "Memory consumption",
+                  "Value #Network Transmitted": "Network transmitted",
+                  "Value #Network received": "Network received",
+                  "namespace": ""
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
       "schemaVersion": 37,
@@ -1343,6 +1530,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 5,
+      "version": 6,
       "weekStart": ""
     }
