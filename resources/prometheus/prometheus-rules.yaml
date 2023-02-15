@@ -55,6 +55,15 @@ spec:
             summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
             description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
             sop_url: "" # TODO: Add SOP
+        - alert: RHACSCentralPostgresConnectionDown
+          expr: avg_over_time(rox_central_postgres_connected{container="central"}[10m]) < 0.5
+          for: 20m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` database connection in namespace `{{ $labels.namespace }}` is down or is in a bad shape."
+            description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` database connection in namespace `{{ $labels.namespace }}` has been down or is in a bad shape for at least 10 minutes."
+            sop_url: "" # TODO: Add SOP
 
     - name: rhacs-scanner
       rules:
