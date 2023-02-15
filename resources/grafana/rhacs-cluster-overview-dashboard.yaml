@@ -1025,104 +1025,12 @@ spec:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Absolute memory usage"
+                  "options": "CPU throttle periods (30m)"
                 },
                 "properties": [
                   {
                     "id": "custom.displayMode",
-                    "value": "auto"
-                  },
-                  {
-                    "id": "unit",
-                    "value": "decbytes"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CPU consumption"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "percentunit"
-                  },
-                  {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
-                  },
-                  {
-                    "id": "max",
-                    "value": 1
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "percentage",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "orange",
-                          "value": 60
-                        },
-                        {
-                          "color": "red",
-                          "value": 80
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "decimals",
-                    "value": 1
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CPU throttle"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "percentunit"
-                  },
-                  {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
-                  },
-                  {
-                    "id": "max",
-                    "value": 1
-                  },
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "percentage",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": null
-                        },
-                        {
-                          "color": "#EAB839",
-                          "value": 10
-                        },
-                        {
-                          "color": "red",
-                          "value": 50
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "decimals",
-                    "value": 1
+                    "value": "color-text"
                   }
                 ]
               },
@@ -1153,7 +1061,7 @@ spec:
             ]
           },
           "gridPos": {
-            "h": 13,
+            "h": 12,
             "w": 24,
             "x": 0,
             "y": 42
@@ -1161,6 +1069,7 @@ spec:
           "id": 19,
           "options": {
             "footer": {
+              "enablePagination": true,
               "fields": "",
               "reducer": [
                 "sum"
@@ -1198,21 +1107,6 @@ spec:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(container_memory_usage_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\"}) by (namespace)",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "legendFormat": "__auto",
-              "range": false,
-              "refId": "Memory total"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "exemplar": false,
               "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace)",
               "format": "table",
               "hide": false,
@@ -1220,21 +1114,6 @@ spec:
               "legendFormat": "__auto",
               "range": false,
               "refId": "Secured Cores"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[5m])) by (namespace) /\nsum(container_spec_cpu_quota{namespace=~\"rhacs-$instance_id\", container=\"central\"} / container_spec_cpu_period{namespace=~\"rhacs-$instance_id\", container=\"central\"}) by (namespace)",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "legendFormat": "__auto",
-              "range": false,
-              "refId": "CPU consumption"
             },
             {
               "datasource": {
@@ -1258,7 +1137,7 @@ spec:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[5m])) by (namespace) / sum(increase(container_cpu_cfs_periods_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[5m])) by (namespace)",
+              "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[30m])) by (namespace)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -1344,7 +1223,7 @@ spec:
                   "Time 4": "",
                   "Value #A": "CPU throttle",
                   "Value #CPU consumption": "CPU consumption",
-                  "Value #CPU throttle": "CPU throttle",
+                  "Value #CPU throttle": "CPU throttle periods (30m)",
                   "Value #Memory consumption": "Memory consumption",
                   "Value #Memory total": "Absolute memory usage",
                   "Value #Network received": "Network received",
@@ -1547,7 +1426,7 @@ spec:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 55
+            "y": 54
           },
           "id": 21,
           "options": {
