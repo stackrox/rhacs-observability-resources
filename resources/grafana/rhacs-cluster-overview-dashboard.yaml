@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 13,
+      "id": 7,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -57,7 +57,7 @@ spec:
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "description": "",
+          "description": "The number of Central deployments with at least one pod in ready state.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -138,7 +138,7 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "count(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}))",
+              "expr": "count(clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1))",
               "interval": "",
               "legendFormat": "Count",
               "range": true,
@@ -153,7 +153,7 @@ spec:
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "description": "",
+          "description": "The number of Central deployments with at least one pod in ready state per organisation.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -234,7 +234,7 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "count by (rhacs_org_name) (count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}) * on(namespace) group_left(rhacs_org_name) count by (namespace, rhacs_org_name) (process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"}))",
+              "expr": "count by (rhacs_org_name) (clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1) * on(namespace) group_left(rhacs_org_name) count by (namespace, rhacs_org_name) (process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"}))",
               "interval": "",
               "legendFormat": "{{rhacs_org_name}}",
               "range": true,
@@ -1708,6 +1708,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 6,
+      "version": 1,
       "weekStart": ""
     }
