@@ -2,7 +2,7 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDashboard
 metadata:
   labels:
-    app: strimzi
+    app: rhacs
     monitoring-key: middleware
   name: kubernetes-mixin-k8s-resources-pod
   namespace: <namespace>
