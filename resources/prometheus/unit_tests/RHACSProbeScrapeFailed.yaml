@@ -1,0 +1,30 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: up{namespace="rhacs-1234", pod="probe-1234-5678", job="probe", instance="1.2.3.4:9090"}
+        values: "0+0x20 1+0x20"
+      - series: kube_pod_container_status_ready{namespace="rhacs-1234", pod="probe-1234-5678", container="probe"}
+        values: "1+0x40"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSProbeScrapeFailed
+        exp_alerts: []
+      - eval_time: 25m
+        alertname: RHACSProbeScrapeFailed
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSProbeScrapeFailed
+              instance: 1.2.3.4:9090
+              namespace: rhacs-1234
+              pod: probe-1234-5678
+              severity: critical
+              job: probe
+            exp_annotations:
+              summary: "Prometheus unable to scrape metrics from target `probe-1234-5678` in namespace `rhacs-1234`."
+              description: "During the last 10 minutes, only `45.45%` of scrapes of target `probe-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 50% of scrapes are successful."
+              sop_url: ""
