@@ -1,0 +1,27 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="probe-1234-5678", container="probe"}
+        values: "0+0x10 1+1x10 4+1x20"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSProbeContainerFrequentlyRestarting
+        exp_alerts: []
+      - eval_time: 30m
+        alertname: RHACSProbeContainerFrequentlyRestarting
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSProbeContainerFrequentlyRestarting
+              container: probe
+              namespace: rhacs-1234
+              pod: probe-1234-5678
+              severity: critical
+            exp_annotations:
+              summary: "Probe container `probe-1234-5678/probe` in namespace `rhacs-1234` restarted more than 3 times."
+              description: "Probe container `probe-1234-5678/probe` in namespace `rhacs-1234` has restarted more than 3 times during the last 30 minutes."
+              sop_url: ""
