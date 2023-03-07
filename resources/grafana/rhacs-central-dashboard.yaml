@@ -3861,7 +3861,7 @@ spec:
                   "refId": "B"
                 }
               ],
-              "title": "RDS Read Latency P90",
+              "title": "RDS Disk Read Latency P90",
               "type": "timeseries"
             },
             {
@@ -4058,7 +4058,7 @@ spec:
                   "refId": "B"
                 }
               ],
-              "title": "RDS Read throughput",
+              "title": "RDS Disk Read throughput",
               "type": "timeseries"
             },
             {
