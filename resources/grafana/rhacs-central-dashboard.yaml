@@ -3812,7 +3812,8 @@ spec:
                         "value": 80
                       }
                     ]
-                  }
+                  },
+                  "unit": "s"
                 },
                 "overrides": []
               },
@@ -3842,10 +3843,22 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_p90{namespace=\"rhacs-$instance_id\"}",
-                  "legendFormat": "__auto",
+                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "DB Instance read latency P90",
                   "range": true,
                   "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover read latency P90",
+                  "range": true,
+                  "refId": "B"
                 }
               ],
               "title": "RDS Read Latency P90",
@@ -3996,7 +4009,8 @@ spec:
                         "value": 80
                       }
                     ]
-                  }
+                  },
+                  "unit": "Bps"
                 },
                 "overrides": []
               },
@@ -4026,10 +4040,22 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_throughput_average{namespace=\"rhacs-$instance_id\"}",
-                  "legendFormat": "__auto",
+                  "expr": "aws_rds_read_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "DB Instance read throughput",
                   "range": true,
                   "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover read throughput",
+                  "range": true,
+                  "refId": "B"
                 }
               ],
               "title": "RDS Read throughput",
@@ -4181,7 +4207,8 @@ spec:
                         "value": 80
                       }
                     ]
-                  }
+                  },
+                  "unit": "Bps"
                 },
                 "overrides": []
               },
@@ -4211,13 +4238,25 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_write_throughput_average{namespace=\"rhacs-$instance_id\"}",
-                  "legendFormat": "__auto",
+                  "expr": "aws_rds_write_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "DB Instance write throughput",
                   "range": true,
                   "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_write_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover write throughput",
+                  "range": true,
+                  "refId": "B"
                 }
               ],
-              "title": "RDS Write Throughput",
+              "title": "RDS Disk Write Throughput",
               "type": "timeseries"
             },
             {
@@ -4401,7 +4440,7 @@ spec:
                   "editorMode": "builder",
                   "expr": "rox_central_postgres_db_size_bytes{namespace=\"rhacs-$instance_id\", job=\"central\"}",
                   "hide": false,
-                  "legendFormat": "Postgres",
+                  "legendFormat": "Postgres {{database}}",
                   "range": true,
                   "refId": "D"
                 }
