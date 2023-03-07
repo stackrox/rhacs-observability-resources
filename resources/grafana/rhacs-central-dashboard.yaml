@@ -3724,7 +3724,7 @@ spec:
                 "overrides": []
               },
               "gridPos": {
-                "h": 8,
+                "h": 9,
                 "w": 12,
                 "x": 0,
                 "y": 13
@@ -3763,7 +3763,6 @@ spec:
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
               },
-              "description": "90th percentile of database read latency",
               "fieldConfig": {
                 "defaults": {
                   "color": {
@@ -3812,18 +3811,17 @@ spec:
                         "value": 80
                       }
                     ]
-                  },
-                  "unit": "s"
+                  }
                 },
                 "overrides": []
               },
               "gridPos": {
-                "h": 8,
+                "h": 9,
                 "w": 12,
                 "x": 12,
                 "y": 13
               },
-              "id": 119,
+              "id": 131,
               "options": {
                 "legend": {
                   "calcs": [],
@@ -3843,8 +3841,8 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
-                  "legendFormat": "DB Instance read latency P90",
+                  "expr": "aws_rds_acuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "DB Instance (average)",
                   "range": true,
                   "refId": "A"
                 },
@@ -3854,14 +3852,62 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_acuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
-                  "legendFormat": "DB Failover read latency P90",
+                  "legendFormat": "DB Failover (average)",
                   "range": true,
                   "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_acuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "DB Instance (P90)",
+                  "range": true,
+                  "refId": "C"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_acuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (P90)",
+                  "range": true,
+                  "refId": "D"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_acuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "DB Instance (max)",
+                  "range": true,
+                  "refId": "E"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_acuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (max)",
+                  "range": true,
+                  "refId": "F"
                 }
               ],
-              "title": "RDS Disk Read Latency P90",
+              "title": "RDS ACU Utilisation",
               "type": "timeseries"
             },
             {
@@ -3922,10 +3968,10 @@ spec:
                 "overrides": []
               },
               "gridPos": {
-                "h": 8,
+                "h": 9,
                 "w": 12,
                 "x": 0,
-                "y": 21
+                "y": 22
               },
               "id": 121,
               "options": {
@@ -4010,6 +4056,498 @@ spec:
                       }
                     ]
                   },
+                  "unit": "percent"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 22
+              },
+              "id": 129,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_cpuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "DB Instance (average)",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_cpuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (average)",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_cpuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "DB Instance (P90)",
+                  "range": true,
+                  "refId": "C"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_cpuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (P90)",
+                  "range": true,
+                  "refId": "D"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_cpuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "DB Instance (max)",
+                  "range": true,
+                  "refId": "E"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_cpuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (max)",
+                  "range": true,
+                  "refId": "F"
+                }
+              ],
+              "title": "RDS CPU Utilisation",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": 600000,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 31
+              },
+              "id": 125,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "rate(rox_central_postgres_op_duration_sum{namespace=\"rhacs-$instance_id\", job=\"central\", Operation=~\"$Operation\", Type=~\"$Type\"}[$__rate_interval])/rate(rox_central_postgres_op_duration_count{namespace=\"rhacs-$instance_id\", job=\"central\", Operation=~\"$Operation\", Type=~\"$Type\"}[$__rate_interval])",
+                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
+                  "range": true,
+                  "refId": "A"
+                }
+              ],
+              "title": "Postgres Operation Duration (average)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "description": "90th percentile of database read latency",
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 31
+              },
+              "id": 119,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "DB Instance (average)",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (average)",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "DB Instance (P90)",
+                  "range": true,
+                  "refId": "C"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (P90)",
+                  "range": true,
+                  "refId": "D"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "DB Instance (max)",
+                  "range": true,
+                  "refId": "E"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_read_latency_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "DB Failover (max)",
+                  "range": true,
+                  "refId": "F"
+                }
+              ],
+              "title": "RDS Disk Read Latency",
+              "type": "timeseries"
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": {
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "links": [],
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 40
+              },
+              "hiddenSeries": false,
+              "id": 18,
+              "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "nullPointMode": "null",
+              "options": {
+                "alertThreshold": true
+              },
+              "percentage": false,
+              "pluginVersion": "9.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "exemplar": true,
+                  "expr": "rox_central_index_op_duration_sum{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"} / rox_central_index_op_duration_count{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"}",
+                  "interval": "",
+                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeRegions": [],
+              "title": "Indexer Operation Duration",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "type": "graph",
+              "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "logBase": 1,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "logBase": 1,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false
+              }
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
                   "unit": "Bps"
                 },
                 "overrides": []
@@ -4018,7 +4556,7 @@ spec:
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 21
+                "y": 40
               },
               "id": 123,
               "options": {
@@ -4092,99 +4630,6 @@ spec:
                       "type": "linear"
                     },
                     "showPoints": "auto",
-                    "spanNulls": 600000,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  },
-                  "mappings": [],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": null
-                      },
-                      {
-                        "color": "red",
-                        "value": 80
-                      }
-                    ]
-                  },
-                  "unit": "ms"
-                },
-                "overrides": []
-              },
-              "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 29
-              },
-              "id": 125,
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "targets": [
-                {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
-                  },
-                  "editorMode": "builder",
-                  "expr": "rate(rox_central_postgres_op_duration_sum{namespace=\"rhacs-$instance_id\", job=\"central\", Operation=~\"$Operation\", Type=~\"$Type\"}[$__rate_interval])/rate(rox_central_postgres_op_duration_count{namespace=\"rhacs-$instance_id\", job=\"central\", Operation=~\"$Operation\", Type=~\"$Type\"}[$__rate_interval])",
-                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
-                  "range": true,
-                  "refId": "A"
-                }
-              ],
-              "title": "Postgres Operation Duration (average)",
-              "type": "timeseries"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "lineInterpolation": "linear",
-                    "lineWidth": 1,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "auto",
                     "spanNulls": false,
                     "stacking": {
                       "group": "A",
@@ -4213,10 +4658,10 @@ spec:
                 "overrides": []
               },
               "gridPos": {
-                "h": 8,
+                "h": 9,
                 "w": 12,
                 "x": 12,
-                "y": 29
+                "y": 48
               },
               "id": 127,
               "options": {
@@ -4265,98 +4710,6 @@ spec:
               "dashLength": 10,
               "dashes": false,
               "datasource": {
-                "uid": "${datasource}"
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "ms"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 0,
-                "y": 37
-              },
-              "hiddenSeries": false,
-              "id": 18,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_index_op_duration_sum{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"} / rox_central_index_op_duration_count{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"}",
-                  "interval": "",
-                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "Indexer Operation Duration",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "ms",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
@@ -4372,8 +4725,8 @@ spec:
               "gridPos": {
                 "h": 9,
                 "w": 12,
-                "x": 12,
-                "y": 37
+                "x": 0,
+                "y": 49
               },
               "hiddenSeries": false,
               "id": 20,
@@ -4462,558 +4815,6 @@ spec:
               "yaxes": [
                 {
                   "format": "decbytes",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
-                "uid": "${datasource}"
-              },
-              "description": "Number of key/value pairs in each bucket.",
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "short"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 0,
-                "y": 46
-              },
-              "hiddenSeries": false,
-              "id": 6,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_bolt_bucket_key_n{namespace=\"rhacs-$instance_id\",job=\"central\"}",
-                  "interval": "",
-                  "legendFormat": "{{Bucket}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "Bolt Object Count",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
-                "uid": "${datasource}"
-              },
-              "description": "RocksDB prefix size (equivalent to bolt bucket).",
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "short"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 12,
-                "y": 46
-              },
-              "hiddenSeries": false,
-              "id": 8,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_rocksdb_prefix_size{namespace=\"rhacs-$instance_id\",job=\"central\"}",
-                  "interval": "",
-                  "legendFormat": "{{Prefix}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "RocksDB Object Count",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
-                "uid": "${datasource}"
-              },
-              "description": "Number of key/value pairs in each bucket.",
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "short"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 0,
-                "y": 55
-              },
-              "hiddenSeries": false,
-              "id": 86,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_bolt_op_duration_count{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"}",
-                  "interval": "",
-                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "Bolt Operation Count",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
-                "uid": "${datasource}"
-              },
-              "description": "Number of key/value pairs in each bucket.",
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "short"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 12,
-                "y": 55
-              },
-              "hiddenSeries": false,
-              "id": 87,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_rocksdb_op_duration_count{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"}",
-                  "interval": "",
-                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "RocksDB Operation Count",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
-                "uid": "${datasource}"
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "ms"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 0,
-                "y": 64
-              },
-              "hiddenSeries": false,
-              "id": 10,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_bolt_op_duration_sum{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"} / rox_central_bolt_op_duration_count{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"}",
-                  "interval": "",
-                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "Bolt Avg Operation Duration",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "ms",
-                  "logBase": 1,
-                  "show": true
-                },
-                {
-                  "format": "short",
-                  "logBase": 1,
-                  "show": true
-                }
-              ],
-              "yaxis": {
-                "align": false
-              }
-            },
-            {
-              "aliasColors": {},
-              "bars": false,
-              "dashLength": 10,
-              "dashes": false,
-              "datasource": {
-                "uid": "${datasource}"
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "links": [],
-                  "unit": "ms"
-                },
-                "overrides": []
-              },
-              "fill": 1,
-              "fillGradient": 0,
-              "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 12,
-                "y": 64
-              },
-              "hiddenSeries": false,
-              "id": 85,
-              "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-              },
-              "lines": true,
-              "linewidth": 1,
-              "nullPointMode": "null",
-              "options": {
-                "alertThreshold": true
-              },
-              "percentage": false,
-              "pluginVersion": "9.1.0",
-              "pointradius": 2,
-              "points": false,
-              "renderer": "flot",
-              "seriesOverrides": [],
-              "spaceLength": 10,
-              "stack": false,
-              "steppedLine": false,
-              "targets": [
-                {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
-                  },
-                  "exemplar": true,
-                  "expr": "rox_central_rocksdb_op_duration_sum{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"} / rox_central_rocksdb_op_duration_count{namespace=\"rhacs-$instance_id\",job=\"central\",Operation=~\"$Operation\",Type=~\"$Type\"}",
-                  "interval": "",
-                  "legendFormat": "Operation: {{Operation}}, Type: {{Type}}",
-                  "refId": "A"
-                }
-              ],
-              "thresholds": [],
-              "timeRegions": [],
-              "title": "RocksDB Avg Operation Duration",
-              "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-              },
-              "type": "graph",
-              "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-              },
-              "yaxes": [
-                {
-                  "format": "ms",
                   "logBase": 1,
                   "show": true
                 },
