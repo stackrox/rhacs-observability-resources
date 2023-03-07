@@ -4935,9 +4935,9 @@ spec:
           },
           {
             "current": {
-              "selected": true,
-              "text": "cf2p7fc51bsr0rarderg",
-              "value": "cf2p7fc51bsr0rarderg"
+              "selected": false,
+              "text": "ce90s406mnv90blbnu20",
+              "value": "ce90s406mnv90blbnu20"
             },
             "datasource": {
               "type": "prometheus",
@@ -5030,7 +5030,7 @@ spec:
         ]
       },
       "time": {
-        "from": "now-24h",
+        "from": "now-3h",
         "to": "now"
       },
       "timepicker": {
@@ -5058,6 +5058,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central Metrics",
       "uid": "gn38yKZnk",
-      "version": 2,
+      "version": 6,
       "weekStart": ""
     }
