@@ -1,0 +1,30 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: aws_rds_acuutilization_maximum{namespace="rhacs-1234", pod="scanner-1234-5678", instance="1.2.3.4:9090", dbinstance_identifier="test-db-instance"}
+        values: "50x5 100x20"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: AWSRDSACUUtilization
+        exp_alerts: []
+      - eval_time: 21m
+        alertname: AWSRDSACUUtilization
+        exp_alerts:
+          - exp_labels:
+              alertname: AWSRDSACUUtilization
+              dbinstance_identifier: test-db-instance
+              instance: 1.2.3.4:9090
+              namespace: rhacs-1234
+              pod: scanner-1234-5678
+              severity: critical
+            exp_annotations:
+              summary: "The AWS RDS ACUUtilization for `test-db-instance` DB instance is too high."
+              description: >
+                The DB instance `test-db-instance` has scaled up as high as it can.
+                Consider increasing the maximum ACU setting for the cluster.
+              sop_url: ""
