@@ -4403,6 +4403,251 @@ spec:
               "type": "timeseries"
             },
             {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": [
+                  {
+                    "__systemRef": "hideSeriesFrom",
+                    "matcher": {
+                      "id": "byNames",
+                      "options": {
+                        "mode": "exclude",
+                        "names": [
+                          "{__name__=\"rox_central_postgres_connected\", container=\"central\", instance=\"10.128.16.6:9090\", job=\"central\", namespace=\"rhacs-cf2p7fc51bsr0rarderg\", pod=\"central-7ff4f686d-rctf5\", rhacs_cluster_name=\"acs-stage-dp-02\", rhacs_environment=\"stage\", rhacs_instance_id=\"cf2p7fc51bsr0rarderg\", rhacs_org_id=\"11009103\", rhacs_org_name=\"Red Hat1\", rhacs_version=\"3.74.0\"}"
+                        ],
+                        "prefix": "All except:",
+                        "readOnly": true
+                      }
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.hideFrom",
+                        "value": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 40
+              },
+              "id": 135,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "rox_central_postgres_connected{namespace=\"rhacs-$instance_id\", job=\"central\"}",
+                  "legendFormat": "Postgres connections",
+                  "range": true,
+                  "refId": "A"
+                }
+              ],
+              "title": "Postgres Connections",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 40
+              },
+              "id": 133,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_database_connections_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "legendFormat": "Master  connection count",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_database_connections_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "Failover connection count",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_database_connections_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "hide": false,
+                  "legendFormat": "Master max connection count",
+                  "range": true,
+                  "refId": "C"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "editorMode": "builder",
+                  "expr": "aws_rds_database_connections_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "hide": false,
+                  "legendFormat": "Failover max connection count",
+                  "range": true,
+                  "refId": "D"
+                }
+              ],
+              "title": "Postgres Connections",
+              "type": "timeseries"
+            },
+            {
               "aliasColors": {},
               "bars": false,
               "dashLength": 10,
@@ -4423,7 +4668,7 @@ spec:
                 "h": 9,
                 "w": 12,
                 "x": 0,
-                "y": 40
+                "y": 49
               },
               "hiddenSeries": false,
               "id": 18,
@@ -4556,7 +4801,7 @@ spec:
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 40
+                "y": 49
               },
               "id": 123,
               "options": {
@@ -4661,7 +4906,7 @@ spec:
                 "h": 9,
                 "w": 12,
                 "x": 12,
-                "y": 48
+                "y": 57
               },
               "id": 127,
               "options": {
@@ -4726,7 +4971,7 @@ spec:
                 "h": 9,
                 "w": 12,
                 "x": 0,
-                "y": 49
+                "y": 58
               },
               "hiddenSeries": false,
               "id": 20,
