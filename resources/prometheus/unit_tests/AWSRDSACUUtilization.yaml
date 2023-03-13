@@ -7,12 +7,12 @@ tests:
   - interval: 1m
     input_series:
       - series: aws_rds_acuutilization_maximum{namespace="rhacs-1234", pod="scanner-1234-5678", instance="1.2.3.4:9090", dbinstance_identifier="test-db-instance"}
-        values: "50x5 100x20"
+        values: "50x10 100x70"
     alert_rule_test:
       - eval_time: 10m
         alertname: AWSRDSACUUtilization
         exp_alerts: []
-      - eval_time: 21m
+      - eval_time: 85m
         alertname: AWSRDSACUUtilization
         exp_alerts:
           - exp_labels:

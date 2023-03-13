@@ -283,7 +283,7 @@ spec:
         - alert: AWSRDSACUUtilization
           expr: |
             avg_over_time(aws_rds_acuutilization_maximum[5m]) > 95
-          for: 10m
+          for: 1h
           labels:
             severity: critical
           annotations:
