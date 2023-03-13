@@ -189,6 +189,35 @@ spec:
             summary: "The latest probe run failed at `{{ $value | humanizeTimestamp }}`."
             description: "The latest run of probe `{{ $labels.pod }}` failed at `{{ $value | humanizeTimestamp }}`."
             sop_url: "" # TODO: Add SOP ([ROX-11888](https://issues.redhat.com/browse/ROX-11888]))
+        - alert: RHACSProbeScrapeFailed
+          expr: |
+            avg_over_time(up{job="probe"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{container="probe"} == 1
+          for: 20m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSProbeContainerDown
+          expr: |
+            avg_over_time(kube_pod_container_status_ready{container="probe"}[10m]) < 0.5
+          for: 20m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
+            sop_url: "" # TODO: Add SOP
+        - alert: RHACSProbeContainerFrequentlyRestarting
+          expr: |
+            increase(kube_pod_container_status_restarts_total{container="probe"}[30m]) > 3
+          labels:
+            severity: critical
+          annotations:
+            summary: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
+            sop_url: "" # TODO: Add SOP
 
     - name: deadmanssnitch
       rules:
@@ -247,4 +276,19 @@ spec:
           annotations:
             summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
             description: "The Prometheus remote write success rate is `{{ $value | humanizePercentage }}`."
+            sop_url: "" # TODO: Add SOP
+
+    - name: aws-rds-acuutilization
+      rules:
+        - alert: AWSRDSACUUtilization
+          expr: |
+            avg_over_time(aws_rds_acuutilization_maximum[5m]) > 95
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "The AWS RDS ACUUtilization for `{{ $labels.dbinstance_identifier }}` DB instance is too high."
+            description: >
+              The DB instance `{{ $labels.dbinstance_identifier }}` has scaled up as high as it can.
+              Consider increasing the maximum ACU setting for the cluster.
             sop_url: "" # TODO: Add SOP

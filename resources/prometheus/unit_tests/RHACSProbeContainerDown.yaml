@@ -1,0 +1,27 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_ready{namespace="rhacs-1234", pod="probe-1234", container="probe"}
+        values: "1+0x10 0+0x50"
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: RHACSProbeContainerDown
+        exp_alerts: []
+      - eval_time: 40m
+        alertname: RHACSProbeContainerDown
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSProbeContainerDown
+              pod: probe-1234
+              container: probe
+              namespace: rhacs-1234
+              severity: critical
+            exp_annotations:
+              summary: "Probe container `probe-1234/probe` in namespace `rhacs-1234` is down or in a CrashLoopBackOff status."
+              description: "Probe container `probe-1234/probe` in namespace `rhacs-1234` has been down or in a CrashLoopBackOff status for at least 10 minutes."
+              sop_url: ""
