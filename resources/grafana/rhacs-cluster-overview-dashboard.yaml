@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 7,
+      "id": 2,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -951,6 +951,19 @@ spec:
           "type": "timeseries"
         },
         {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 42
+          },
+          "id": 23,
+          "panels": [],
+          "title": "Instance Table",
+          "type": "row"
+        },
+        {
           "datasource": {
             "type": "datasource",
             "uid": "-- Mixed --"
@@ -1064,7 +1077,7 @@ spec:
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 42
+            "y": 43
           },
           "id": 19,
           "options": {
@@ -1174,6 +1187,19 @@ spec:
               "legendFormat": "__auto",
               "range": false,
               "refId": "Network transmitted"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "min(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_version)",
+              "format": "table",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "Version"
             }
           ],
           "title": "Central Overview Table",
@@ -1196,7 +1222,8 @@ spec:
                   "Time 6": true,
                   "Time 7": true,
                   "Time 8": true,
-                  "Value #Organisation": true
+                  "Value #Organisation": true,
+                  "Value #Version": true
                 },
                 "indexByName": {
                   "Time 1": 9,
@@ -1230,7 +1257,9 @@ spec:
                   "Value #Network transmitted": "Network transmitted",
                   "Value #Organisation": "CPU seconds",
                   "Value #Secured Cores": "Secured Cores",
-                  "rhacs_org_name": "Organisation"
+                  "Value #Version": "",
+                  "rhacs_org_name": "Organisation",
+                  "rhacs_version": "Version"
                 }
               }
             }
@@ -1426,7 +1455,7 @@ spec:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 54
+            "y": 55
           },
           "id": 21,
           "options": {
@@ -1708,6 +1737,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }
