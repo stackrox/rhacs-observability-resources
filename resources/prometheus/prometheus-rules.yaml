@@ -277,3 +277,18 @@ spec:
             summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
             description: "The Prometheus remote write success rate is `{{ $value | humanizePercentage }}`."
             sop_url: "" # TODO: Add SOP
+
+    - name: aws-rds-acuutilization
+      rules:
+        - alert: AWSRDSACUUtilization
+          expr: |
+            avg_over_time(aws_rds_acuutilization_maximum[5m]) > 95
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "The AWS RDS ACUUtilization for `{{ $labels.dbinstance_identifier }}` DB instance is too high."
+            description: >
+              The DB instance `{{ $labels.dbinstance_identifier }}` has scaled up as high as it can.
+              Consider increasing the maximum ACU setting for the cluster.
+            sop_url: "" # TODO: Add SOP
