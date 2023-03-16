@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    app: strimzi
+    app: rhacs
   name: rhacs-recording-rules
 spec:
   groups:
