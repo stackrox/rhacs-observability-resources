@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    app: rhacs
+    app: strimzi
   name: kubernetes-mixin-rules
 spec:
   "groups":
