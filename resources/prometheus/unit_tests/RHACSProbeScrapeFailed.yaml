@@ -27,4 +27,4 @@ tests:
             exp_annotations:
               summary: "Prometheus unable to scrape metrics from target `probe-1234-5678` in namespace `rhacs-1234`."
               description: "During the last 10 minutes, only `45.45%` of scrapes of target `probe-1234-5678` in namespace `rhacs-1234` were successful. This alert is raised when less than 50% of scrapes are successful."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-009-probe-unavailable.md"

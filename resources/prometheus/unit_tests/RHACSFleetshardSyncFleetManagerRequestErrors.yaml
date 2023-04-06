@@ -24,4 +24,4 @@ tests:
             exp_annotations:
               summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` failed to reach fleet manager."
               description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has a fleet manager request error rate of 9% over the last 10 minutes."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"

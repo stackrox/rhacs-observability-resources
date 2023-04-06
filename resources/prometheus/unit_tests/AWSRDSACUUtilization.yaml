@@ -27,4 +27,4 @@ tests:
               description: >
                 The DB instance `test-db-instance` has scaled up as high as it can.
                 Consider increasing the maximum ACU setting for the cluster.
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-014-aws-rds-acu-utilization.md"
