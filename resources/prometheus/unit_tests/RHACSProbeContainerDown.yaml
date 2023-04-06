@@ -24,4 +24,4 @@ tests:
             exp_annotations:
               summary: "Probe container `probe-1234/probe` in namespace `rhacs-1234` is down or in a CrashLoopBackOff status."
               description: "Probe container `probe-1234/probe` in namespace `rhacs-1234` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-009-probe-unavailable.md"

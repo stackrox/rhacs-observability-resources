@@ -17,7 +17,7 @@ spec:
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
             description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSCentralContainerDown
           expr: |
             avg_over_time(kube_pod_container_status_ready{container="central"}[10m]) < 0.5
@@ -27,7 +27,7 @@ spec:
           annotations:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
             description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSCentralContainerFrequentlyRestarting
           expr: |
             increase(kube_pod_container_status_restarts_total{container="central"}[30m]) > 3
@@ -36,7 +36,7 @@ spec:
           annotations:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSCentralDatabasePersistentVolumeFillingUp
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
           for: 5m
@@ -45,7 +45,7 @@ spec:
           annotations:
             summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
             description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
         - alert: RHACSCentralDatabasePersistentVolumeFillingUp
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
           for: 5m
@@ -54,7 +54,7 @@ spec:
           annotations:
             summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
             description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
         - alert: RHACSCentralPostgresConnectionDown
           expr: avg_over_time(rox_central_postgres_connected{container="central"}[10m]) < 0.5
           for: 20m
@@ -63,7 +63,7 @@ spec:
           annotations:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` database connection in namespace `{{ $labels.namespace }}` is down or is in a bad shape."
             description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` database connection in namespace `{{ $labels.namespace }}` has been down or is in a bad shape for at least 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-010-rhacs-instance-db-unavailable.md"
 
     - name: rhacs-scanner
       rules:
@@ -76,7 +76,7 @@ spec:
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
             description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSScannerContainerDown
           expr: |
             avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"}[10m]) < 0.5
@@ -86,7 +86,7 @@ spec:
           annotations:
             summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
             description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
             increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[30m]) > 3
@@ -95,7 +95,7 @@ spec:
           annotations:
             summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
 
     - name: rhacs-fleetshard
       rules:
@@ -108,7 +108,7 @@ spec:
           annotations:
             summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
             description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-011-rhacs-operator-unavailable.md"
         - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
           expr: |
             increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-controller-manager-.*"}[30m]) > 3
@@ -117,8 +117,7 @@ spec:
           annotations:
             summary: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard operator container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
-            sop_url: "" # TODO: Add SOP
-
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-011-rhacs-operator-unavailable.md"
         - alert: RHACSFleetshardSyncScrapeFailed
           expr: |
             (avg_over_time(up{pod=~"fleetshard-sync-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"} == 1) or absent(up{pod=~"fleetshard-sync-.*"})
@@ -128,7 +127,7 @@ spec:
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
             description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardSyncContainerDown
           expr: |
             avg_over_time(kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"}[10m]) < 0.5
@@ -138,7 +137,7 @@ spec:
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
           expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[30m]) > 3
           labels:
@@ -146,7 +145,7 @@ spec:
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
             acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.01
@@ -156,7 +155,7 @@ spec:
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` failed to reconcile Central instances."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has a reconciliation error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
         - alert: RHACSFleetshardSyncFleetManagerRequestErrors
           expr: |
             acs_fleetshard_fleet_manager_errors_per_requests:ratio_rate10m > 0.01
@@ -166,7 +165,7 @@ spec:
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` failed to reach fleet manager."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has a fleet manager request error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
         - alert: RHACSFleetshardSyncInvalidCentralCount
           expr: |
             sum(acs_fleetshard_total_centrals) <= 0
@@ -176,7 +175,7 @@ spec:
           annotations:
             summary: "Fleetshard synchronizer manages `{{ $value }}` centrals."
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
 
     - name: rhacs-probe
       rules:
@@ -188,7 +187,7 @@ spec:
           annotations:
             summary: "The latest probe run failed at `{{ $value | humanizeTimestamp }}`."
             description: "The latest run of probe `{{ $labels.pod }}` failed at `{{ $value | humanizeTimestamp }}`."
-            sop_url: "" # TODO: Add SOP ([ROX-11888](https://issues.redhat.com/browse/ROX-11888]))
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-008-probe-run-failed.md"
         - alert: RHACSProbeScrapeFailed
           expr: |
             avg_over_time(up{job="probe"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{container="probe"} == 1
@@ -198,7 +197,7 @@ spec:
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
             description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-009-probe-unavailable.md"
         - alert: RHACSProbeContainerDown
           expr: |
             avg_over_time(kube_pod_container_status_ready{container="probe"}[10m]) < 0.5
@@ -208,7 +207,7 @@ spec:
           annotations:
             summary: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
             description: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-009-probe-unavailable.md"
         - alert: RHACSProbeContainerFrequentlyRestarting
           expr: |
             increase(kube_pod_container_status_restarts_total{container="probe"}[30m]) > 3
@@ -217,7 +216,7 @@ spec:
           annotations:
             summary: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Probe container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-009-probe-unavailable.md"
 
     - name: deadmanssnitch
       rules:
@@ -243,7 +242,7 @@ spec:
           annotations:
             summary: "Openshift monitoring federation scrape target is down."
             description: "The Openshift monitoring federation scrape target has been down for longer than 10 minutes."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-015-openshift-monitoring-federation-unavailable.md"
 
     - name: observability-operator
       rules:
@@ -255,7 +254,7 @@ spec:
           annotations:
             summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `{{ $labels.namespace }}` is filling up."
             description: "The Observability Operator's Prometheus storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
 
         - alert: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
           expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"managed-services-prometheus-obs-prometheus-[0-9]"}[6h], 4 * 24 * 3600) < 0
@@ -265,7 +264,7 @@ spec:
           annotations:
             summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `{{ $labels.namespace }}` is filling up."
             description: "The Observability Operator's Prometheus storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
 
         - alert: ObservabilityOperatorRemoteWriteFailure
           expr: >-
@@ -276,7 +275,7 @@ spec:
           annotations:
             summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
             description: "The Prometheus remote write success rate is `{{ $value | humanizePercentage }}`."
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-013-observability-operator-write-failure.md"
 
     - name: aws-rds-acuutilization
       rules:
@@ -291,4 +290,4 @@ spec:
             description: >
               The DB instance `{{ $labels.dbinstance_identifier }}` has scaled up as high as it can.
               Consider increasing the maximum ACU setting for the cluster.
-            sop_url: "" # TODO: Add SOP
+            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-014-aws-rds-acu-utilization.md"

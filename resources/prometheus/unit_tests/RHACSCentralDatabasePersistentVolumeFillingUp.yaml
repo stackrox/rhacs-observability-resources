@@ -26,7 +26,7 @@ tests:
             exp_annotations:
               summary: "Central database storage in namespace `rhacs-1234` is filing up."
               description: "Central database storage in namespace `rhacs-1234` is filling up for PVC `stackrox-db`. Available storage quota is `13.09%`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
       - eval_time: 110m
         alertname: RHACSCentralDatabasePersistentVolumeFillingUp
         exp_alerts:
@@ -38,7 +38,7 @@ tests:
             exp_annotations:
               summary: "Central database storage in namespace `rhacs-1234` is filing up."
               description: "Central database storage in namespace `rhacs-1234` is filling up for PVC `stackrox-db`. Available storage quota is `3.32%`."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
           - exp_labels:
               alertname: RHACSCentralDatabasePersistentVolumeFillingUp
               severity: warning
@@ -47,4 +47,4 @@ tests:
             exp_annotations:
               summary: "Central database storage in namespace `rhacs-1234` is filing up."
               description: "Central database storage in namespace `rhacs-1234` is filling up for PVC `stackrox-db`. Available storage quota is `3.32%`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
