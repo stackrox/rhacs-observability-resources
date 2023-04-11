@@ -26,7 +26,7 @@ tests:
             exp_annotations:
               summary: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` is down or in a CrashLoopBackOff status."
               description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/manager` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-011-rhacs-operator-unavailable.md"
           - exp_labels:
               alertname: RHACSFleetshardOperatorContainerDown
               container: kube-rbac-proxy
@@ -36,4 +36,4 @@ tests:
             exp_annotations:
               summary: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` is down or in a CrashLoopBackOff status."
               description: "Fleetshard operator container `rhacs-operator-controller-manager-1234/kube-rbac-proxy` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 10 minutes."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-011-rhacs-operator-unavailable.md"

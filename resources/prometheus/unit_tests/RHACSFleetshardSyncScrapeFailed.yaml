@@ -26,4 +26,4 @@ tests:
             exp_annotations:
               summary: "Prometheus unable to scrape metrics from target `fleetshard-sync-1234` in namespace `rhacs`."
               description: "During the last 10 minutes, only `45.45%` of scrapes of target `fleetshard-sync-1234` in namespace `rhacs` were successful. This alert is raised when less than 50% of scrapes are successful."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"

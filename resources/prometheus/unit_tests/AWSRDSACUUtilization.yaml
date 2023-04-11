@@ -6,7 +6,7 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: aws_rds_acuutilization_maximum{namespace="rhacs-1234", pod="scanner-1234-5678", instance="1.2.3.4:9090", dbinstance_identifier="test-db-instance"}
+      - series: aws_rds_acuutilization_maximum{namespace="rhacs-1234", pod="scanner-1234-5678", instance="1.2.3.4:9090", dimension_DBInstanceIdentifier="test-db-instance"}
         values: "50x10 100x70"
     alert_rule_test:
       - eval_time: 10m
@@ -17,7 +17,7 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname: AWSRDSACUUtilization
-              dbinstance_identifier: test-db-instance
+              dimension_DBInstanceIdentifier: test-db-instance
               instance: 1.2.3.4:9090
               namespace: rhacs-1234
               pod: scanner-1234-5678
@@ -27,4 +27,4 @@ tests:
               description: >
                 The DB instance `test-db-instance` has scaled up as high as it can.
                 Consider increasing the maximum ACU setting for the cluster.
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-014-aws-rds-acu-utilization.md"

@@ -22,4 +22,4 @@ tests:
             exp_annotations:
               summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
               description: "The Prometheus remote write success rate is `10%`."
-              sop_url: ""
+              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-013-observability-operator-write-failure.md"
