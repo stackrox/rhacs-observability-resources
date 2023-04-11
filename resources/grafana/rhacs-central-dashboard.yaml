@@ -3840,7 +3840,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_database_connections_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_database_connections_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "legendFormat": "Master  connection count",
                   "range": true,
                   "refId": "A"
@@ -3851,7 +3851,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_database_connections_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_database_connections_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "Failover connection count",
                   "range": true,
@@ -3863,7 +3863,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_database_connections_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_database_connections_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "Master max connection count",
                   "range": true,
@@ -3875,7 +3875,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_database_connections_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_database_connections_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "Failover max connection count",
                   "range": true,
@@ -4061,7 +4061,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_acuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_acuutilization_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "legendFormat": "DB Instance (average)",
                   "range": true,
                   "refId": "A"
@@ -4072,7 +4072,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_acuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_acuutilization_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (average)",
                   "range": true,
@@ -4084,7 +4084,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_acuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_acuutilization_p90{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "DB Instance (P90)",
                   "range": true,
@@ -4096,7 +4096,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_acuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_acuutilization_p90{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (P90)",
                   "range": true,
@@ -4108,7 +4108,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_acuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_acuutilization_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "DB Instance (max)",
                   "range": true,
@@ -4120,7 +4120,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_acuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_acuutilization_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (max)",
                   "range": true,
@@ -4307,7 +4307,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_cpuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "legendFormat": "DB Instance (average)",
                   "range": true,
                   "refId": "A"
@@ -4318,7 +4318,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_cpuutilization_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_cpuutilization_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (average)",
                   "range": true,
@@ -4330,7 +4330,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_cpuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_cpuutilization_p90{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "DB Instance (P90)",
                   "range": true,
@@ -4342,7 +4342,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_cpuutilization_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_cpuutilization_p90{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (P90)",
                   "range": true,
@@ -4354,7 +4354,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_cpuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_cpuutilization_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "DB Instance (max)",
                   "range": true,
@@ -4366,7 +4366,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_cpuutilization_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_cpuutilization_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (max)",
                   "range": true,
@@ -4553,7 +4553,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_read_latency_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "legendFormat": "DB Instance (average)",
                   "range": true,
                   "refId": "A"
@@ -4564,7 +4564,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_read_latency_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (average)",
                   "range": true,
@@ -4576,7 +4576,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_read_latency_p90{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "DB Instance (P90)",
                   "range": true,
@@ -4588,7 +4588,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_p90{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_read_latency_p90{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (P90)",
                   "range": true,
@@ -4600,7 +4600,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_read_latency_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "hide": false,
                   "legendFormat": "DB Instance (max)",
                   "range": true,
@@ -4612,7 +4612,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_latency_maximum{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_read_latency_maximum{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover (max)",
                   "range": true,
@@ -4799,7 +4799,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_read_throughput_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "legendFormat": "DB Instance read throughput",
                   "range": true,
                   "refId": "A"
@@ -4810,7 +4810,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_read_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_read_throughput_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover read throughput",
                   "range": true,
@@ -4904,7 +4904,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_write_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-instance\"}",
+                  "expr": "aws_rds_write_throughput_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-instance\"}",
                   "legendFormat": "DB Instance write throughput",
                   "range": true,
                   "refId": "A"
@@ -4915,7 +4915,7 @@ spec:
                     "uid": "PBFA97CFB590B2093"
                   },
                   "editorMode": "builder",
-                  "expr": "aws_rds_write_throughput_average{dbinstance_identifier=\"rhacs-$instance_id-db-failover\"}",
+                  "expr": "aws_rds_write_throughput_average{dimension_DBInstanceIdentifier=\"rhacs-$instance_id-db-failover\"}",
                   "hide": false,
                   "legendFormat": "DB Failover write throughput",
                   "range": true,
