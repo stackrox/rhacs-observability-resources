@@ -286,8 +286,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "The AWS RDS ACUUtilization for `{{ $labels.dbinstance_identifier }}` DB instance is too high."
+            summary: "The AWS RDS ACUUtilization for `{{ $labels.dimension_DBInstanceIdentifier }}` DB instance is too high."
             description: >
-              The DB instance `{{ $labels.dbinstance_identifier }}` has scaled up as high as it can.
+              The DB instance `{{ $labels.dimension_DBInstanceIdentifier }}` has scaled up as high as it can.
               Consider increasing the maximum ACU setting for the cluster.
             sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-014-aws-rds-acu-utilization.md"
