@@ -3,7 +3,7 @@ kind: PodMonitor
 metadata:
   name: prometheus-self-metrics
   labels:
-    app: strimzi
+    app: rhacs
 spec:
   namespaceSelector:
     any: true
