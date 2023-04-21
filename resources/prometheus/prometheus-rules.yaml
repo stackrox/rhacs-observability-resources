@@ -291,3 +291,134 @@ spec:
               The DB instance `{{ $labels.dimension_DBInstanceIdentifier }}` has scaled up as high as it can.
               Consider increasing the maximum ACU setting for the cluster.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-014-aws-rds-acu-utilization.md"
+
+    - name: rhacs-central.sli
+      rules:
+        # Pod ready SLI
+        # Central pod must be ready to count as available.
+        # This is a time series of 0s (down) and 1s (up).
+        - expr: |
+            clamp_max(sum by (namespace) (kube_pod_container_status_ready{container="central", pod=~"central-.*", namespace=~"rhacs-.*"}), 1)
+          record: central:sli:pod_ready
+
+        # Error rate SLI
+        # The error rate over the last 10 minutes must be smaller than 35% to count as available.
+
+        # GRPC
+        - expr: |
+            sum by (namespace) (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_code="OK"}[10m]))
+          record: central:grpc_server_handled:OK:rate10m
+
+        - expr: |
+            sum by (namespace) (rate(grpc_server_started_total{namespace=~"rhacs-.*", job="central", grpc_type="unary"}[10m]))
+          record: central:grpc_server_started:total:rate10m
+
+        # HTTP
+        - expr: |
+            sum by (namespace) (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central", code!~"5.."}[10m]))
+          record: central:http_incoming_requests:not_5xx:rate10m
+
+        - expr: |
+            sum by (namespace) (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central"}[10m]))
+          record: central:http_incoming_requests:total:rate10m
+
+        # This is a time series of 0s (down) and 1s (up).
+        # Success rate above 65% is floored to 1.
+        # Success rate below 65% is floored to 0.
+        - expr: |2
+            floor((
+               central:grpc_server_handled:OK:rate10m
+               + central:http_incoming_requests:not_5xx:rate10m 
+                )/(
+               central:grpc_server_started:total:rate10m
+               + central:http_incoming_requests:total:rate10m
+              ) + 0.35
+            )
+          record: central:sli:error_rate
+
+        # Availability SLI
+        # If any of the SLIs is violated, the service counts as unavailable.
+        # This is a time series of 0s (down) and 1s (up).
+        - expr: |
+            central:sli:pod_ready * central:sli:error_rate
+          record: central:sli:availability
+
+        - expr: |
+            avg_over_time(central:sli:availability[1h])
+          record: central:sli:availability:avg_over_time1h
+
+        - expr: |
+            avg_over_time(central:sli:availability[28d])
+          record: central:sli:availability:avg_over_time28d
+
+    - name: rhacs-central.slo
+      rules:
+        # Availability SLO
+        - expr: "0.99"
+          record: central:slo:availability
+
+        # 0% exhaustion means no recorded failures.
+        # 100% exhaustion means the SLO target has been reached.
+        # >100% exhaustion means the SLO target has been violated.
+        - expr: |
+            (1 - central:sli:availability:avg_over_time28d) / (1 - central:slo:availability)
+          record: central:slo:availability:error_budget_exhaustion
+
+        # A burn rate of 1 corresponds to full error budget exhaustion after the SLO window W.
+        # A burn rate of n corresponds to full error budget exhaustion after W/n - in other words,
+        # it measures the exhaustion velocity. To keep the SLO target, a temporary burn rate larger
+        # than 1 must be compensated with a burn rate smaller than 1.
+        - expr: |
+            (1 - central:sli:availability:avg_over_time1h) / (1 - central:slo:availability)
+          record: central:slo:availability:burnrate1h
+
+    - name: rhacs-central.alerts
+      rules:
+        - alert: Central availability error budget exhaustion - 90%
+          annotations:
+            message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
+            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
+            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+          expr: |
+            central:slo:availability:error_budget_exhaustion >= 0.9
+          labels:
+            service: central
+            severity: critical
+            team: appsre
+            namespace: "{{ $labels.namespace }}"
+
+        - alert: Central availability error budget exhaustion - 70%
+          annotations:
+            message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
+            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
+            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+          expr: |
+            central:slo:availability:error_budget_exhaustion >= 0.7
+          labels:
+            service: central
+            severity: warning
+
+        - alert: Central availability error budget exhaustion - 50%
+          annotations:
+            message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
+            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
+            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+          expr: |
+            central:slo:availability:error_budget_exhaustion >= 0.5
+          labels:
+            service: central
+            severity: warning
+
+        - alert: Central high availability burn rate
+          annotations:
+            message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
+            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
+            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+          # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
+          # See recording rules for how burn rates relate to SLI and SLO in general.
+          expr: |
+            central:slo:availability:burnrate1h >= 50
+          labels:
+            service: central
+            severity: critical
+            team: appsre
