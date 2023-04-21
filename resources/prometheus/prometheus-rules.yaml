@@ -328,7 +328,7 @@ spec:
         - expr: |2
             floor((
                central:grpc_server_handled:OK:rate10m
-               + central:http_incoming_requests:not_5xx:rate10m 
+               + central:http_incoming_requests:not_5xx:rate10m
                 )/(
                central:grpc_server_started:total:rate10m
                + central:http_incoming_requests:total:rate10m

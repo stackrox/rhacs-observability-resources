@@ -21,7 +21,6 @@ tests:
         values: "5+5x500"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1"}
         values: "5+5x397"
-        
       # 5m downtime due NOK or 5xx responses.
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test1"}
         values: "0+0x397 0+5x20"
