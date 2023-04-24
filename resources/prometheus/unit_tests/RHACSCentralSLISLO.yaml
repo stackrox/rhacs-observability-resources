@@ -16,16 +16,16 @@ tests:
       - series: kube_pod_container_status_ready{container="central", pod="central-test1", namespace="rhacs-test1"}
         values: "1+0x300 0 0 0 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test1"}
-        values: "5+5x397"
+        values: "1+1x400"
       - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test1"}
-        values: "5+5x500"
+        values: "1+1x397 399+2x1"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1"}
-        values: "5+5x397"
+        values: "4+4x400"
       # 5m downtime due NOK or 5xx responses.
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test1"}
-        values: "0+0x397 0+5x20"
+        values: "0+0x397 0+1x1"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test1"}
-        values: "0+0x397 0+5x20"
+        values: "0+0x397 0+4x1"
     alert_rule_test:
       - eval_time: 100m
         alertname: Central availability error budget exhaustion - 90%
@@ -51,16 +51,16 @@ tests:
       - series: kube_pod_container_status_ready{container="central", pod="central-test2", namespace="rhacs-test2"}
         values: "1+0x300 0 0 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test2"}
-        values: "5+5x400"
+        values: "2+2x400"
       - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test2"}
-        values: "5+5x500"
+        values: "2+2x397 798+4x1"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test2"}
-        values: "5+5x400"
+        values: "3+3x400"
       # 5m downtime due NOK or 5xx responses.
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test2"}
-        values: "0+0x397 0+5x20"
+        values: "0+0x397 0+2x1"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test2"}
-        values: "0+0x397 0+5x20"
+        values: "0+0x397 0+3x1"
     alert_rule_test:
       - eval_time: 100m
         alertname: Central availability error budget exhaustion - 70%
@@ -85,16 +85,16 @@ tests:
       - series: kube_pod_container_status_ready{container="central", pod="central-test3", namespace="rhacs-test3"}
         values: "1+0x300 0 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test3"}
-        values: "5+5x400"
+        values: "3+3x400"
       - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test3"}
-        values: "5+5x500"
+        values: "3+3x397 1197+6x1"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test3"}
-        values: "5+5x400"
+        values: "2+2x400"
       # 5m downtime due 5xx responses.
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test3"}
-        values: "0+0x397 0+5x20"
+        values: "0+0x397 0+3x1"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test3"}
-        values: "0+0x397 0+5x20"
+        values: "0+0x397 0+2x1"
     alert_rule_test:
       - eval_time: 100m
         alertname: Central availability error budget exhaustion - 50%
@@ -116,7 +116,7 @@ tests:
   - interval: 5m
     input_series:
       # 30m downtime due to pod not ready.
-      - series: kube_pod_container_status_ready{container="central", pod="central-test3", namespace="rhacs-test4"}
+      - series: kube_pod_container_status_ready{container="central", pod="central-test4", namespace="rhacs-test4"}
         values: "1+0x6 0+0x6"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test4"}
         values: "5+5x14"

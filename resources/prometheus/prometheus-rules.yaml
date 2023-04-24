@@ -298,7 +298,7 @@ spec:
         # Central pod must be ready to count as available.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            clamp_max(sum by (namespace) (kube_pod_container_status_ready{container="central", pod=~"central-.*", namespace=~"rhacs-.*"}), 1)
+            clamp_max(sum by(namespace) (kube_pod_container_status_ready{container="central", pod=~"central-.*", namespace=~"rhacs-.*"}), 1) or vector(0)
           record: central:sli:pod_ready
 
         # Error rate SLI
@@ -325,14 +325,16 @@ spec:
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
-        - expr: |2
-            floor((
-               central:grpc_server_handled:OK:rate10m
-               + central:http_incoming_requests:not_5xx:rate10m
-                )/(
-               central:grpc_server_started:total:rate10m
-               + central:http_incoming_requests:total:rate10m
-              ) + 0.35
+        - expr: |
+            floor(
+              (
+                central:grpc_server_handled:OK:rate10m
+              + central:http_incoming_requests:not_5xx:rate10m
+              ) / (
+                central:grpc_server_started:total:rate10m
+              + central:http_incoming_requests:total:rate10m
+              )
+              + 0.35
             )
           record: central:sli:error_rate
 
@@ -361,7 +363,7 @@ spec:
         # 100% exhaustion means the SLO target has been reached.
         # >100% exhaustion means the SLO target has been violated.
         - expr: |
-            (1 - central:sli:availability:avg_over_time28d) / (1 - central:slo:availability)
+            (1 - central:sli:availability:avg_over_time28d) / (1 - scalar(central:slo:availability))
           record: central:slo:availability:error_budget_exhaustion
 
         # A burn rate of 1 corresponds to full error budget exhaustion after the SLO window W.
@@ -369,7 +371,7 @@ spec:
         # it measures the exhaustion velocity. To keep the SLO target, a temporary burn rate larger
         # than 1 must be compensated with a burn rate smaller than 1.
         - expr: |
-            (1 - central:sli:availability:avg_over_time1h) / (1 - central:slo:availability)
+            (1 - central:sli:availability:avg_over_time1h) / (1 - scalar(central:slo:availability))
           record: central:slo:availability:burnrate1h
 
     - name: rhacs-central.alerts
@@ -397,6 +399,7 @@ spec:
           labels:
             service: central
             severity: warning
+            namespace: "{{ $labels.namespace }}"
 
         - alert: Central availability error budget exhaustion - 50%
           annotations:
@@ -408,6 +411,7 @@ spec:
           labels:
             service: central
             severity: warning
+            namespace: "{{ $labels.namespace }}"
 
         - alert: Central high availability burn rate
           annotations:
@@ -422,3 +426,4 @@ spec:
             service: central
             severity: critical
             team: appsre
+            namespace: "{{ $labels.namespace }}"
