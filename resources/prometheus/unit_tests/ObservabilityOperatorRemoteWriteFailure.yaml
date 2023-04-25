@@ -6,9 +6,11 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: prometheus_remote_storage_succeeded_samples_total{namespace="rhacs-observability"}
-        values: "1+100x30 3000+10x150"
-      - series: prometheus_remote_storage_samples_in_total{namespace="rhacs-observability"}
+      - series: prometheus_remote_storage_samples_failed_total{namespace="rhacs-observability"}
+        values: "0+0x30 0+40x150"
+      - series: prometheus_remote_storage_samples_retried_total{namespace="rhacs-observability"}
+        values: "0+0x30 0+40x150"
+      - series: prometheus_remote_storage_samples_total{namespace="rhacs-observability"}
         values: "1+100x180"
     alert_rule_test:
       - eval_time: 60m
@@ -21,5 +23,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "The Observability Operator's Prometheus is failing to remote write to Observatorium."
-              description: "The Prometheus remote write success rate is `10%`."
+              description: "The Prometheus remote write success rate is `20%`."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-013-observability-operator-write-failure.md"
