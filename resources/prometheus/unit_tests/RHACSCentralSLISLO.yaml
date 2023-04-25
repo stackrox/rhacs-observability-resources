@@ -37,7 +37,6 @@ tests:
               alertname: Central availability error budget exhaustion - 90%
               service: central
               severity: critical
-              team: appsre
               namespace: rhacs-test1
               rhacs_instance_id: test
             exp_annotations:
@@ -133,7 +132,6 @@ tests:
               alertname: Central high availability burn rate
               service: central
               severity: critical
-              team: appsre
               namespace: rhacs-test4
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.02."
