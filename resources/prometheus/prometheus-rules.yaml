@@ -306,20 +306,24 @@ spec:
 
         # GRPC
         - expr: |
-            sum by (namespace) (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_code="OK"}[10m]))
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_code="OK"}[10m]))
           record: central:grpc_server_handled:OK:rate10m
 
         - expr: |
-            sum by (namespace) (rate(grpc_server_started_total{namespace=~"rhacs-.*", job="central", grpc_type="unary"}[10m]))
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(grpc_server_started_total{namespace=~"rhacs-.*", job="central", grpc_type="unary"}[10m]))
           record: central:grpc_server_started:total:rate10m
 
         # HTTP
         - expr: |
-            sum by (namespace) (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central", code!~"5.."}[10m]))
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central", code!~"5.."}[10m]))
           record: central:http_incoming_requests:not_5xx:rate10m
 
         - expr: |
-            sum by (namespace) (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central"}[10m]))
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central"}[10m]))
           record: central:http_incoming_requests:total:rate10m
 
         # This is a time series of 0s (down) and 1s (up).
@@ -342,7 +346,7 @@ spec:
         # If any of the SLIs is violated, the service counts as unavailable.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            central:sli:pod_ready * central:sli:error_rate
+            central:sli:pod_ready * on (namespace) group_right() central:sli:error_rate
           record: central:sli:availability
 
         - expr: |
@@ -387,6 +391,11 @@ spec:
             severity: critical
             team: appsre
             namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
 
         - alert: Central availability error budget exhaustion - 70%
           annotations:
@@ -398,6 +407,11 @@ spec:
             service: central
             severity: warning
             namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
 
         - alert: Central availability error budget exhaustion - 50%
           annotations:
@@ -409,6 +423,11 @@ spec:
             service: central
             severity: warning
             namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
 
         - alert: Central high availability burn rate
           annotations:
@@ -423,3 +442,8 @@ spec:
             severity: critical
             team: appsre
             namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"

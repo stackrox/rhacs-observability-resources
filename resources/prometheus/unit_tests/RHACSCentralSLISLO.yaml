@@ -15,16 +15,16 @@ tests:
       # 15m downtime due to pod not ready.
       - series: kube_pod_container_status_ready{container="central", pod="central-test1", namespace="rhacs-test1"}
         values: "1+0x300 0 0 0 1+0x100"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test1"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test1"}
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "1+1x397 399+2x1"
-      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1"}
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "4+4x400"
       # 5m downtime due NOK or 5xx responses.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test1"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "0+0x397 0+1x1"
-      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test1"}
+      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "0+0x397 0+4x1"
     alert_rule_test:
       - eval_time: 100m
@@ -39,6 +39,7 @@ tests:
               severity: critical
               team: appsre
               namespace: rhacs-test1
+              rhacs_instance_id: test
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 100.2%."
               sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
