@@ -41,8 +41,7 @@ tests:
               namespace: rhacs-test1
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 100.2%."
-              dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-              runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+              sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
 
   # Central availability error budget exhaustion - 70%
   - interval: 5m
@@ -75,8 +74,7 @@ tests:
               namespace: rhacs-test2
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 75.15%."
-              dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-              runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+              sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
 
   # Central availability error budget exhaustion - 50%
   - interval: 5m
@@ -109,8 +107,7 @@ tests:
               namespace: rhacs-test3
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 50.1%."
-              dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-              runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+              sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
 
   # Central high availability burn rate
   - interval: 5m
@@ -139,5 +136,4 @@ tests:
               namespace: rhacs-test4
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.02."
-              dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-              runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+              sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"

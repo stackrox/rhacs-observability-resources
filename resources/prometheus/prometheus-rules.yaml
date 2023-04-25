@@ -379,8 +379,7 @@ spec:
         - alert: Central availability error budget exhaustion - 90%
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
-            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+            sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
           expr: |
             central:slo:availability:error_budget_exhaustion >= 0.9
           labels:
@@ -392,8 +391,7 @@ spec:
         - alert: Central availability error budget exhaustion - 70%
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
-            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+            sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
           expr: |
             central:slo:availability:error_budget_exhaustion >= 0.7
           labels:
@@ -404,8 +402,7 @@ spec:
         - alert: Central availability error budget exhaustion - 50%
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
-            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+            sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
           expr: |
             central:slo:availability:error_budget_exhaustion >= 0.5
           labels:
@@ -416,8 +413,7 @@ spec:
         - alert: Central high availability burn rate
           annotations:
             message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
-            dashboard: "https://grafana.app-sre.devshift.net/d/T2kek3H9a/central-slos?orgId=1&from=now-28d&to=now"
-            runbook: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
+            sop_url: "https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/docs/central/sop#central-availability"
           # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
           # See recording rules for how burn rates relate to SLI and SLO in general.
           expr: |
