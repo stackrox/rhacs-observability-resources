@@ -26,7 +26,7 @@ tests:
             exp_annotations:
               summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `rhacs-observability` is filling up."
               description: "The Observability Operator's Prometheus storage in namespace `rhacs-observability` is filling up for PVC `managed-services-prometheus-obs-prometheus-0`. Available storage quota is `13.09%`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
       - eval_time: 110m
         alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
         exp_alerts:
@@ -38,7 +38,7 @@ tests:
             exp_annotations:
               summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `rhacs-observability` is filling up."
               description: "The Observability Operator's Prometheus storage in namespace `rhacs-observability` is filling up for PVC `managed-services-prometheus-obs-prometheus-0`. Available storage quota is `3.32%`."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
           - exp_labels:
               alertname: ObservabilityOperatorPrometheusPersistentVolumeFillingUp
               severity: warning
@@ -47,4 +47,4 @@ tests:
             exp_annotations:
               summary: "The Observability Operator's Prometheus persistent volume in namespace namespace `rhacs-observability` is filling up."
               description: "The Observability Operator's Prometheus storage in namespace `rhacs-observability` is filling up for PVC `managed-services-prometheus-obs-prometheus-0`. Available storage quota is `3.32%`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-012-increasing-observability-operator-pvc-size.md"

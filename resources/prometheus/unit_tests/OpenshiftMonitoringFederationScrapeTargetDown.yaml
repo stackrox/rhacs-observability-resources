@@ -24,7 +24,7 @@ tests:
             exp_annotations:
               summary: "Openshift monitoring federation scrape target is down."
               description: "The Openshift monitoring federation scrape target has been down for longer than 10 minutes."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-015-openshift-monitoring-federation-unavailable.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-015-openshift-monitoring-federation-unavailable.md"
 
   - interval: 1m
     input_series:
@@ -46,4 +46,4 @@ tests:
             exp_annotations:
               summary: "Openshift monitoring federation scrape target is down."
               description: "The Openshift monitoring federation scrape target has been down for longer than 10 minutes."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-015-openshift-monitoring-federation-unavailable.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-015-openshift-monitoring-federation-unavailable.md"
