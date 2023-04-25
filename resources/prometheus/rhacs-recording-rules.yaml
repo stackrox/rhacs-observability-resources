@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    app: strimzi
+    app: rhacs
   name: rhacs-recording-rules
 spec:
   groups:
@@ -23,8 +23,12 @@ spec:
 
     - name: observability-operator
       rules:
+        # failed sample -> unrecoverable error
+        # retried sample -> recoverable error
         - expr: |2
-              sum(rate(prometheus_remote_storage_succeeded_samples_total{namespace="rhacs-observability"}[1h]))
-            /
-              sum(rate(prometheus_remote_storage_samples_in_total{namespace="rhacs-observability"}[1h]))
+            1 - (
+              sum(rate(prometheus_remote_storage_samples_failed_total{namespace="rhacs-observability"}[1h]))
+                +
+              sum(rate(prometheus_remote_storage_samples_retried_total{namespace="rhacs-observability"}[1h]))
+            ) / sum(rate(prometheus_remote_storage_samples_total{namespace="rhacs-observability"}[1h]))
           record: obs_operator:prometheus_remote_storage_succeeded_samples:ratio_rate1h

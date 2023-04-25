@@ -24,4 +24,4 @@ tests:
             exp_annotations:
               summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` restarted more than 3 times."
               description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has restarted more than 3 times during the last 30 minutes."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
