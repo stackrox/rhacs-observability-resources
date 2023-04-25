@@ -21,4 +21,4 @@ tests:
             exp_annotations:
               summary: "Fleetshard synchronizer manages `0` centrals."
               description: "Fleetshard synchronizer manages `0` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"

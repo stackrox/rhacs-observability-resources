@@ -28,4 +28,4 @@ tests:
             exp_annotations:
               summary: "The latest probe run failed at `1970-01-01 00:00:07 +0000 UTC`."
               description: "The latest run of probe `probe-1234` failed at `1970-01-01 00:00:07 +0000 UTC`."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-008-probe-run-failed.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-008-probe-run-failed.md"

@@ -24,4 +24,4 @@ tests:
             exp_annotations:
               summary: "Central container `central-1234/central` database connection in namespace `rhacs-1234` is down or is in a bad shape."
               description: "Central container `central-1234/central` database connection in namespace `rhacs-1234` has been down or is in a bad shape for at least 10 minutes."
-              sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-010-rhacs-instance-db-unavailable.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-010-rhacs-instance-db-unavailable.md"
