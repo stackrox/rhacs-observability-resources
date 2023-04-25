@@ -383,7 +383,7 @@ spec:
         - alert: Central availability error budget exhaustion - 90%
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
-            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           expr: |
             central:slo:availability:error_budget_exhaustion >= 0.9
           labels:
@@ -400,7 +400,7 @@ spec:
         - alert: Central availability error budget exhaustion - 70%
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
-            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           expr: |
             central:slo:availability:error_budget_exhaustion >= 0.7
           labels:
@@ -416,7 +416,7 @@ spec:
         - alert: Central availability error budget exhaustion - 50%
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
-            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           expr: |
             central:slo:availability:error_budget_exhaustion >= 0.5
           labels:
@@ -432,7 +432,7 @@ spec:
         - alert: Central high availability burn rate
           annotations:
             message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
-            sop_url: "https://github.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
           # See recording rules for how burn rates relate to SLI and SLO in general.
           expr: |
