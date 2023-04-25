@@ -389,7 +389,6 @@ spec:
           labels:
             service: central
             severity: critical
-            team: appsre
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
             rhacs_org_name: "{{ $labels.rhacs_org_name }}"
@@ -440,7 +439,6 @@ spec:
           labels:
             service: central
             severity: critical
-            team: appsre
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
             rhacs_org_name: "{{ $labels.rhacs_org_name }}"
