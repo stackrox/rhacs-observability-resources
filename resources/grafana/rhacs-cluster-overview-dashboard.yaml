@@ -1657,7 +1657,7 @@ spec:
               "query": "label_values(process_cpu_seconds_total{job=\"central\"}, rhacs_org_name)",
               "refId": "StandardVariableQuery"
             },
-            "refresh": 1,
+            "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 1,
@@ -1689,7 +1689,7 @@ spec:
               "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
               "refId": "StandardVariableQuery"
             },
-            "refresh": 1,
+            "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 1,
@@ -1721,7 +1721,7 @@ spec:
               "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
               "refId": "StandardVariableQuery"
             },
-            "refresh": 1,
+            "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 1,
