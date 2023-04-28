@@ -5,6 +5,7 @@ kubernetes {
   _config+:: {
     cadvisorSelector: 'job="kubelet",metrics_path="/metrics/cadvisor"',
     containerfsSelector: 'id!=""',
+    grafanaIntervalVar: "5m",
     kubeApiserverSelector: 'job="api"',
     kubeProxySelector: 'job="machine-config-daemon"',
     kubeSchedulerSelector: 'job="scheduler"',
