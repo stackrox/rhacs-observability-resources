@@ -1,7 +1,0 @@
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  labels:
-    app: rhacs
-  name: kubernetes-mixin-rules
-spec:

@@ -13,7 +13,6 @@
       "rules": [
         "prometheus/billing-rules.yaml",
         "prometheus/kubernetes-mixin-alerts.yaml",
-        "prometheus/kubernetes-mixin-rules.yaml",
         "prometheus/prometheus-rules.yaml",
         "prometheus/rhacs-recording-rules.yaml"
       ],
