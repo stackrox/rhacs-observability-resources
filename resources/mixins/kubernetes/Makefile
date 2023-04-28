@@ -13,4 +13,4 @@ dashboards: templates/dashboards/*
 	@scripts/generate-dashboards.sh
 
 .PHONY: generate
-generate: update alerts rules dashboards
+generate: update alerts dashboards
