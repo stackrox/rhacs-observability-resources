@@ -262,9 +262,9 @@ spec:
             "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecpuovercommit"
             "summary": "Cluster has overcommitted CPU resource requests."
           "expr": |
-            sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) - (sum(kube_node_status_allocatable{resource="cpu"}) - max(kube_node_status_allocatable{resource="cpu"})) > 0
+            sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) - (sum(kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"}) - max(kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"})) > 0
             and
-            (sum(kube_node_status_allocatable{resource="cpu"}) - max(kube_node_status_allocatable{resource="cpu"})) > 0
+            (sum(kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"}) - max(kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"})) > 0
           "for": "10m"
           "labels":
             "severity": "critical"
@@ -275,9 +275,9 @@ spec:
             "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubememoryovercommit"
             "summary": "Cluster has overcommitted memory resource requests."
           "expr": |
-            sum(namespace_memory:kube_pod_container_resource_requests:sum{}) - (sum(kube_node_status_allocatable{resource="memory"}) - max(kube_node_status_allocatable{resource="memory"})) > 0
+            sum(namespace_memory:kube_pod_container_resource_requests:sum{}) - (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) - max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})) > 0
             and
-            (sum(kube_node_status_allocatable{resource="memory"}) - max(kube_node_status_allocatable{resource="memory"})) > 0
+            (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) - max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})) > 0
           "for": "10m"
           "labels":
             "severity": "critical"
@@ -486,9 +486,9 @@ spec:
             "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclienterrors"
             "summary": "Kubernetes API server client is experiencing errors."
           "expr": |
-            (sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (cluster, instance, job, namespace)
+            (sum(rate(rest_client_requests_total{job="api",code=~"5.."}[5m])) by (cluster, instance, job, namespace)
               /
-            sum(rate(rest_client_requests_total[5m])) by (cluster, instance, job, namespace))
+            sum(rate(rest_client_requests_total{job="api"}[5m])) by (cluster, instance, job, namespace))
             > 0.01
           "for": "15m"
           "labels":
@@ -648,7 +648,7 @@ spec:
             "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodereadinessflapping"
             "summary": "Node readiness status is flapping."
           "expr": |
-            sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (cluster, node) > 2
+            sum(changes(kube_node_status_condition{job="kube-state-metrics",status="true",condition="Ready"}[15m])) by (cluster, node) > 2
           "for": "15m"
           "labels":
             "severity": "warning"

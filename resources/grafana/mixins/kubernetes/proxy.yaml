@@ -150,7 +150,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "sum(rate(kubeproxy_sync_proxy_rules_duration_seconds_count{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[$__rate_interval]))",
+                  "expr": "sum(rate(kubeproxy_sync_proxy_rules_duration_seconds_count{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "rate",
@@ -232,7 +232,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "histogram_quantile(0.99,rate(kubeproxy_sync_proxy_rules_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[$__rate_interval]))",
+                  "expr": "histogram_quantile(0.99,rate(kubeproxy_sync_proxy_rules_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "{{instance}}",
@@ -327,7 +327,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "sum(rate(kubeproxy_network_programming_duration_seconds_count{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[$__rate_interval]))",
+                  "expr": "sum(rate(kubeproxy_network_programming_duration_seconds_count{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "rate",
@@ -409,7 +409,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "histogram_quantile(0.99, sum(rate(kubeproxy_network_programming_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+                  "expr": "histogram_quantile(0.99, sum(rate(kubeproxy_network_programming_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\"}[5m])) by (instance, le))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "{{instance}}",
@@ -504,28 +504,28 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
+                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"2..\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "2xx",
                   "refId": "A"
                 },
                 {
-                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
+                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"3..\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "3xx",
                   "refId": "B"
                 },
                 {
-                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
+                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"4..\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "4xx",
                   "refId": "C"
                 },
                 {
-                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
+                  "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\",code=~\"5..\"}[5m]))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "5xx",
@@ -607,7 +607,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\",instance=~\"$instance\",verb=\"POST\"}[$__rate_interval])) by (verb, url, le))",
+                  "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\",instance=~\"$instance\",verb=\"POST\"}[5m])) by (verb, url, le))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "{{verb}} {{url}}",
@@ -702,7 +702,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, url, le))",
+                  "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"machine-config-daemon\", instance=~\"$instance\", verb=\"GET\"}[5m])) by (verb, url, le))",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "{{verb}} {{url}}",
@@ -879,7 +879,7 @@ spec:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"machine-config-daemon\",instance=~\"$instance\"}[$__rate_interval])",
+                  "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"machine-config-daemon\",instance=~\"$instance\"}[5m])",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "{{instance}}",
