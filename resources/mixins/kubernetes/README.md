@@ -10,3 +10,8 @@ The Kubernetes mixin requires jsonnet to render its output resources:
 ## Update
 
 Execute `make generate` to update the mixin and re-generate all resources.
+
+## OpenShift platform metrics federation
+
+OpenShift already provides Kubernetes mixin rules by default. To avoid duplication of metrics via recording rules,
+no recording rules are generated.
