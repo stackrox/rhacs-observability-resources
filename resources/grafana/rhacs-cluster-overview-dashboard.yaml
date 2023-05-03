@@ -223,7 +223,7 @@ spec:
             },
             "tooltip": {
               "mode": "multi",
-              "sort": "none"
+              "sort": "desc"
             }
           },
           "pluginVersion": "9.1.0",
@@ -426,8 +426,8 @@ spec:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "multi",
-              "sort": "none"
+              "mode": "single",
+              "sort": "desc"
             }
           },
           "pluginVersion": "9.1.0",
@@ -549,7 +549,7 @@ spec:
               "editorMode": "code",
               "expr": "sum(namespace_cpu:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"cpu\"})",
               "interval": "",
-              "legendFormat": "CPU",
+              "legendFormat": "CPU Request",
               "range": true,
               "refId": "A"
             },
@@ -559,11 +559,36 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\"})",
+              "expr": "cluster:node_cpu:ratio_rate5m",
               "hide": false,
-              "legendFormat": "Memory",
+              "interval": "",
+              "legendFormat": "CPU Utilisation",
               "range": true,
               "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\"})",
+              "hide": false,
+              "legendFormat": "Memory Request",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "1 - sum(:node_memory_MemAvailable_bytes:sum) / sum(node_memory_MemTotal_bytes{job=\"node-exporter\"})",
+              "hide": false,
+              "legendFormat": "Memory Utilisation",
+              "range": true,
+              "refId": "D"
             }
           ],
           "title": "Cluster Resource Usage",
@@ -584,6 +609,7 @@ spec:
                 "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
+                "axisWidth": -3,
                 "barAlignment": 0,
                 "drawStyle": "line",
                 "fillOpacity": 10,
@@ -642,8 +668,8 @@ spec:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "multi",
-              "sort": "none"
+              "mode": "single",
+              "sort": "desc"
             }
           },
           "pluginVersion": "9.1.0",
@@ -738,7 +764,7 @@ spec:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "multi",
+              "mode": "single",
               "sort": "none"
             }
           },
@@ -833,7 +859,7 @@ spec:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "multi",
+              "mode": "single",
               "sort": "none"
             }
           },
@@ -928,7 +954,7 @@ spec:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "multi",
+              "mode": "single",
               "sort": "none"
             }
           },
@@ -976,7 +1002,9 @@ spec:
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -1002,8 +1030,11 @@ spec:
                 },
                 "properties": [
                   {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
                   },
                   {
                     "id": "unit",
@@ -1042,8 +1073,10 @@ spec:
                 },
                 "properties": [
                   {
-                    "id": "custom.displayMode",
-                    "value": "color-text"
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
                   }
                 ]
               },
@@ -1082,6 +1115,7 @@ spec:
           "id": 19,
           "options": {
             "footer": {
+              "countRows": false,
               "enablePagination": true,
               "fields": "",
               "reducer": [
@@ -1097,7 +1131,7 @@ spec:
               }
             ]
           },
-          "pluginVersion": "9.1.0",
+          "pluginVersion": "9.4.7",
           "targets": [
             {
               "datasource": {
@@ -1278,7 +1312,9 @@ spec:
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -1308,8 +1344,11 @@ spec:
                     "value": "percentunit"
                   },
                   {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
                   },
                   {
                     "id": "max",
@@ -1376,8 +1415,11 @@ spec:
                     "value": 1
                   },
                   {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
                   },
                   {
                     "id": "thresholds",
@@ -1420,8 +1462,11 @@ spec:
                     "value": 1
                   },
                   {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
                   },
                   {
                     "id": "thresholds",
@@ -1460,6 +1505,7 @@ spec:
           "id": 21,
           "options": {
             "footer": {
+              "countRows": false,
               "fields": "",
               "reducer": [
                 "sum"
@@ -1474,7 +1520,7 @@ spec:
               }
             ]
           },
-          "pluginVersion": "9.1.0",
+          "pluginVersion": "9.4.7",
           "targets": [
             {
               "datasource": {
@@ -1624,7 +1670,9 @@ spec:
           "type": "table"
         }
       ],
-      "schemaVersion": 37,
+      "refresh": "",
+      "revision": 1,
+      "schemaVersion": 38,
       "style": "dark",
       "tags": [
         "rhacs"
@@ -1737,6 +1785,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
