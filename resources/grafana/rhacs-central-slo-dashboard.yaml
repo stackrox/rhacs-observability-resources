@@ -139,7 +139,7 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "avg(central:sli:availability:avg_over_time28d{rhacs_instance_id=~\"$instance_id\"})",
+              "expr": "avg(central:sli:availability:extended_avg_over_time28d{rhacs_instance_id=~\"$instance_id\"})",
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
