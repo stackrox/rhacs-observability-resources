@@ -40,7 +40,7 @@ tests:
               namespace: rhacs-test1
               rhacs_instance_id: test
             exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 100.2%."
+              message: "High availability error budget exhaustion for central. Current exhaustion: 100%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central availability error budget exhaustion - 70%
@@ -73,7 +73,7 @@ tests:
               severity: warning
               namespace: rhacs-test2
             exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 75.15%."
+              message: "High availability error budget exhaustion for central. Current exhaustion: 75%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central availability error budget exhaustion - 50%
@@ -106,7 +106,7 @@ tests:
               severity: warning
               namespace: rhacs-test3
             exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 50.1%."
+              message: "High availability error budget exhaustion for central. Current exhaustion: 50%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central high availability burn rate
@@ -134,5 +134,5 @@ tests:
               severity: critical
               namespace: rhacs-test4
             exp_annotations:
-              message: "High availability burn rate for central. Current burn rate per hour: 59.02."
+              message: "High availability burn rate for central. Current burn rate per hour: 58.33."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
