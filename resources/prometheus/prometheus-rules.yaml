@@ -416,7 +416,7 @@ spec:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           expr: |
-            central:slo:availability:error_budget_exhaustion >= 0.9
+            central:slo:availability:error_budget_exhaustion >= 0.9 and central:sli:availability >= 0
           labels:
             service: central
             severity: critical
@@ -432,7 +432,7 @@ spec:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           expr: |
-            central:slo:availability:error_budget_exhaustion >= 0.7
+            central:slo:availability:error_budget_exhaustion >= 0.7 and central:sli:availability >= 0
           labels:
             service: central
             severity: warning
@@ -448,7 +448,7 @@ spec:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
           expr: |
-            central:slo:availability:error_budget_exhaustion >= 0.5
+            central:slo:availability:error_budget_exhaustion >= 0.5 and central:sli:availability >= 0
           labels:
             service: central
             severity: warning
@@ -466,7 +466,7 @@ spec:
           # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
           # See recording rules for how burn rates relate to SLI and SLO in general.
           expr: |
-            central:slo:availability:burnrate1h >= 50
+            central:slo:availability:burnrate1h >= 50 and central:sli:availability >= 0
           labels:
             service: central
             severity: critical
