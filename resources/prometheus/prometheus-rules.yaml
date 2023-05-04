@@ -350,12 +350,36 @@ spec:
           record: central:sli:availability
 
         - expr: |
-            avg_over_time(central:sli:availability[1h])
-          record: central:sli:availability:avg_over_time1h
+            count_over_time(central:sli:availability[1h])
+          record: central:sli:availability:count_over_time1h
 
         - expr: |
-            avg_over_time(central:sli:availability[28d])
-          record: central:sli:availability:avg_over_time28d
+            count_over_time(central:sli:availability[28d])
+          record: central:sli:availability:count_over_time28d
+
+        - expr: |
+            sum_over_time(central:sli:availability[1h])
+          record: central:sli:availability:sum_over_time1h
+
+        - expr: |
+            sum_over_time(central:sli:availability[28d])
+          record: central:sli:availability:sum_over_time28d
+
+        # Extended average over time refers to the time series effectively being extended
+        # over the entire time interval. This is in contrast to `avg_over_time`, which
+        # only averages over time intervals where the time series is not nil.
+        # This is important during the initial 28 days of Central instances. For example,
+        # consider a Central instance that lived for 5 minutes and was down for 2 minutes.
+        # Using `avg_over_time`, the availability would be `3 min / 5 min = 60%`. The
+        # extended average over 28 days would yield `1 - 2 min / 28 days ~ 99.995%`.
+        # After the initial 28 days, both averages are equivalent.
+        - expr: |
+            1 - (central:sli:availability:count_over_time1h - central:sli:availability:sum_over_time1h) / scalar(central:slo:scrapes1h)
+          record: central:sli:availability:extended_avg_over_time1h
+
+        - expr: |
+            1 - (central:sli:availability:count_over_time28d - central:sli:availability:sum_over_time28d) / scalar(central:slo:scrapes28d)
+          record: central:sli:availability:extended_avg_over_time28d
 
     - name: rhacs-central.slo
       rules:
@@ -363,11 +387,18 @@ spec:
         - expr: "0.99"
           record: central:slo:availability
 
+        # Based on 30s scrape intervals.
+        - expr: "60 * 2"
+          record: central:slo:scrapes1h
+
+        - expr: "28 * 24 * 60 * 2"
+          record: central:slo:scrapes28d
+
         # 0% exhaustion means no recorded failures.
         # 100% exhaustion means the SLO target has been reached.
         # >100% exhaustion means the SLO target has been violated.
         - expr: |
-            (1 - central:sli:availability:avg_over_time28d) / (1 - scalar(central:slo:availability))
+            (1 - central:sli:availability:extended_avg_over_time28d) / (1 - scalar(central:slo:availability))
           record: central:slo:availability:error_budget_exhaustion
 
         # A burn rate of 1 corresponds to full error budget exhaustion after the SLO window W.
@@ -375,7 +406,7 @@ spec:
         # it measures the exhaustion velocity. To keep the SLO target, a temporary burn rate larger
         # than 1 must be compensated with a burn rate smaller than 1.
         - expr: |
-            (1 - central:sli:availability:avg_over_time1h) / (1 - scalar(central:slo:availability))
+            (1 - central:sli:availability:extended_avg_over_time1h) / (1 - scalar(central:slo:availability))
           record: central:slo:availability:burnrate1h
 
     - name: rhacs-central.alerts
