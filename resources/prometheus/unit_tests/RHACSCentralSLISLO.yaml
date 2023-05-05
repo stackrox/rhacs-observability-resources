@@ -1,7 +1,7 @@
 rule_files:
   - /tmp/prometheus-rules-test.yaml
 
-evaluation_interval: 1m
+evaluation_interval: 30s
 
 group_eval_order:
   - rhacs-central.sli
@@ -12,20 +12,20 @@ tests:
   # Central availability error budget exhaustion - 90%
   - interval: 5m
     input_series:
-      # 15m downtime due to pod not ready.
+      # 200m downtime due to pod not ready. Out of 28 days, this equates to ~0.5% downtime.
       - series: kube_pod_container_status_ready{container="central", pod="central-test1", namespace="rhacs-test1"}
-        values: "1+0x300 0 0 0 1+0x100"
+        values: "1+0x260 0+0x40 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "1+1x400"
       - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test1", rhacs_instance_id="test"}
-        values: "1+1x397 399+2x1"
+        values: "1+1x360 362+2x40"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "4+4x400"
-      # 5m downtime due NOK or 5xx responses.
+      # 200m downtime due NOK or 5xx responses. Out of 28 days, this equates to ~0.5% downtime.
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test1", rhacs_instance_id="test"}
-        values: "0+0x397 0+1x1"
+        values: "0+0x360 0+1x40"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test1", rhacs_instance_id="test"}
-        values: "0+0x397 0+4x1"
+        values: "0+0x360 0+4x40"
     alert_rule_test:
       - eval_time: 100m
         alertname: Central availability error budget exhaustion - 90%
@@ -40,26 +40,26 @@ tests:
               namespace: rhacs-test1
               rhacs_instance_id: test
             exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 100.2%."
+              message: "High availability error budget exhaustion for central. Current exhaustion: 97.97%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central availability error budget exhaustion - 70%
   - interval: 5m
     input_series:
-      # 10m downtime due to pod not ready.
+      # 175m downtime due to pod not ready. Out of 28 days, this equates to ~0.43% downtime.
       - series: kube_pod_container_status_ready{container="central", pod="central-test2", namespace="rhacs-test2"}
-        values: "1+0x300 0 0 1+0x100"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test2"}
-        values: "2+2x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test2"}
-        values: "2+2x397 798+4x1"
-      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test2"}
-        values: "3+3x400"
-      # 5m downtime due NOK or 5xx responses.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test2"}
-        values: "0+0x397 0+2x1"
-      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test2"}
-        values: "0+0x397 0+3x1"
+        values: "1+0x265 0+0x35 1+0x100"
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test2", rhacs_instance_id="test"}
+        values: "1+1x400"
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test2", rhacs_instance_id="test"}
+        values: "1+1x365 367+2x35"
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test2", rhacs_instance_id="test"}
+        values: "4+4x400"
+      # 175m downtime due NOK or 5xx responses. Out of 28 days, this equates to ~0.43% downtime.
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test2", rhacs_instance_id="test"}
+        values: "0+0x365 0+1x35"
+      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test2", rhacs_instance_id="test"}
+        values: "0+0x365 0+4x35"
     alert_rule_test:
       - eval_time: 100m
         alertname: Central availability error budget exhaustion - 70%
@@ -72,27 +72,28 @@ tests:
               service: central
               severity: warning
               namespace: rhacs-test2
+              rhacs_instance_id: test
             exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 75.15%."
+              message: "High availability error budget exhaustion for central. Current exhaustion: 85.57%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central availability error budget exhaustion - 50%
   - interval: 5m
     input_series:
-      # 5m downtime due to pod not ready.
+      # 105m downtime due to pod not ready. Out of 28 days, this equates to ~0.25% downtime.
       - series: kube_pod_container_status_ready{container="central", pod="central-test3", namespace="rhacs-test3"}
-        values: "1+0x300 0 1+0x100"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test3"}
-        values: "3+3x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test3"}
-        values: "3+3x397 1197+6x1"
-      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test3"}
-        values: "2+2x400"
-      # 5m downtime due 5xx responses.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test3"}
-        values: "0+0x397 0+3x1"
-      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test3"}
-        values: "0+0x397 0+2x1"
+        values: "1+0x279 0+0x21 1+0x100"
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test3", rhacs_instance_id="test"}
+        values: "1+1x400"
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test3", rhacs_instance_id="test"}
+        values: "1+1x379 381+2x21"
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test3", rhacs_instance_id="test"}
+        values: "4+4x400"
+      # 105m downtime due NOK or 5xx responses. Out of 28 days, this equates to ~0.25% downtime.
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test3", rhacs_instance_id="test"}
+        values: "0+0x379 0+1x21"
+      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test3", rhacs_instance_id="test"}
+        values: "0+0x379 0+4x21"
     alert_rule_test:
       - eval_time: 100m
         alertname: Central availability error budget exhaustion - 50%
@@ -105,8 +106,9 @@ tests:
               service: central
               severity: warning
               namespace: rhacs-test3
+              rhacs_instance_id: test
             exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 50.1%."
+              message: "High availability error budget exhaustion for central. Current exhaustion: 50.84%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central high availability burn rate
@@ -134,5 +136,5 @@ tests:
               severity: critical
               namespace: rhacs-test4
             exp_annotations:
-              message: "High availability burn rate for central. Current burn rate per hour: 59.02."
+              message: "High availability burn rate for central. Current burn rate per hour: 59.17."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
