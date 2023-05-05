@@ -281,8 +281,8 @@ spec:
       rules:
         - alert: AWSRDSACUUtilization
           expr: |
-            avg_over_time(aws_rds_acuutilization_maximum[5m]) > 95
-          for: 1h
+            aws_rds_acuutilization_average{dimension_DBInstanceIdentifier=~"rhacs-.*"} > 95
+          for: 15m
           labels:
             severity: critical
           annotations:
