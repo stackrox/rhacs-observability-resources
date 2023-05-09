@@ -13,7 +13,7 @@ tests:
   - interval: 5m
     input_series:
       # 200m downtime due to pod not ready. Out of 28 days, this equates to ~0.5% downtime.
-      - series: kube_pod_container_status_ready{container="central", pod="central-test1", namespace="rhacs-test1"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test1"}
         values: "1+0x260 0+0x40 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "1+1x400"
@@ -47,7 +47,7 @@ tests:
   - interval: 5m
     input_series:
       # 175m downtime due to pod not ready. Out of 28 days, this equates to ~0.43% downtime.
-      - series: kube_pod_container_status_ready{container="central", pod="central-test2", namespace="rhacs-test2"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test2"}
         values: "1+0x265 0+0x35 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "1+1x400"
@@ -81,7 +81,7 @@ tests:
   - interval: 5m
     input_series:
       # 105m downtime due to pod not ready. Out of 28 days, this equates to ~0.25% downtime.
-      - series: kube_pod_container_status_ready{container="central", pod="central-test3", namespace="rhacs-test3"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test3"}
         values: "1+0x279 0+0x21 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "1+1x400"
@@ -115,7 +115,7 @@ tests:
   - interval: 5m
     input_series:
       # 30m downtime due to pod not ready.
-      - series: kube_pod_container_status_ready{container="central", pod="central-test4", namespace="rhacs-test4"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test4"}
         values: "1+0x6 0+0x6"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test4"}
         values: "5+5x14"
