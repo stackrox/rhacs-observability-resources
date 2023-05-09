@@ -478,139 +478,145 @@ spec:
             rhacs_environment: "{{ $labels.rhacs_environment }}"
     - name: az-resources
       rules:
+        - record: kube_node_labels:with_availability_zone
+          expr: |
+            label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+        - record: kube_node_status_allocatable:strictly_worker_nodes
+          expr: |
+            kube_node_status_allocatable{job="kube-state-metrics"} * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1)
         - alert: WorkerNodesByAZMemoryQuotaOverCommit
           expr: |
             (
-              (    
+              (
                 sum(
                   sum(
-                    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{resource="memory",observability="",job="kube-state-metrics"}) by (node) 
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{resource="memory",observability="",job="kube-state-metrics"}) by (node)
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
                 /
                 sum(
                   max(
                     kube_node_status_allocatable{resource="memory", job="kube-state-metrics", observability=""}) by (node)
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
-              ) 
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
+              )
             ) > 0.8
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ {{ $labels.availablity_zone }}."
-            description: "During the last 5 minutes, the average memory request commitment on worker nodes in AZ {{ $labels.availablity_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
+            summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average memory request commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZCPUQuotaOverCommit
           expr: |
             (
-              (    
+              (
                 sum(
                   sum(
-                    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{resource="cpu",observability="",job="kube-state-metrics"}) by (node) 
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{resource="cpu",observability="",job="kube-state-metrics"}) by (node)
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
                 /
                 sum(
                   max(
                     kube_node_status_allocatable{resource="cpu", job="kube-state-metrics", observability=""}) by (node)
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
-              ) 
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
+              )
             ) > 0.8
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availablity_zone }}."
-            description: "During the last 5 minutes, the average cpu request commitment on worker nodes in AZ {{ $labels.availablity_zone }} was {{ $value | humanizePercentage }}. This is above the threshold of 80%."
+            summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average CPU request commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZMemoryOverCommit
           expr: |
             (
-              (    
+              (
                 sum(
                   sum(
-                    cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{resource="memory",observability="",job="kube-state-metrics"}) by (node) 
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{resource="memory",observability="",job="kube-state-metrics"}) by (node)
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
                 /
                 sum(
                   max(
                     kube_node_status_allocatable{resource="memory", job="kube-state-metrics", observability=""}) by (node)
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
-              ) 
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
+              )
             ) > 2
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ {{ $labels.availablity_zone }}."
-            description: "During the last 5 minutes, the average memory limit commitment on worker nodes in AZ {{ $labels.availablity_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
+            summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average Memory limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZCPUOverCommit
           expr: |
             (
-              (    
+              (
                 sum(
                   sum(
-                    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{resource="cpu",observability="",job="kube-state-metrics"}) by (node) 
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{resource="cpu",observability="",job="kube-state-metrics"}) by (node)
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
                 /
                 sum(
                   max(
                     kube_node_status_allocatable{resource="cpu", job="kube-state-metrics", observability=""}) by (node)
-                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1 
+                    * on (node) group_left() (sum(kube_node_role{role=~"infra|worker",observability=""}) by (node) == 1
                     or vector(0)
                   )
-                  * on (node) 
-                    group_left(availablity_zone) 
-                    label_replace(kube_node_labels, "availablity_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
-                ) by (availablity_zone)
-              ) 
+                  * on (node)
+                    group_left(availability_zone)
+                    label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")
+                ) by (availability_zone)
+              )
             ) > 2
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availablity_zone }}."
-            description: "During the last 5 minutes, the average cpu limit commitment on worker nodes in AZ {{ $labels.availablity_zone }} was {{ $value | humanizePercentage }}. This is above the threshold of 200%."
+            summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average CPU limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
             # TODO(ROX-16772)
