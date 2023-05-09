@@ -148,7 +148,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
-            acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.01
+            acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10
           for: 5m
           labels:
             severity: critical
