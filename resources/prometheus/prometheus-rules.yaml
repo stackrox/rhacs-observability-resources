@@ -484,23 +484,70 @@ spec:
         - record: node_availability_zone
           expr: |
             sum(label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")) by (availability_zone, node) > 0
-        - alert: WorkerNodesByAZMemoryQuotaOverCommit
+        - record: memory_resource_requests:strictly_worker_nodes:by_availability_zone:sum
           expr: |
-            (
-              (
-                sum(
-                  sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{resource="memory",observability="",job="kube-state-metrics"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-                /
-                sum(
-                  sum(kube_node_status_allocatable{resource="memory"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-              )
-            ) > 0.8
+            sum(
+              sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{resource="memory",observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: memory_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{resource="memory",observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: cpu_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{resource="cpu", observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: cpu_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: availability_zone:strictly_worker_nodes:allocatable_cpu
+          expr: |
+            sum(
+              sum(kube_node_status_allocatable{resource="cpu"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: availability_zone:strictly_worker_nodes:allocatable_memory
+          expr: |
+            sum(
+              sum(kube_node_status_allocatable{resource="memory"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: availability_zone:strictly_worker_nodes:memory_request_ratio
+          expr: |
+            memory_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_memory
+        - record: availability_zone:strictly_worker_nodes:cpu_request_ratio
+          expr: |
+            cpu_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_cpu
+        - record: availability_zone:strictly_worker_nodes:memory_limit_ratio
+          expr: |
+            memory_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_memory
+        - record: availability_zone:strictly_worker_nodes:cpu_limit_ratio
+          expr: |
+            cpu_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_cpu
+        - alert: WorkerNodesByAZMemoryQuotaOverCommit
+          expr: availability_zone:strictly_worker_nodes:memory_request_ratio > 0.8
           for: 5m
           labels:
             severity: critical
@@ -509,22 +556,7 @@ spec:
             description: "During the last 5 minutes, the average memory request commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZCPUQuotaOverCommit
-          expr: |
-            (
-              (
-                sum(
-                  sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{resource="cpu",observability="",job="kube-state-metrics"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-                /
-                sum(
-                  sum(kube_node_status_allocatable{resource="cpu"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-              )
-            ) > 0.8
+          expr: availability_zone:strictly_worker_nodes:cpu_request_ratio > 0.8
           for: 5m
           labels:
             severity: critical
@@ -533,22 +565,7 @@ spec:
             description: "During the last 5 minutes, the average CPU request commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZMemoryOverCommit
-          expr: |
-            (
-              (
-                sum(
-                  sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{resource="memory",observability="",job="kube-state-metrics"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-                /
-                sum(
-                  sum(kube_node_status_allocatable{resource="memory"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-              )
-            ) > 2
+          expr: availability_zone:strictly_worker_nodes:memory_limit_ratio > 2
           for: 5m
           labels:
             severity: critical
@@ -557,22 +574,7 @@ spec:
             description: "During the last 5 minutes, the average Memory limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZCPUOverCommit
-          expr: |
-            (
-              (
-                sum(
-                  sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{resource="cpu",observability="",job="kube-state-metrics"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-                /
-                sum(
-                  sum(kube_node_status_allocatable{resource="cpu"}) by (node)
-                  * on (node) strictly_worker_nodes
-                  * on (node) group_left(availability_zone) node_availability_zone
-                ) by (availability_zone)
-              )
-            ) > 2
+          expr: availability_zone:strictly_worker_nodes:cpu_limit_ratio > 2
           for: 5m
           labels:
             severity: critical
