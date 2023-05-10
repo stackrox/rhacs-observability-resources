@@ -148,7 +148,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
-            acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.01
+            acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10
           for: 5m
           labels:
             severity: critical
@@ -281,8 +281,8 @@ spec:
       rules:
         - alert: AWSRDSACUUtilization
           expr: |
-            avg_over_time(aws_rds_acuutilization_maximum[5m]) > 95
-          for: 1h
+            aws_rds_acuutilization_average{dimension_DBInstanceIdentifier=~"rhacs-.*"} > 95
+          for: 15m
           labels:
             severity: critical
           annotations:
@@ -291,3 +291,294 @@ spec:
               The DB instance `{{ $labels.dimension_DBInstanceIdentifier }}` has scaled up as high as it can.
               Consider increasing the maximum ACU setting for the cluster.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-014-aws-rds-acu-utilization.md"
+
+    - name: rhacs-central.sli
+      rules:
+        # Pod ready SLI
+        # Central pod must be ready to count as available.
+        # This is a time series of 0s (down) and 1s (up).
+        - expr: |
+            clamp_max(sum by(namespace) (kube_deployment_status_replicas_ready{deployment="central", namespace=~"rhacs-.*"}), 1)
+          record: central:sli:pod_ready
+
+        # Error rate SLI
+        # The error rate over the last 10 minutes must be smaller than 35% to count as available.
+
+        # GRPC
+        - expr: |
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_code="OK"}[10m]))
+          record: central:grpc_server_handled:OK:rate10m
+
+        - expr: |
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(grpc_server_started_total{namespace=~"rhacs-.*", job="central", grpc_type="unary"}[10m]))
+          record: central:grpc_server_started:total:rate10m
+
+        # HTTP
+        - expr: |
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central", code!~"5.."}[10m]))
+          record: central:http_incoming_requests:not_5xx:rate10m
+
+        - expr: |
+            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
+            (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central"}[10m]))
+          record: central:http_incoming_requests:total:rate10m
+
+        # This is a time series of 0s (down) and 1s (up).
+        # Success rate above 65% is floored to 1.
+        # Success rate below 65% is floored to 0.
+        - expr: |
+            floor(
+              (
+                central:grpc_server_handled:OK:rate10m
+              + central:http_incoming_requests:not_5xx:rate10m
+              ) / (
+                central:grpc_server_started:total:rate10m
+              + central:http_incoming_requests:total:rate10m
+              )
+              + 0.35
+            )
+          record: central:sli:error_rate
+
+        # Availability SLI
+        # If any of the SLIs is violated, the service counts as unavailable.
+        # This is a time series of 0s (down) and 1s (up).
+        - expr: |
+            central:sli:pod_ready * on (namespace) group_right() central:sli:error_rate
+          record: central:sli:availability
+
+        - expr: |
+            count_over_time(central:sli:availability[1h])
+          record: central:sli:availability:count_over_time1h
+
+        - expr: |
+            count_over_time(central:sli:availability[28d])
+          record: central:sli:availability:count_over_time28d
+
+        - expr: |
+            sum_over_time(central:sli:availability[1h])
+          record: central:sli:availability:sum_over_time1h
+
+        - expr: |
+            sum_over_time(central:sli:availability[28d])
+          record: central:sli:availability:sum_over_time28d
+
+        # Extended average over time refers to the time series effectively being extended
+        # over the entire time interval. This is in contrast to `avg_over_time`, which
+        # only averages over time intervals where the time series is not nil.
+        # This is important during the initial 28 days of Central instances. For example,
+        # consider a Central instance that lived for 5 minutes and was down for 2 minutes.
+        # Using `avg_over_time`, the availability would be `3 min / 5 min = 60%`. The
+        # extended average over 28 days would yield `1 - 2 min / 28 days ~ 99.995%`.
+        # After the initial 28 days, both averages are equivalent.
+        - expr: |
+            1 - (central:sli:availability:count_over_time1h - central:sli:availability:sum_over_time1h) / scalar(central:slo:scrapes1h)
+          record: central:sli:availability:extended_avg_over_time1h
+
+        - expr: |
+            1 - (central:sli:availability:count_over_time28d - central:sli:availability:sum_over_time28d) / scalar(central:slo:scrapes28d)
+          record: central:sli:availability:extended_avg_over_time28d
+
+    - name: rhacs-central.slo
+      rules:
+        # Availability SLO
+        - expr: "0.99"
+          record: central:slo:availability
+
+        # Based on 30s scrape intervals.
+        - expr: "60 * 2"
+          record: central:slo:scrapes1h
+
+        - expr: "28 * 24 * 60 * 2"
+          record: central:slo:scrapes28d
+
+        # 0% exhaustion means no recorded failures.
+        # 100% exhaustion means the SLO target has been reached.
+        # >100% exhaustion means the SLO target has been violated.
+        - expr: |
+            (1 - central:sli:availability:extended_avg_over_time28d) / (1 - scalar(central:slo:availability))
+          record: central:slo:availability:error_budget_exhaustion
+
+        # A burn rate of 1 corresponds to full error budget exhaustion after the SLO window W.
+        # A burn rate of n corresponds to full error budget exhaustion after W/n - in other words,
+        # it measures the exhaustion velocity. To keep the SLO target, a temporary burn rate larger
+        # than 1 must be compensated with a burn rate smaller than 1.
+        - expr: |
+            (1 - central:sli:availability:extended_avg_over_time1h) / (1 - scalar(central:slo:availability))
+          record: central:slo:availability:burnrate1h
+
+    - name: rhacs-central.alerts
+      rules:
+        - alert: Central availability error budget exhaustion - 90%
+          annotations:
+            message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          expr: |
+            central:slo:availability:error_budget_exhaustion >= 0.9 and central:sli:availability >= 0
+          labels:
+            service: central
+            severity: critical
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
+
+        - alert: Central availability error budget exhaustion - 70%
+          annotations:
+            message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          expr: |
+            central:slo:availability:error_budget_exhaustion >= 0.7 and central:sli:availability >= 0
+          labels:
+            service: central
+            severity: warning
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
+
+        - alert: Central availability error budget exhaustion - 50%
+          annotations:
+            message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          expr: |
+            central:slo:availability:error_budget_exhaustion >= 0.5 and central:sli:availability >= 0
+          labels:
+            service: central
+            severity: warning
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
+
+        - alert: Central high availability burn rate
+          annotations:
+            message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
+          # See recording rules for how burn rates relate to SLI and SLO in general.
+          expr: |
+            central:slo:availability:burnrate1h >= 50 and central:sli:availability >= 0
+          labels:
+            service: central
+            severity: critical
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
+    - name: az-resources
+      rules:
+        - record: strictly_worker_nodes
+          expr: |
+            kube_node_role{role="worker"} * on (node) (sum(kube_node_role) by (node) == 1)
+        - record: node_availability_zone
+          expr: |
+            sum(label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")) by (availability_zone, node) > 0
+        - record: memory_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{resource="memory",observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: memory_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{resource="memory",observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: cpu_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{resource="cpu", observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: cpu_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+          expr: |
+            sum(
+              sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{observability="",job="kube-state-metrics"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: availability_zone:strictly_worker_nodes:allocatable_cpu
+          expr: |
+            sum(
+              sum(kube_node_status_allocatable{resource="cpu"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: availability_zone:strictly_worker_nodes:allocatable_memory
+          expr: |
+            sum(
+              sum(kube_node_status_allocatable{resource="memory"}) by (node)
+              * on (node) strictly_worker_nodes
+              * on (node) group_left(availability_zone) node_availability_zone
+            ) by (availability_zone)
+        - record: availability_zone:strictly_worker_nodes:memory_request_ratio
+          expr: |
+            memory_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_memory
+        - record: availability_zone:strictly_worker_nodes:cpu_request_ratio
+          expr: |
+            cpu_resource_requests:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_cpu
+        - record: availability_zone:strictly_worker_nodes:memory_limit_ratio
+          expr: |
+            memory_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_memory
+        - record: availability_zone:strictly_worker_nodes:cpu_limit_ratio
+          expr: |
+            cpu_resource_limits:strictly_worker_nodes:by_availability_zone:sum
+            /
+            availability_zone:strictly_worker_nodes:allocatable_cpu
+        - alert: WorkerNodesByAZMemoryQuotaOverCommit
+          expr: availability_zone:strictly_worker_nodes:memory_request_ratio > 0.8
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average memory request commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
+            # TODO(ROX-16772)
+        - alert: WorkerNodesByAZCPUQuotaOverCommit
+          expr: availability_zone:strictly_worker_nodes:cpu_request_ratio > 0.8
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average CPU request commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
+            # TODO(ROX-16772)
+        - alert: WorkerNodesByAZMemoryOverCommit
+          expr: availability_zone:strictly_worker_nodes:memory_limit_ratio > 2
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average Memory limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
+            # TODO(ROX-16772)
+        - alert: WorkerNodesByAZCPUOverCommit
+          expr: availability_zone:strictly_worker_nodes:cpu_limit_ratio > 2
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availability_zone }}."
+            description: "During the last 5 minutes, the average CPU limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
+            # TODO(ROX-16772)

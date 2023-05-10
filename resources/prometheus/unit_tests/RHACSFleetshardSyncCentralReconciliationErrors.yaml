@@ -7,7 +7,7 @@ tests:
   - interval: 1m
     input_series:
       - series: acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m{namespace="rhacs", pod="fleetshard-sync-1234", container="fleetshard-sync"}
-        values: "0+0x5 0+0.01x15"
+        values: "0+0x5 0+0.03x15"
     alert_rule_test:
       - eval_time: 5m
         alertname: RHACSFleetshardSyncReconciliationErrors
@@ -23,5 +23,5 @@ tests:
               severity: critical
             exp_annotations:
               summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` failed to reconcile Central instances."
-              description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has a reconciliation error rate of 9% over the last 10 minutes."
+              description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has a reconciliation error rate of 27% over the last 10 minutes."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
