@@ -574,11 +574,11 @@ spec:
             description: "During the last 5 minutes, the average Memory limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
             # TODO(ROX-16772)
         - alert: WorkerNodesByAZCPUOverCommit
-          expr: availability_zone:strictly_worker_nodes:cpu_limit_ratio > 2
+          expr: availability_zone:strictly_worker_nodes:cpu_limit_ratio > 3
           for: 5m
           labels:
             severity: critical
           annotations:
             summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ {{ $labels.availability_zone }}."
-            description: "During the last 5 minutes, the average CPU limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
+            description: "During the last 5 minutes, the average CPU limit commitment on worker nodes in AZ {{ $labels.availability_zone }} was {{ $value | humanizePercentage }}. This is above the recommended threshold of 300%."
             # TODO(ROX-16772)
