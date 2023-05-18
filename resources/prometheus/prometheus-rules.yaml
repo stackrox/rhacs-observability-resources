@@ -307,7 +307,7 @@ spec:
         # GRPC
         - expr: |
             sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_code!~"DataLoss|DeadlineExceeded|Internal|Unavailable|Unknown"}[10m]))
+            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_code!~"DeadlineExceeded|Internal|Unavailable|Unknown"}[10m]))
           record: central:grpc_server_handled:server_available_code:rate10m
 
         - expr: |
