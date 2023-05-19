@@ -21,8 +21,8 @@ tests:
         values: "1+1x360 362+2x40"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "4+4x400"
-      # 200m downtime due NOK or 5xx responses. Out of 28 days, this equates to ~0.5% downtime.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test1", rhacs_instance_id="test"}
+      # 200m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.5% downtime.
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "0+0x360 0+1x40"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "0+0x360 0+4x40"
@@ -55,8 +55,8 @@ tests:
         values: "1+1x365 367+2x35"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "4+4x400"
-      # 175m downtime due NOK or 5xx responses. Out of 28 days, this equates to ~0.43% downtime.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test2", rhacs_instance_id="test"}
+      # 175m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.43% downtime.
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "0+0x365 0+1x35"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "0+0x365 0+4x35"
@@ -89,8 +89,8 @@ tests:
         values: "1+1x379 381+2x21"
       - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "4+4x400"
-      # 105m downtime due NOK or 5xx responses. Out of 28 days, this equates to ~0.25% downtime.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="NOK", namespace="rhacs-test3", rhacs_instance_id="test"}
+      # 105m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.25% downtime.
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "0+0x379 0+1x21"
       - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "0+0x379 0+4x21"
