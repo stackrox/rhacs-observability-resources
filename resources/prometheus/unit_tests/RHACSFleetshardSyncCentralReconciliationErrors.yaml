@@ -20,7 +20,7 @@ tests:
               container: fleetshard-sync
               namespace: rhacs
               pod: fleetshard-sync-1234
-              severity: critical
+              severity: warning
             exp_annotations:
               summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` failed to reconcile Central instances."
               description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has a reconciliation error rate of 27% over the last 10 minutes."
