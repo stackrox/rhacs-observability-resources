@@ -20,7 +20,7 @@ tests:
               container: scanner
               namespace: rhacs-1234
               pod: scanner-1234-5678
-              severity: critical
+              severity: warning
             exp_annotations:
               summary: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` restarted more than 3 times."
               description: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` has restarted more than 3 times during the last 30 minutes."
