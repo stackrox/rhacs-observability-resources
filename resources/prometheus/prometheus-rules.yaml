@@ -374,11 +374,19 @@ spec:
         # extended average over 28 days would yield `1 - 2 min / 28 days ~ 99.995%`.
         # After the initial 28 days, both averages are equivalent.
         - expr: |
-            1 - (central:sli:availability:count_over_time1h - central:sli:availability:sum_over_time1h) / scalar(central:slo:scrapes1h)
+            clamp(
+              1 - (central:sli:availability:count_over_time1h - central:sli:availability:sum_over_time1h) / scalar(central:slo:scrapes1h),
+              0,
+              1
+            )
           record: central:sli:availability:extended_avg_over_time1h
 
         - expr: |
-            1 - (central:sli:availability:count_over_time28d - central:sli:availability:sum_over_time28d) / scalar(central:slo:scrapes28d)
+            clamp(
+              1 - (central:sli:availability:count_over_time28d - central:sli:availability:sum_over_time28d) / scalar(central:slo:scrapes28d),
+              0,
+              1
+            )
           record: central:sli:availability:extended_avg_over_time28d
 
     - name: rhacs-central.slo
