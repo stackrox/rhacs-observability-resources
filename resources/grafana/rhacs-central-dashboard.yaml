@@ -37,7 +37,7 @@ spec:
       "fiscalYearStartMonth": 0,
       "gnetId": 14765,
       "graphTooltip": 0,
-      "id": 18,
+      "id": 6,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -134,7 +134,7 @@ spec:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.1.0",
+          "pluginVersion": "9.4.7",
           "targets": [
             {
               "datasource": {
@@ -214,7 +214,7 @@ spec:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.1.0",
+          "pluginVersion": "9.4.7",
           "targets": [
             {
               "datasource": {
@@ -278,7 +278,7 @@ spec:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.1.0",
+          "pluginVersion": "9.4.7",
           "targets": [
             {
               "datasource": {
@@ -358,7 +358,7 @@ spec:
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.1.0",
+          "pluginVersion": "9.4.7",
           "targets": [
             {
               "datasource": {
@@ -3710,8 +3710,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3802,8 +3801,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3931,8 +3929,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4023,8 +4020,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4175,8 +4171,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4268,8 +4263,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4421,8 +4415,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4514,8 +4507,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4667,8 +4659,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4760,8 +4751,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4865,8 +4855,7 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -5126,7 +5115,8 @@ spec:
         }
       ],
       "refresh": "1m",
-      "schemaVersion": 37,
+      "revision": 1,
+      "schemaVersion": 38,
       "style": "dark",
       "tags": [
         "rhacs"
@@ -5166,7 +5156,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(process_cpu_seconds_total{job=\"central\"}, rhacs_org_name)",
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\"}, rhacs_org_name)",
             "description": "Red Hat SSO Organisation Name",
             "hide": 0,
             "includeAll": true,
@@ -5175,7 +5165,7 @@ spec:
             "name": "org_name",
             "options": [],
             "query": {
-              "query": "label_values(process_cpu_seconds_total{job=\"central\"}, rhacs_org_name)",
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\"}, rhacs_org_name)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
@@ -5198,7 +5188,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\"}, rhacs_org_id)",
             "description": "Red Hat SSO Organisation ID",
             "hide": 0,
             "includeAll": true,
@@ -5207,7 +5197,7 @@ spec:
             "name": "org_id",
             "options": [],
             "query": {
-              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\"}, rhacs_org_id)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
@@ -5219,8 +5209,8 @@ spec:
           {
             "current": {
               "selected": false,
-              "text": "ce90s406mnv90blbnu20",
-              "value": "ce90s406mnv90blbnu20"
+              "text": "ceccreb6m744ct03d480",
+              "value": "ceccreb6m744ct03d480"
             },
             "datasource": {
               "type": "prometheus",
@@ -5341,6 +5331,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central Metrics",
       "uid": "gn38yKZnk",
-      "version": 3,
+      "version": 1,
       "weekStart": ""
     }
