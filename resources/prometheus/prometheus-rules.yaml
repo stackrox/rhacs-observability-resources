@@ -201,7 +201,7 @@ spec:
         - alert: RHACSCentralDBManualSnapshotsUtilizationHigh
           expr: |
             expr: acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.8
-          for: 1h
+          for: 5m
           labels:
             severity: warning
           annotations:
@@ -231,7 +231,7 @@ spec:
         - alert: RHACSCentralDBManualSnapshotsUtilizationCritical
           expr: |
             expr: acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.9
-          for: 1h
+          for: 5m
           labels:
             severity: critical
           annotations:
