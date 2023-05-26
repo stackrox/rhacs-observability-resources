@@ -175,8 +175,69 @@ spec:
           annotations:
             summary: "Fleetshard synchronizer manages `{{ $value }}` centrals."
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
-
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md" 
+    - name: rhacs-aws-quota
+      rules:
+        - alert: RHACSCentralDBClustersUtilizationHigh
+          expr: |
+            expr: acs_fleetshard_central_db_clusters_used / acs_fleetshard_central_db_clusters_max >= 0.8
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "The number of RDS DB clusters is close to its limit."
+            description: "The number of AWS RDS DB clusters is close to its limit. A quota increase should be requested from AWS."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+        - alert: RHACSCentralDBInstancesUtilizationHigh
+          expr: |
+            expr: acs_fleetshard_central_db_instances_used / acs_fleetshard_central_db_instances_max >= 0.8
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "The number of RDS DB instances is close to its limit."
+            description: "The number of AWS RDS DB instances is close to its limit. A quota increase should be requested from AWS."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+        - alert: RHACSCentralDBManualSnapshotsUtilizationHigh
+          expr: |
+            expr: acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.8
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "The number of RDS DB snapshots is close to its limit."
+            description: "The number of AWS RDS DB manual snapshots is close to its limit. A quota increase should be requested from AWS."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+        - alert: RHACSCentralDBClustersUtilizationCritical
+          expr: |
+            expr: acs_fleetshard_central_db_clusters_used / acs_fleetshard_central_db_clusters_max >= 0.9
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "The number of RDS DB clusters is very close to its limit."
+            description: "The number of AWS RDS DB clusters is close to its limit. A quota increase must be requested from AWS."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+        - alert: RHACSCentralDBInstancesUtilizationCritical
+          expr: |
+            expr: acs_fleetshard_central_db_instances_used / acs_fleetshard_central_db_instances_max >= 0.9
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "The number of RDS DB instances is very close to its limit."
+            description: "The number of AWS RDS DB instances is close to its limit. A quota increase must be requested from AWS."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+        - alert: RHACSCentralDBManualSnapshotsUtilizationCritical
+          expr: |
+            expr: acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.9
+          for: 1h
+          labels:
+            severity: critical
+          annotations:
+            summary: "The number of RDS DB snapshots is very close to its limit."
+            description: "The number of AWS RDS DB manual snapshots is close to its limit. A quota increase must be requested from AWS."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
     - name: rhacs-probe
       rules:
         - alert: RHACSProbeRunFailed
