@@ -180,7 +180,7 @@ spec:
       rules:
         - alert: RHACSCentralDBClustersUtilizationHigh
           expr: |
-            expr: acs_fleetshard_central_db_clusters_used / acs_fleetshard_central_db_clusters_max >= 0.8
+            acs_fleetshard_central_db_clusters_used / acs_fleetshard_central_db_clusters_max >= 0.8
           for: 1h
           labels:
             severity: warning
@@ -190,7 +190,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
         - alert: RHACSCentralDBInstancesUtilizationHigh
           expr: |
-            expr: acs_fleetshard_central_db_instances_used / acs_fleetshard_central_db_instances_max >= 0.8
+            acs_fleetshard_central_db_instances_used / acs_fleetshard_central_db_instances_max >= 0.8
           for: 1h
           labels:
             severity: warning
@@ -200,7 +200,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
         - alert: RHACSCentralDBManualSnapshotsUtilizationHigh
           expr: |
-            expr: acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.8
+            acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.8
           for: 5m
           labels:
             severity: warning
@@ -210,7 +210,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
         - alert: RHACSCentralDBClustersUtilizationCritical
           expr: |
-            expr: acs_fleetshard_central_db_clusters_used / acs_fleetshard_central_db_clusters_max >= 0.9
+            acs_fleetshard_central_db_clusters_used / acs_fleetshard_central_db_clusters_max >= 0.9
           for: 1h
           labels:
             severity: critical
@@ -220,7 +220,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
         - alert: RHACSCentralDBInstancesUtilizationCritical
           expr: |
-            expr: acs_fleetshard_central_db_instances_used / acs_fleetshard_central_db_instances_max >= 0.9
+            acs_fleetshard_central_db_instances_used / acs_fleetshard_central_db_instances_max >= 0.9
           for: 1h
           labels:
             severity: critical
@@ -230,7 +230,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
         - alert: RHACSCentralDBManualSnapshotsUtilizationCritical
           expr: |
-            expr: acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.9
+            acs_fleetshard_central_db_snapshots_used / acs_fleetshard_central_db_snapshots_max >= 0.9
           for: 5m
           labels:
             severity: critical
