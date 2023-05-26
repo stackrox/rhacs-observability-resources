@@ -23,7 +23,7 @@ tests:
             exp_annotations:
               summary: "The number of RDS DB clusters is close to its limit."
               description: "The number of AWS RDS DB clusters is close to its limit. A quota increase should be requested from AWS."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 121m
         alertname: RHACSCentralDBClustersUtilizationCritical
         exp_alerts:
@@ -33,7 +33,7 @@ tests:
             exp_annotations:
               summary: "The number of RDS DB clusters is very close to its limit."
               description: "The number of AWS RDS DB clusters is close to its limit. A quota increase must be requested from AWS."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 131m
         alertname: RHACSCentralDBClustersUtilizationCritical
         exp_alerts:
@@ -57,7 +57,7 @@ tests:
             exp_annotations:
               summary: "The number of RDS DB instances is close to its limit."
               description: "The number of AWS RDS DB instances is close to its limit. A quota increase should be requested from AWS."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 121m
         alertname: RHACSCentralDBInstancesUtilizationCritical
         exp_alerts:
@@ -67,7 +67,7 @@ tests:
             exp_annotations:
               summary: "The number of RDS DB instances is very close to its limit."
               description: "The number of AWS RDS DB instances is close to its limit. A quota increase must be requested from AWS."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 131m
         alertname: RHACSCentralDBInstancesUtilizationCritical
         exp_alerts:
@@ -91,7 +91,7 @@ tests:
             exp_annotations:
               summary: "The number of RDS DB snapshots is close to its limit."
               description: "The number of AWS RDS DB manual snapshots is close to its limit. A quota increase should be requested from AWS."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 66m
         alertname: RHACSCentralDBManualSnapshotsUtilizationCritical
         exp_alerts:
@@ -101,7 +101,7 @@ tests:
             exp_annotations:
               summary: "The number of RDS DB snapshots is very close to its limit."
               description: "The number of AWS RDS DB manual snapshots is close to its limit. A quota increase must be requested from AWS."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-limits.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 131m
         alertname: RHACSCentralDBManualSnapshotsUtilizationCritical
         exp_alerts:
