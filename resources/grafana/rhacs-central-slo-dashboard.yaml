@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 21,
+      "id": 13,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -1249,7 +1249,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(central:sli:availability, rhacs_org_name)",
+            "definition": "label_values(central:sli:availability{rhacs_org_id!=\"16536854\"}, rhacs_org_name)",
             "description": "Red Hat SSO Organisation Name",
             "hide": 0,
             "includeAll": true,
@@ -1258,7 +1258,7 @@ spec:
             "name": "org_name",
             "options": [],
             "query": {
-              "query": "label_values(central:sli:availability, rhacs_org_name)",
+              "query": "label_values(central:sli:availability{rhacs_org_id!=\"16536854\"}, rhacs_org_name)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
@@ -1281,7 +1281,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(central:sli:availability{rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
+            "definition": "label_values(central:sli:availability{rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\"}, rhacs_org_id)",
             "description": "Red Hat SSO Organisation ID",
             "hide": 0,
             "includeAll": true,
@@ -1290,7 +1290,7 @@ spec:
             "name": "org_id",
             "options": [],
             "query": {
-              "query": "label_values(central:sli:availability{rhacs_org_name=~\"$org_name\"}, rhacs_org_id)",
+              "query": "label_values(central:sli:availability{rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\"}, rhacs_org_id)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
@@ -1354,6 +1354,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central SLOs",
       "uid": "vH7ntMs4k",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
