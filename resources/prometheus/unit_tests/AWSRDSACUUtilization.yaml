@@ -19,7 +19,7 @@ tests:
               alertname: AWSRDSACUUtilization
               dimension_DBInstanceIdentifier: rhacs-test-db-instance
               namespace: rhacs-1234
-              severity: critical
+              severity: warning
             exp_annotations:
               summary: "The AWS RDS ACUUtilization for `rhacs-test-db-instance` DB instance is too high."
               description: >

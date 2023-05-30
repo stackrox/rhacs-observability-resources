@@ -91,7 +91,7 @@ spec:
           expr: |
             increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[30m]) > 3
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
@@ -151,7 +151,7 @@ spec:
             acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10
           for: 5m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` failed to reconcile Central instances."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has a reconciliation error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
@@ -161,7 +161,7 @@ spec:
             acs_fleetshard_fleet_manager_errors_per_requests:ratio_rate10m > 0.01
           for: 5m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` failed to reach fleet manager."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has a fleet manager request error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
@@ -171,7 +171,7 @@ spec:
             sum(acs_fleetshard_total_centrals) <= 0
           for: 15m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Fleetshard synchronizer manages `{{ $value }}` centrals."
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
@@ -284,7 +284,7 @@ spec:
             aws_rds_acuutilization_average{dimension_DBInstanceIdentifier=~"rhacs-.*"} > 95
           for: 15m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "The AWS RDS ACUUtilization for `{{ $labels.dimension_DBInstanceIdentifier }}` DB instance is too high."
             description: >
@@ -374,11 +374,19 @@ spec:
         # extended average over 28 days would yield `1 - 2 min / 28 days ~ 99.995%`.
         # After the initial 28 days, both averages are equivalent.
         - expr: |
-            1 - (central:sli:availability:count_over_time1h - central:sli:availability:sum_over_time1h) / scalar(central:slo:scrapes1h)
+            clamp(
+              1 - (central:sli:availability:count_over_time1h - central:sli:availability:sum_over_time1h) / scalar(central:slo:scrapes1h),
+              0,
+              1
+            )
           record: central:sli:availability:extended_avg_over_time1h
 
         - expr: |
-            1 - (central:sli:availability:count_over_time28d - central:sli:availability:sum_over_time28d) / scalar(central:slo:scrapes28d)
+            clamp(
+              1 - (central:sli:availability:count_over_time28d - central:sli:availability:sum_over_time28d) / scalar(central:slo:scrapes28d),
+              0,
+              1
+            )
           record: central:sli:availability:extended_avg_over_time28d
 
     - name: rhacs-central.slo
