@@ -7,9 +7,9 @@ tests:
   - interval: 1m
     input_series:
       - series: acs_fleetshard_central_db_clusters_used
-        values: "81+0x60 91+0x120"
+        values: "81+0x70 91+0x110"
       - series: acs_fleetshard_central_db_clusters_max
-        values: "100+0x130 150+0x50"
+        values: "100+0x140 150+0x50"
     alert_rule_test:
       - eval_time: 50m
         alertname: RHACSCentralDBClustersUtilizationHigh
@@ -22,9 +22,9 @@ tests:
               severity: warning
             exp_annotations:
               summary: "The number of RDS DB clusters is close to its limit."
-              description: "The number of AWS RDS DB clusters is close to its limit. A quota increase should be requested from AWS."
+              description: "Remaining DB clusters: 19. A quota increase should be requested from AWS.\n"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
-      - eval_time: 121m
+      - eval_time: 131m
         alertname: RHACSCentralDBClustersUtilizationCritical
         exp_alerts:
           - exp_labels:
@@ -32,18 +32,18 @@ tests:
               severity: critical
             exp_annotations:
               summary: "The number of RDS DB clusters is very close to its limit."
-              description: "The number of AWS RDS DB clusters is close to its limit. A quota increase must be requested from AWS."
+              description: "Remaining DB clusters: 9. A quota increase must be requested from AWS.\n"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
-      - eval_time: 131m
+      - eval_time: 141m
         alertname: RHACSCentralDBClustersUtilizationCritical
         exp_alerts:
           []
   - interval: 1m
     input_series:
       - series: acs_fleetshard_central_db_instances_used
-        values: "81+0x60 91+0x120"
+        values: "165+0x70 182+0x110"
       - series: acs_fleetshard_central_db_instances_max
-        values: "100+0x130 150+0x50"
+        values: "200+0x140 300+0x50"
     alert_rule_test:
       - eval_time: 50m
         alertname: RHACSCentralDBInstancesUtilizationHigh
@@ -56,9 +56,9 @@ tests:
               severity: warning
             exp_annotations:
               summary: "The number of RDS DB instances is close to its limit."
-              description: "The number of AWS RDS DB instances is close to its limit. A quota increase should be requested from AWS."
+              description: "Remaining DB instances: 35. A quota increase should be requested from AWS.\n"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
-      - eval_time: 121m
+      - eval_time: 131m
         alertname: RHACSCentralDBInstancesUtilizationCritical
         exp_alerts:
           - exp_labels:
@@ -66,18 +66,18 @@ tests:
               severity: critical
             exp_annotations:
               summary: "The number of RDS DB instances is very close to its limit."
-              description: "The number of AWS RDS DB instances is close to its limit. A quota increase must be requested from AWS."
+              description: "Remaining DB instances: 18. A quota increase must be requested from AWS.\n"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
-      - eval_time: 131m
+      - eval_time: 141m
         alertname: RHACSCentralDBInstancesUtilizationCritical
         exp_alerts:
           []
   - interval: 1m
     input_series:
       - series: acs_fleetshard_central_db_snapshots_used
-        values: "81+0x60 91+0x120"
+        values: "801+0x60 901+0x120"
       - series: acs_fleetshard_central_db_snapshots_max
-        values: "100+0x130 150+0x50"
+        values: "1000+0x130 1500+0x50"
     alert_rule_test:
       - eval_time: 2m
         alertname: RHACSCentralDBManualSnapshotsUtilizationHigh
@@ -90,7 +90,7 @@ tests:
               severity: warning
             exp_annotations:
               summary: "The number of RDS DB snapshots is close to its limit."
-              description: "The number of AWS RDS DB manual snapshots is close to its limit. A quota increase should be requested from AWS."
+              description: "Remaining DB manual snapshots: 199. A quota increase should be requested from AWS.\n"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 66m
         alertname: RHACSCentralDBManualSnapshotsUtilizationCritical
@@ -100,7 +100,7 @@ tests:
               severity: critical
             exp_annotations:
               summary: "The number of RDS DB snapshots is very close to its limit."
-              description: "The number of AWS RDS DB manual snapshots is close to its limit. A quota increase must be requested from AWS."
+              description: "Remaining DB manual snapshots: 99. A quota increase must be requested from AWS.\n"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-029-increase-aws-rds-limits.md"
       - eval_time: 131m
         alertname: RHACSCentralDBManualSnapshotsUtilizationCritical
