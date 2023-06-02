@@ -176,6 +176,15 @@ spec:
             summary: "Fleetshard synchronizer manages `{{ $value }}` centrals."
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
+        - alert: RHACSFleetshardSyncCentralReconcilePaused
+          expr: |
+            acs_fleetshard_pause_reconcile_instances == 1
+          for: 2d
+          labels:
+            severity: warning
+          annotations:
+            summary: "ACS instance {{ $labels.instance }} has paused reconciliation for more than 2 days."
+            description: "ACS instance {{ $labels.instance }} has the 'pause-reconcile' annotation and therefore is not being managed by the ACS operator. Please check that this is intended."
     - name: rhacs-aws-quota
       rules:
         - alert: RHACSCentralDBClustersUtilizationHigh
