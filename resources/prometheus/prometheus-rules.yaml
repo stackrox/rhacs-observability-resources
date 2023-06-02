@@ -381,30 +381,46 @@ spec:
           record: central:grpc_server_started:total:rate10m
 
         # HTTP
+
+        # need to filter exported_namespace by `rhacs-[a-zA-Z0-9]{20}` to remove rhacs-observability namespace.
+
+        # exported_namespace exists because of a label collision with the namespace the metrics are collected from (which is the namespace in which the router is deployed)
+        # the namespace we care about needs to be relabeled to be joined up with the grpc timeseries
         - expr: |
-            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-            (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central", code!~"5.."}[10m]))
+            label_replace(
+              sum by (exported_namespace)
+              (rate(haproxy_backend_http_responses_total{exported_namespace=~"rhacs-[a-zA-Z0-9]{20}",code!~"5xx"}[10m])),
+              "namespace", "$1", "exported_namespace", "(.+)"
+            )
           record: central:http_incoming_requests:not_5xx:rate10m
 
         - expr: |
-            sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-            (rate(http_incoming_requests_total{namespace=~"rhacs-.*", job="central"}[10m]))
+            label_replace(
+              sum by (exported_namespace)
+              (rate(haproxy_backend_http_responses_total{exported_namespace=~"rhacs-[a-zA-Z0-9]{20}"}[10m])),
+              "namespace", "$1", "exported_namespace", "(.+)"
+            )
           record: central:http_incoming_requests:total:rate10m
 
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
+
+        # Need to drop exported_namespace to avoid confusion and match up with unit tests
         - expr: |
-            floor(
+            sum without(exported_namespace)
+            (floor(
               (
+                central:http_incoming_requests:not_5xx:rate10m
+              + on (namespace) group_left(rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
                 central:grpc_server_handled:server_available_code:rate10m
-              + central:http_incoming_requests:not_5xx:rate10m
               ) / (
+                central:http_incoming_requests:total:rate10m
+              + on (namespace) group_left(rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
                 central:grpc_server_started:total:rate10m
-              + central:http_incoming_requests:total:rate10m
               )
               + 0.35
-            )
+            ))
           record: central:sli:error_rate
 
         # Availability SLI
