@@ -1,0 +1,34 @@
+rule_files:
+  - /tmp/kubernetes-mixin-alerts.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: container_cpu_cfs_throttled_periods_total{container="test",pod="test-pod",namespace="test"}
+        values: "1+1x100"
+      - series: container_cpu_cfs_periods_total{container="test",pod="test-pod",namespace="test"}
+        values: "1+2x100"
+      - series: container_cpu_cfs_throttled_periods_total{container="openshift-test",pod="openshift-test-pod",namespace="openshift-test"}
+        values: "1+1x100"
+      - series: container_cpu_cfs_periods_total{container="openshift-test",pod="openshift-test-pod",namespace="openshift-test"}
+        values: "1+2x100"
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: CPUThrottlingHigh
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: CPUThrottlingHigh
+        exp_alerts:
+          - exp_labels:
+              alertname: CPUThrottlingHigh
+              severity: info
+              source: mixin/kubernetes
+              container: test
+              pod: test-pod
+              namespace: test
+            exp_annotations:
+              description: "50% throttling of CPU in namespace test for container test in pod test-pod."
+              runbook_url: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+              summary: "Processes experience elevated CPU throttling."
