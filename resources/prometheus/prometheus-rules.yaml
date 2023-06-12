@@ -414,11 +414,11 @@ spec:
                 central:http_incoming_requests:not_5xx:rate10m
               + on (namespace) group_left(rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
                 central:grpc_server_handled:server_available_code:rate10m
-              ) / (
+              ) / ((
                 central:http_incoming_requests:total:rate10m
               + on (namespace) group_left(rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
                 central:grpc_server_started:total:rate10m
-              )
+              ) > 0)
               + 0.35
             ))
           record: central:sli:error_rate
