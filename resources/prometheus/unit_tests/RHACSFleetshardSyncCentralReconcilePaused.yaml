@@ -1,0 +1,30 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1h
+
+tests:
+  - interval: 1h
+    input_series:
+      - series: acs_fleetshard_pause_reconcile_instances{instance="rhacs-chs64i3dabr0026a6fag"}
+        values: "0+0x0 1+0x50 0+0x2"
+    alert_rule_test:
+      - eval_time: 1h
+        alertname: RHACSFleetshardSyncCentralReconcilePaused
+        exp_alerts: []
+      - eval_time: 30h
+        alertname: RHACSFleetshardSyncCentralReconcilePaused
+        exp_alerts: []
+      - eval_time: 49h
+        alertname: RHACSFleetshardSyncCentralReconcilePaused
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSFleetshardSyncCentralReconcilePaused
+              instance: rhacs-chs64i3dabr0026a6fag
+              severity: warning
+            exp_annotations:
+              summary: "ACS instance rhacs-chs64i3dabr0026a6fag has paused reconciliation for more than 2 days."
+              description: "ACS instance rhacs-chs64i3dabr0026a6fag has the 'pause-reconcile' annotation and therefore is not being managed by the ACS operator. Please check that this is intended."
+      - eval_time: 52h
+        alertname: RHACSFleetshardSyncCentralReconcilePaused
+        exp_alerts: []
