@@ -97,6 +97,26 @@ spec:
             description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
 
+    - name: rhacs-egress-proxy
+      rules:
+        - alert: RHACSEgressProxyReplicaCount
+          expr: kube_deployment_status_replicas_ready{namespace=~"rhacs-.*",deployment="egress-proxy"} < 3
+          for: 20m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Egress proxy cannot reach desired replica count (3) in namespace `{{ $labels.namespace }}`."
+            description: "During the last 30 minutes, the egress-proxy deployment in namespace `{{ $labels.namespace }}` has not reached three (3) replicas. This alert is raised when at least one replica is continuously marked as not ready for at least 20 minutes."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+        - alert: RHACSEgressProxyContainerFrequentlyRestarting
+          expr: increase(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*",container="egress-proxy"}[30m]) > 3
+          labels:
+            severity: warning
+          annotations:
+            summary: "Egress proxy container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Egress proxy container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+
     - name: rhacs-fleetshard
       rules:
         - alert: RHACSFleetshardOperatorContainerDown

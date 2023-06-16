@@ -1,0 +1,52 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_deployment_status_replicas_ready{namespace="rhacs-aaaabbbbccccddddeeee", deployment="egress-proxy", container="kube-rbac-proxy-main"}
+        values: "3x10 2x10 1x20"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSEgressProxyReplicaCount
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: RHACSEgressProxyReplicaCount
+        exp_alerts: []
+      - eval_time: 40m
+        alertname: RHACSEgressProxyReplicaCount
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSEgressProxyReplicaCount
+              namespace: rhacs-aaaabbbbccccddddeeee
+              deployment: egress-proxy
+              # not sure why the observed metrics have container=kube-rbac-proxy-main
+              container: kube-rbac-proxy-main
+              severity: critical
+            exp_annotations:
+              summary: "Egress proxy cannot reach desired replica count (3) in namespace `rhacs-aaaabbbbccccddddeeee`."
+              description: "During the last 30 minutes, the egress-proxy deployment in namespace `rhacs-aaaabbbbccccddddeeee` has not reached three (3) replicas. This alert is raised when at least one replica is continuously marked as not ready for at least 20 minutes."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-aaaabbbbccccddddeeee", pod="egress-proxy-1234-5678", container="egress-proxy"}
+        values: "0+0x10 1+1x10 10+1x20"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSEgressProxyContainerFrequentlyRestarting
+        exp_alerts: []
+      - eval_time: 30m
+        alertname: RHACSEgressProxyContainerFrequentlyRestarting
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSEgressProxyContainerFrequentlyRestarting
+              container: egress-proxy
+              namespace: rhacs-aaaabbbbccccddddeeee
+              pod: egress-proxy-1234-5678
+              severity: warning
+            exp_annotations:
+              summary: "Egress proxy container `egress-proxy-1234-5678/egress-proxy` in namespace `rhacs-aaaabbbbccccddddeeee` restarted more than 3 times."
+              description: "Egress proxy container `egress-proxy-1234-5678/egress-proxy` in namespace `rhacs-aaaabbbbccccddddeeee` has restarted more than 3 times during the last 30 minutes."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
