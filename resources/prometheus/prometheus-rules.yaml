@@ -408,7 +408,7 @@ spec:
 
         # Need to drop exported_namespace to avoid confusion and match up with unit tests
         - expr: |
-            sum without(exported_namespace)
+            (sum without(exported_namespace)
             (floor(
               (
                 central:http_incoming_requests:not_5xx:rate10m
@@ -420,7 +420,8 @@ spec:
                 central:grpc_server_started:total:rate10m
               ) > 0)
               + 0.35
-            ))
+            )))
+            or (sum without (observability) (central:sli:pod_ready))
           record: central:sli:error_rate
 
         # Availability SLI
