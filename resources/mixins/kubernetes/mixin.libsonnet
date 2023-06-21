@@ -9,6 +9,7 @@ kubernetes {
     kubeApiserverSelector: 'job="api"',
     kubeProxySelector: 'job="machine-config-daemon"',
     kubeSchedulerSelector: 'job="scheduler"',
+    kubeStateMetricsSelector: 'namespace!~"openshift-.*',
   },
 } + {
   // Customize alert labels.
