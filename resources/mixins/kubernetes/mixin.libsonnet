@@ -9,7 +9,7 @@ kubernetes {
     kubeApiserverSelector: 'job="api"',
     kubeProxySelector: 'job="machine-config-daemon"',
     kubeSchedulerSelector: 'job="scheduler"',
-    namespaceSelector: 'namespace=~"rhacs-.*|acscs-.*"',
+    namespaceSelector: 'namespace=~"rhacs|rhacs-.*|acscs-.*"',
   },
 } + {
   // Customize alert labels.
