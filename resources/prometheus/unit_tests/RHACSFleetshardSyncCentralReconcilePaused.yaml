@@ -12,10 +12,10 @@ tests:
       - eval_time: 1h
         alertname: RHACSFleetshardSyncCentralReconcilePaused
         exp_alerts: []
-      - eval_time: 30h
+      - eval_time: 20d
         alertname: RHACSFleetshardSyncCentralReconcilePaused
         exp_alerts: []
-      - eval_time: 49h
+      - eval_time: 31d
         alertname: RHACSFleetshardSyncCentralReconcilePaused
         exp_alerts:
           - exp_labels:
@@ -23,7 +23,7 @@ tests:
               instance: rhacs-chs64i3dabr0026a6fag
               severity: warning
             exp_annotations:
-              summary: "ACS instance rhacs-chs64i3dabr0026a6fag has paused reconciliation for more than 2 days."
+              summary: "ACS instance rhacs-chs64i3dabr0026a6fag has paused reconciliation for more than 30 days."
               description: "ACS instance rhacs-chs64i3dabr0026a6fag has the 'pause-reconcile' annotation and therefore is not being managed by the ACS operator. Please check that this is intended."
       - eval_time: 52h
         alertname: RHACSFleetshardSyncCentralReconcilePaused

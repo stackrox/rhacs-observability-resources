@@ -179,11 +179,11 @@ spec:
         - alert: RHACSFleetshardSyncCentralReconcilePaused
           expr: |
             acs_fleetshard_pause_reconcile_instances == 1
-          for: 2d
+          for: 30d
           labels:
             severity: warning
           annotations:
-            summary: "ACS instance {{ $labels.instance }} has paused reconciliation for more than 2 days."
+            summary: "ACS instance {{ $labels.instance }} has paused reconciliation for more than 30 days."
             description: "ACS instance {{ $labels.instance }} has the 'pause-reconcile' annotation and therefore is not being managed by the ACS operator. Please check that this is intended."
     - name: rhacs-aws-quota
       rules:
