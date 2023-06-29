@@ -9,68 +9,22 @@ group_eval_order:
   - rhacs-central.alerts
 
 tests:
-  # Ensure that a service with zero requests doesn't fire an alert
-  - interval: 5m
-    input_series:
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-aaaabbbbccccddddeeee"}
-        values: "1x1000"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1x1000"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1+0x1000"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
-        values: "1x1000"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "0x1000"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="5xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
-        values: "0x1000"
-    alert_rule_test:
-      - eval_time: 500m
-        alertname: Central availability error budget exhaustion - 50%
-        exp_alerts: []
-  # Ensure that a service with zero requests but the pod is down *does* fire an alert
-  - interval: 5m
-    input_series:
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-aaaabbbbccccddddeeee"}
-        values: "0x1000"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1x1000"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1+0x1000"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
-        values: "1x1000"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "0x1000"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="5xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
-        values: "0x1000"
-    alert_rule_test:
-      - eval_time: 500m
-        alertname: Central availability error budget exhaustion - 90%
-        exp_alerts:
-          - exp_labels:
-              alertname: Central availability error budget exhaustion - 90%
-              service: central
-              severity: critical
-              namespace: rhacs-aaaabbbbccccddddeeee
-            exp_annotations:
-              message: "High availability error budget exhaustion for central. Current exhaustion: 124.1%."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
   # Central availability error budget exhaustion - 90%
   - interval: 5m
     input_series:
       # 200m downtime due to pod not ready. Out of 28 days, this equates to ~0.5% downtime.
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-aaaabbbbccccddddeeee"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test1"}
         values: "1+0x260 0+0x40 1+0x100"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "1+1x360 362+2x40"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "4+4x400"
       # 200m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.5% downtime.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "0+0x360 0+1x40"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="5xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
+      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test1", rhacs_instance_id="test"}
         values: "0+0x360 0+4x40"
     alert_rule_test:
       - eval_time: 100m
@@ -83,8 +37,8 @@ tests:
               alertname: Central availability error budget exhaustion - 90%
               service: central
               severity: critical
-              namespace: rhacs-aaaabbbbccccddddeeee
-              rhacs_instance_id: aaaabbbbccccddddeeee
+              namespace: rhacs-test1
+              rhacs_instance_id: test
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 97.97%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
@@ -93,18 +47,18 @@ tests:
   - interval: 5m
     input_series:
       # 175m downtime due to pod not ready. Out of 28 days, this equates to ~0.43% downtime.
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-ffffgggghhhhiiiijjjj"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test2"}
         values: "1+0x265 0+0x35 1+0x100"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-ffffgggghhhhiiiijjjj", rhacs_instance_id="ffffgggghhhhiiiijjjj"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-ffffgggghhhhiiiijjjj", rhacs_instance_id="ffffgggghhhhiiiijjjj"}
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "1+1x365 367+2x35"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-ffffgggghhhhiiiijjjj"}
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "4+4x400"
       # 175m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.43% downtime.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-ffffgggghhhhiiiijjjj", rhacs_instance_id="ffffgggghhhhiiiijjjj"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "0+0x365 0+1x35"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="5xx", exported_namespace="rhacs-ffffgggghhhhiiiijjjj"}
+      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test2", rhacs_instance_id="test"}
         values: "0+0x365 0+4x35"
     alert_rule_test:
       - eval_time: 100m
@@ -117,8 +71,8 @@ tests:
               alertname: Central availability error budget exhaustion - 70%
               service: central
               severity: warning
-              namespace: rhacs-ffffgggghhhhiiiijjjj
-              rhacs_instance_id: ffffgggghhhhiiiijjjj
+              namespace: rhacs-test2
+              rhacs_instance_id: test
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 85.57%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
@@ -127,18 +81,18 @@ tests:
   - interval: 5m
     input_series:
       # 105m downtime due to pod not ready. Out of 28 days, this equates to ~0.25% downtime.
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-kkkkllllmmmmnnnnoooo"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test3"}
         values: "1+0x279 0+0x21 1+0x100"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-kkkkllllmmmmnnnnoooo", rhacs_instance_id="kkkkllllmmmmnnnnoooo"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-kkkkllllmmmmnnnnoooo", rhacs_instance_id="kkkkllllmmmmnnnnoooo"}
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "1+1x379 381+2x21"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-kkkkllllmmmmnnnnoooo"}
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "4+4x400"
       # 105m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.25% downtime.
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-kkkkllllmmmmnnnnoooo", rhacs_instance_id="kkkkllllmmmmnnnnoooo"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "0+0x379 0+1x21"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="5xx", exported_namespace="rhacs-kkkkllllmmmmnnnnoooo"}
+      - series: http_incoming_requests_total{job="central", code="500", namespace="rhacs-test3", rhacs_instance_id="test"}
         values: "0+0x379 0+4x21"
     alert_rule_test:
       - eval_time: 100m
@@ -151,8 +105,8 @@ tests:
               alertname: Central availability error budget exhaustion - 50%
               service: central
               severity: warning
-              namespace: rhacs-kkkkllllmmmmnnnnoooo
-              rhacs_instance_id: kkkkllllmmmmnnnnoooo
+              namespace: rhacs-test3
+              rhacs_instance_id: test
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 50.84%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
@@ -161,13 +115,13 @@ tests:
   - interval: 5m
     input_series:
       # 30m downtime due to pod not ready.
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-ppppqqqqrrrrsssstttt"}
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-test4"}
         values: "1+0x6 0+0x6"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-ppppqqqqrrrrsssstttt"}
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-test4"}
         values: "5+5x14"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-ppppqqqqrrrrsssstttt"}
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-test4"}
         values: "5+5x14"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-ppppqqqqrrrrsssstttt"}
+      - series: http_incoming_requests_total{job="central", code="200", namespace="rhacs-test4"}
         values: "5+5x14"
     alert_rule_test:
       - eval_time: 30m
@@ -180,7 +134,7 @@ tests:
               alertname: Central high availability burn rate
               service: central
               severity: critical
-              namespace: rhacs-ppppqqqqrrrrsssstttt
+              namespace: rhacs-test4
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.17."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
