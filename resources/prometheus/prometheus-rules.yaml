@@ -336,7 +336,15 @@ spec:
         # Central pod must be ready to count as available.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            clamp_max(sum by(namespace) (kube_deployment_status_replicas_ready{deployment="central", namespace=~"rhacs-.*"}), 1)
+            label_replace(
+              clamp_max(
+                sum by(namespace) (kube_deployment_status_replicas_ready{deployment="central", namespace=~"rhacs-.*"}), 1
+              ),
+              "rhacs_instance_id",
+              "$1",
+              "namespace",
+              "rhacs-(.*)"
+            )
           record: central:sli:pod_ready
 
         # Error rate SLI
@@ -379,45 +387,47 @@ spec:
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
 
-        # Need to drop exported_namespace to avoid confusion and match up with unit tests
+        # If no requests have been registered in the rate period, we default to `central:sli:pod_ready`.
+        # The fallback mechanism helps to avoid undefined values in the metric series, which are otherwise simply
+        # dropped by Prometheus, and would therefore mess up the aggregated `central:sli:availability` metric series.
+        # We keep the `namespace` and `rhacs_instance_id` labels to be consistent with other SLI metrics and for
+        # reference in dashboards.
         - expr: |
-            (sum without(exported_namespace)
-            (floor(
-              (
-                central:http_incoming_requests:not_5xx:rate10m
-              + on (namespace) group_left(rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-                central:grpc_server_handled:server_available_code:rate10m
-              ) / ((
-                central:http_incoming_requests:total:rate10m
-              + on (namespace) group_left(rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-                central:grpc_server_started:total:rate10m
-              ) > 0)
-              + 0.35
-            )))
-            or (sum without (observability) (central:sli:pod_ready))
+            sum by (namespace, rhacs_instance_id) (
+              floor(
+                (
+                  central:http_incoming_requests:not_5xx:rate10m
+                + on (namespace) group_left(rhacs_instance_id) central:grpc_server_handled:server_available_code:rate10m
+                ) / ((
+                  central:http_incoming_requests:total:rate10m
+                + on (namespace) group_left(rhacs_instance_id) central:grpc_server_started:total:rate10m
+                ) > 0) + 0.35
+              )
+            )
+            or on (namespace, rhacs_instance_id) central:sli:pod_ready
           record: central:sli:error_rate
 
         # Availability SLI
         # If any of the SLIs is violated, the service counts as unavailable.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            central:sli:pod_ready * on (namespace) group_right() central:sli:error_rate
+            central:sli:pod_ready * on (namespace, rhacs_instance_id) central:sli:error_rate
           record: central:sli:availability
 
         - expr: |
-            count_over_time(central:sli:availability[1h])
+            sum by (namespace, rhacs_instance_id) (count_over_time(central:sli:availability[1h]))
           record: central:sli:availability:count_over_time1h
 
         - expr: |
-            count_over_time(central:sli:availability[28d])
+            sum by (namespace, rhacs_instance_id) (count_over_time(central:sli:availability[28d]))
           record: central:sli:availability:count_over_time28d
 
         - expr: |
-            sum_over_time(central:sli:availability[1h])
+            sum by (namespace, rhacs_instance_id) (sum_over_time(central:sli:availability[1h]))
           record: central:sli:availability:sum_over_time1h
 
         - expr: |
-            sum_over_time(central:sli:availability[28d])
+            sum by (namespace, rhacs_instance_id) (sum_over_time(central:sli:availability[28d]))
           record: central:sli:availability:sum_over_time28d
 
         # Extended average over time refers to the time series effectively being extended
@@ -485,10 +495,6 @@ spec:
             severity: critical
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
-            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
-            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
-            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
-            rhacs_environment: "{{ $labels.rhacs_environment }}"
 
         - alert: Central availability error budget exhaustion - 70%
           annotations:
@@ -501,10 +507,6 @@ spec:
             severity: warning
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
-            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
-            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
-            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
-            rhacs_environment: "{{ $labels.rhacs_environment }}"
 
         - alert: Central availability error budget exhaustion - 50%
           annotations:
@@ -517,10 +519,6 @@ spec:
             severity: warning
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
-            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
-            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
-            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
-            rhacs_environment: "{{ $labels.rhacs_environment }}"
 
         - alert: Central high availability burn rate
           annotations:
@@ -535,10 +533,6 @@ spec:
             severity: critical
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
-            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
-            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
-            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
-            rhacs_environment: "{{ $labels.rhacs_environment }}"
     - name: az-resources
       rules:
         - record: strictly_worker_nodes
