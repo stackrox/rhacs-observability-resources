@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 9,
+      "id": 11,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -449,12 +449,108 @@ spec:
           "type": "timeseries"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 17
+          },
+          "id": 24,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "count(max by (exported_instance) (acs_fleetshard_pause_reconcile_instances == 1)) or vector(0)",
+              "interval": "",
+              "legendFormat": "Count",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Paused Reconcile Count",
+          "type": "timeseries"
+        },
+        {
           "collapsed": false,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 17
+            "y": 25
           },
           "id": 16,
           "panels": [],
@@ -524,7 +620,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 18
+            "y": 26
           },
           "id": 12,
           "options": {
@@ -657,7 +753,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 18
+            "y": 26
           },
           "id": 6,
           "options": {
@@ -753,7 +849,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 26
+            "y": 34
           },
           "id": 7,
           "options": {
@@ -848,7 +944,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 26
+            "y": 34
           },
           "id": 5,
           "options": {
@@ -943,7 +1039,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 34
+            "y": 42
           },
           "id": 4,
           "options": {
@@ -982,7 +1078,7 @@ spec:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 42
+            "y": 50
           },
           "id": 23,
           "panels": [],
@@ -1005,7 +1101,9 @@ spec:
                 "cellOptions": {
                   "type": "auto"
                 },
-                "inspect": false
+                "filterable": true,
+                "inspect": false,
+                "minWidth": 200
               },
               "mappings": [],
               "thresholds": {
@@ -1063,6 +1161,10 @@ spec:
                         }
                       ]
                     }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 261
                   }
                 ]
               },
@@ -1077,6 +1179,10 @@ spec:
                     "value": {
                       "type": "color-text"
                     }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 223
                   }
                 ]
               },
@@ -1089,6 +1195,10 @@ spec:
                   {
                     "id": "unit",
                     "value": "binBps"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 192
                   }
                 ]
               },
@@ -1101,6 +1211,70 @@ spec:
                   {
                     "id": "unit",
                     "value": "binBps"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 185
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Version"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 109
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Paused"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 82
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Organisation"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 223
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Secured Cores"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "namespace"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 264
                   }
                 ]
               }
@@ -1110,7 +1284,7 @@ spec:
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 43
+            "y": 51
           },
           "id": 19,
           "options": {
@@ -1234,6 +1408,21 @@ spec:
               "legendFormat": "__auto",
               "range": true,
               "refId": "Version"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "clamp_max(label_replace(acs_fleetshard_pause_reconcile_instances, \"namespace\", \"rhacs-$1\", \"exported_instance\", \"(.*)\"), 1)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
             }
           ],
           "title": "Central Overview Table",
@@ -1257,7 +1446,15 @@ spec:
                   "Time 7": true,
                   "Time 8": true,
                   "Value #Organisation": true,
-                  "Value #Version": true
+                  "Value #Version": true,
+                  "__name__": true,
+                  "container": true,
+                  "exported_instance": true,
+                  "instance": true,
+                  "job": true,
+                  "pod": true,
+                  "rhacs_cluster_name": true,
+                  "rhacs_environment": true
                 },
                 "indexByName": {
                   "Time 1": 9,
@@ -1282,7 +1479,7 @@ spec:
                 "renameByName": {
                   "Time 2": "",
                   "Time 4": "",
-                  "Value #A": "CPU throttle",
+                  "Value #A": "Paused",
                   "Value #CPU consumption": "CPU consumption",
                   "Value #CPU throttle": "CPU throttle periods (30m)",
                   "Value #Memory consumption": "Memory consumption",
@@ -1500,7 +1697,7 @@ spec:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 55
+            "y": 63
           },
           "id": 21,
           "options": {
@@ -1785,6 +1982,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 1,
+      "version": 3,
       "weekStart": ""
     }
