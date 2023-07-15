@@ -545,6 +545,102 @@ spec:
           "type": "timeseries"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 17
+          },
+          "id": 25,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "count(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
+              "interval": "",
+              "legendFormat": "Clusters",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Secured Clusters",
+          "type": "timeseries"
+        },
+        {
           "collapsed": false,
           "gridPos": {
             "h": 1,
@@ -643,9 +739,9 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "sum(namespace_cpu:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"cpu\"})",
+              "expr": "availability_zone:strictly_worker_nodes:cpu_limit_ratio",
               "interval": "",
-              "legendFormat": "CPU Request",
+              "legendFormat": "Limit / {{availability_zone}}",
               "range": true,
               "refId": "A"
             },
@@ -655,39 +751,124 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "cluster:node_cpu:ratio_rate5m",
+              "expr": "availability_zone:strictly_worker_nodes:cpu_request_ratio",
               "hide": false,
               "interval": "",
-              "legendFormat": "CPU Utilisation",
+              "legendFormat": "Request / {{availability_zone}}",
               "range": true,
               "refId": "B"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\"})",
-              "hide": false,
-              "legendFormat": "Memory Request",
-              "range": true,
-              "refId": "C"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "expr": "1 - sum(:node_memory_MemAvailable_bytes:sum) / sum(node_memory_MemTotal_bytes{job=\"node-exporter\"})",
-              "hide": false,
-              "legendFormat": "Memory Utilisation",
-              "range": true,
-              "refId": "D"
             }
           ],
-          "title": "Cluster Resource Usage",
+          "title": "Availability Zone CPU Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 26
+          },
+          "id": 26,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "availability_zone:strictly_worker_nodes:memory_limit_ratio",
+              "interval": "",
+              "legendFormat": "Limit / {{availability_zone}}",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "availability_zone:strictly_worker_nodes:memory_request_ratio",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "Request / {{availability_zone}}",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Availability Zone Memory Usage",
           "type": "timeseries"
         },
         {
@@ -752,8 +933,8 @@ spec:
           "gridPos": {
             "h": 8,
             "w": 12,
-            "x": 12,
-            "y": 26
+            "x": 0,
+            "y": 34
           },
           "id": 6,
           "options": {
@@ -785,101 +966,6 @@ spec:
             }
           ],
           "title": "Central Memory Usage",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "percentunit"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 34
-          },
-          "id": 7,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.1.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "expr": "sum(kubelet_volume_stats_used_bytes{namespace=~\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"}) by (namespace) / sum(kubelet_volume_stats_capacity_bytes{namespace=~\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"}) by (namespace)",
-              "interval": "",
-              "legendFormat": "{{namespace}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Central Volume Usage",
           "type": "timeseries"
         },
         {
@@ -1982,6 +2068,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 3,
+      "version": 4,
       "weekStart": ""
     }
