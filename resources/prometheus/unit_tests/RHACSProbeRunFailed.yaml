@@ -6,10 +6,10 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: acs_probe_last_failure_timestamp{namespace="rhacs-probe", pod="probe-1234"}
-        values: "0+0x10 0+0x15 7+0x60"
-      - series: acs_probe_last_success_timestamp{namespace="rhacs-probe", pod="probe-1234"}
-        values: "0+0x10 1+1x15 6+0x60"
+      - series: acs_probe_last_failure_timestamp{namespace="rhacs-probe", region="eu-west-1", rhacs_cluster_name="acs-eu-1"}
+        values: "0+0x15 17+1x60"
+      - series: acs_probe_last_success_timestamp{namespace="rhacs-probe", region="eu-west-1", rhacs_cluster_name="acs-eu-1"}
+        values: "1+1x15 17+0x60"
     alert_rule_test:
       - eval_time: 0m
         alertname: RHACSProbeRunFailed
@@ -23,9 +23,9 @@ tests:
           - exp_labels:
               alertname: RHACSProbeRunFailed
               severity: critical
-              namespace: rhacs-probe
-              pod: probe-1234
+              region: eu-west-1
+              rhacs_cluster_name: "acs-eu-1"
             exp_annotations:
-              summary: "The latest probe run failed at `1970-01-01 00:00:07 +0000 UTC`."
-              description: "The latest run of probe `probe-1234` failed at `1970-01-01 00:00:07 +0000 UTC`."
+              summary: "The latest probe run failed at `1970-01-01 00:01:01 +0000 UTC`."
+              description: "The latest probe run in region `eu-west-1` on cluster `acs-eu-1` failed at `1970-01-01 00:01:01 +0000 UTC`."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-008-probe-run-failed.md"

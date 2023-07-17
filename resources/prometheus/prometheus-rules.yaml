@@ -236,13 +236,16 @@ spec:
     - name: rhacs-probe
       rules:
         - alert: RHACSProbeRunFailed
-          expr: acs_probe_last_failure_timestamp > 0 and acs_probe_last_failure_timestamp >= acs_probe_last_success_timestamp
+          expr: |
+            max by (region, rhacs_cluster_name, rhacs_environment) (max_over_time(acs_probe_last_failure_timestamp[1w]))
+              >
+            max by (region, rhacs_cluster_name, rhacs_environment) (max_over_time(acs_probe_last_success_timestamp[1w]))
           for: 30m
           labels:
             severity: critical
           annotations:
             summary: "The latest probe run failed at `{{ $value | humanizeTimestamp }}`."
-            description: "The latest run of probe `{{ $labels.pod }}` failed at `{{ $value | humanizeTimestamp }}`."
+            description: "The latest probe run in region `{{ $labels.region }}` on cluster `{{ $labels.rhacs_cluster_name }}` failed at `{{ $value | humanizeTimestamp }}`."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-008-probe-run-failed.md"
         - alert: RHACSProbeScrapeFailed
           expr: |
