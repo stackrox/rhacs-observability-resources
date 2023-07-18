@@ -37,24 +37,6 @@ spec:
             summary: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Central container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
-        - alert: RHACSCentralDatabasePersistentVolumeFillingUp
-          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.1
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
-            description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
-        - alert: RHACSCentralDatabasePersistentVolumeFillingUp
-          expr: kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"} / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim="stackrox-db"} < 0.25 and predict_linear(kubelet_volume_stats_available_bytes{persistentvolumeclaim="stackrox-db"}[6h], 4 * 24 * 3600) < 0
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: "Central database storage in namespace `{{ $labels.namespace }}` is filing up."
-            description: "Central database storage in namespace `{{ $labels.namespace }}` is filling up for PVC `{{ $labels.persistentvolumeclaim }}`. Available storage quota is `{{ $value | humanizePercentage }}`. The volume is expected to fill up within 4 days based on linear extrapolation over the last 6 hours."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-006-increasing-rhacs-pvc-size.md"
         - alert: RHACSCentralPostgresConnectionDown
           expr: avg_over_time(rox_central_postgres_connected{container="central"}[10m]) < 0.5
           for: 20m
