@@ -37,7 +37,7 @@ spec:
       "fiscalYearStartMonth": 0,
       "gnetId": 14765,
       "graphTooltip": 0,
-      "id": 6,
+      "id": 3,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -437,7 +437,8 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -558,7 +559,8 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -678,7 +680,8 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -767,6 +770,7 @@ spec:
             },
             {
               "datasource": {
+                "type": "prometheus",
                 "uid": "${datasource}"
               },
               "fieldConfig": {
@@ -809,7 +813,8 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -817,7 +822,7 @@ spec:
                       }
                     ]
                   },
-                  "unit": "decbytes"
+                  "unit": "Bps"
                 },
                 "overrides": [
                   {
@@ -840,7 +845,7 @@ spec:
                 "x": 12,
                 "y": 15
               },
-              "id": 114,
+              "id": 113,
               "links": [],
               "options": {
                 "legend": {
@@ -860,42 +865,17 @@ spec:
                   "datasource": {
                     "uid": "${datasource}"
                   },
+                  "editorMode": "code",
                   "exemplar": true,
-                  "expr": "sum(kube_persistentvolumeclaim_resource_requests_storage_bytes{namespace=\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kube-state-metrics\"})",
+                  "expr": "sum(rate(container_network_transmit_bytes_total{namespace=\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (pod)",
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "Request",
+                  "legendFormat": "{{pod}}",
+                  "range": true,
                   "refId": "A"
-                },
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "expr": "sum(kubelet_volume_stats_capacity_bytes{namespace=\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"})",
-                  "interval": "",
-                  "legendFormat": "Capacity",
-                  "refId": "D"
-                },
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "expr": "sum(kubelet_volume_stats_available_bytes{namespace=\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"})",
-                  "interval": "",
-                  "legendFormat": "Available",
-                  "refId": "C"
-                },
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "expr": "sum(kubelet_volume_stats_used_bytes{namespace=\"rhacs-$instance_id\", persistentvolumeclaim=\"stackrox-db\", job=~\"kubelet\"})",
-                  "interval": "",
-                  "legendFormat": "Used",
-                  "refId": "B"
                 }
               ],
-              "title": "Database Volume",
+              "title": "Network Transmitted",
               "type": "timeseries"
             },
             {
@@ -943,7 +923,8 @@ spec:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -1005,115 +986,6 @@ spec:
                 }
               ],
               "title": "Network Received",
-              "type": "timeseries"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "drawStyle": "line",
-                    "fillOpacity": 10,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "lineInterpolation": "stepAfter",
-                    "lineWidth": 1,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "never",
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  },
-                  "mappings": [],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green"
-                      },
-                      {
-                        "color": "red",
-                        "value": 80
-                      }
-                    ]
-                  },
-                  "unit": "Bps"
-                },
-                "overrides": [
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "wait time"
-                    },
-                    "properties": [
-                      {
-                        "id": "unit",
-                        "value": "s"
-                      }
-                    ]
-                  }
-                ]
-              },
-              "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 23
-              },
-              "id": 113,
-              "links": [],
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "mode": "multi",
-                  "sort": "none"
-                }
-              },
-              "pluginVersion": "9.1.0",
-              "targets": [
-                {
-                  "datasource": {
-                    "uid": "${datasource}"
-                  },
-                  "editorMode": "code",
-                  "exemplar": true,
-                  "expr": "sum(rate(container_network_transmit_bytes_total{namespace=\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (pod)",
-                  "interval": "",
-                  "intervalFactor": 2,
-                  "legendFormat": "{{pod}}",
-                  "range": true,
-                  "refId": "A"
-                }
-              ],
-              "title": "Network Transmitted",
               "type": "timeseries"
             }
           ],
@@ -5209,8 +5081,8 @@ spec:
           {
             "current": {
               "selected": false,
-              "text": "ceccreb6m744ct03d480",
-              "value": "ceccreb6m744ct03d480"
+              "text": "ce90s406mnv90blbnu20",
+              "value": "ce90s406mnv90blbnu20"
             },
             "datasource": {
               "type": "prometheus",
@@ -5331,6 +5203,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central Metrics",
       "uid": "gn38yKZnk",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }
