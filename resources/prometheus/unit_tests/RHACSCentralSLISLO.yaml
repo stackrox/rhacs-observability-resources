@@ -186,3 +186,137 @@ tests:
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.17."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+
+  # Test central GRPC/HTTP API latency alerts and rules
+  - interval: 10m
+    input_series:
+      - series: central:grpc_server_handling_seconds:rate10m:p90{namespace="rhacs-abc", grpc_service="grpcsvc", grpc_method="grpcmeth"}
+        values: 1+0x4000
+      - series: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90{namespace="rhacs-abc", grpc_service="grpcsvc", grpc_method="grpcmeth"}
+        values: 1+0x4000
+    alert_rule_test:
+      # Ensure alert for a 28d window doesn't fire if there aren't enough SLI samples.
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for GRPC API - 90%
+        exp_alerts: []
+      # Ensure alert for a 28d window doesn't fire if there aren't enough SLI samples.
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for HTTP API - 90%
+        exp_alerts: []
+  - interval: 10m
+    input_series:
+      - series: central:grpc_server_handling_seconds:rate10m:p90{namespace="rhacs-abc", grpc_service="grpcsvc", grpc_method="grpcmeth"}
+        values: "1+0x3994 0+0x36"
+      - series: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90{namespace="rhacs-abc", grpc_service="grpcsvc", grpc_method="grpcmeth"}
+        values: "1+0x3994 0+0x36"
+    alert_rule_test:
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for GRPC API - 90%
+        exp_alerts:
+          - exp_labels:
+              alertname: Central availability error budget exhaustion - 90%
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpcsvc
+              grpc_method: grpcmeth
+              severity: critical
+            exp_annotations:
+              message: "Latency error budget exhaustion for central's GRPC API. Current exhaustion: 91.77%."
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for GRPC API - 70%
+        exp_alerts:
+          - exp_labels:
+              alertname: Central availability error budget exhaustion - 70%
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpcsvc
+              grpc_method: grpcmeth
+              severity: warning
+            exp_annotations:
+              message: "Latency error budget exhaustion for central's GRPC API. Current exhaustion: 91.77%."
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for GRPC API - 50%
+        exp_alerts:
+          - exp_labels:
+              alertname: Central availability error budget exhaustion - 50%
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpcsvc
+              grpc_method: grpcmeth
+              severity: warning
+            exp_annotations:
+              message: "Latency error budget exhaustion for central's GRPC API. Current exhaustion: 91.77%."
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for HTTP API - 90%
+        exp_alerts:
+          - exp_labels:
+              alertname: Central availability error budget exhaustion - 90%
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpcsvc
+              grpc_method: grpcmeth
+              severity: critical
+            exp_annotations:
+              message: "Latency error budget exhaustion for central's HTTP API. Current exhaustion: 91.77%."
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for HTTP API - 70%
+        exp_alerts:
+          - exp_labels:
+              alertname: Central availability error budget exhaustion - 70%
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpcsvc
+              grpc_method: grpcmeth
+              severity: warning
+            exp_annotations:
+              message: "Latency error budget exhaustion for central's HTTP API. Current exhaustion: 91.77%."
+      - eval_time: 28d
+        alertname: Central latency error budget exhaustion for HTTP API - 50%
+        exp_alerts:
+          - exp_labels:
+              alertname: Central availability error budget exhaustion - 50%
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpcsvc
+              grpc_method: grpcmeth
+              severity: warning
+            exp_annotations:
+              message: "Latency error budget exhaustion for central's HTTP API. Current exhaustion: 91.77%."
+  - interval: 10m
+    input_series:
+      - series: central:grpc_server_handling_seconds:rate10m:p90{namespace="rhacs-abc", grpc_service="grpc_service", grpc_method="grpc_method"}
+        values: "1+0x2 0+0x2"
+      - series: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90{namespace="rhacs-abc", path="path"}
+        values: "1+0x2 0+0x2"
+    alert_rule_test:
+      - eval_time: 1h
+        alertname: Central latency burn rate for GRPC API
+        exp_alerts:
+          - exp_labels:
+              alertname: Central latency burn rate for GRPC API
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              grpc_service: grpc_service
+              grpc_method: grpc_method
+              severity: warning
+            exp_annotations:
+              message: "Latency  burn rate for central's GRPC API. Current burn rate per hour: 50."
+      - eval_time: 1h
+        alertname: Central latency burn rate for HTTP API
+        exp_alerts:
+          - exp_labels:
+              alertname: Central latency burn rate for HTTP API
+              namespace: rhacs-abc
+              rhacs_instance_id: rhacs-abc
+              service: central
+              path: path
+              severity: warning
+            exp_annotations:
+              message: "Latency  burn rate for central's HTTP API. Current burn rate per hour: 50."
