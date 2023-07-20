@@ -52,6 +52,7 @@ tests:
               service: central
               severity: critical
               namespace: rhacs-aaaabbbbccccddddeeee
+              rhacs_instance_id: aaaabbbbccccddddeeee
             exp_annotations:
               message: "High availability error budget exhaustion for central. Current exhaustion: 124.1%."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
@@ -181,6 +182,7 @@ tests:
               service: central
               severity: critical
               namespace: rhacs-ppppqqqqrrrrsssstttt
+              rhacs_instance_id: ppppqqqqrrrrsssstttt
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.17."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
