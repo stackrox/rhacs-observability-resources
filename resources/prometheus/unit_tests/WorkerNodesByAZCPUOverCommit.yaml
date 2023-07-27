@@ -28,4 +28,4 @@ tests:
             exp_annotations:
               description: "During the last 5 minutes, the average CPU limit commitment on worker nodes in AZ us-east-1a was 201%. This is above the recommended threshold of 200%."
               summary: "There is a high risk of over-committing CPU resources on worker nodes in AZ us-east-1a."
-              # TODO(ROX-16772) sop_url
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
