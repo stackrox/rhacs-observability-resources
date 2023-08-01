@@ -5198,7 +5198,7 @@ spec:
               "query": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
               "refId": "StandardVariableQuery"
             },
-            "refresh": 1,
+            "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 0,
