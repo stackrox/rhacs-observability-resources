@@ -1955,7 +1955,7 @@ spec:
       ],
       "refresh": "",
       "revision": 1,
-      "schemaVersion": 38,
+      "schemaVersion": 37,
       "style": "dark",
       "tags": [
         "rhacs"
@@ -1976,7 +1976,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\"}, rhacs_org_name)",
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
             "description": "Red Hat SSO Organisation Name",
             "hide": 0,
             "includeAll": true,
@@ -1985,7 +1985,7 @@ spec:
             "name": "org_name",
             "options": [],
             "query": {
-              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\"}, rhacs_org_name)",
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
@@ -2008,7 +2008,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\"}, rhacs_org_id)",
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
             "description": "Red Hat SSO Organisation ID",
             "hide": 0,
             "includeAll": true,
@@ -2017,7 +2017,7 @@ spec:
             "name": "org_id",
             "options": [],
             "query": {
-              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\"}, rhacs_org_id)",
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
@@ -2040,7 +2040,7 @@ spec:
               "type": "prometheus",
               "uid": "PBFA97CFB590B2093"
             },
-            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
             "description": "RHACS Central Instance ID",
             "hide": 0,
             "includeAll": true,
@@ -2049,13 +2049,41 @@ spec:
             "name": "instance_id",
             "options": [],
             "query": {
-              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\"}, rhacs_instance_id)",
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+            "description": "RHACS Cluster ID",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Cluster ID",
+            "multi": true,
+            "name": "cluster_id",
+            "options": [],
+            "query": {
+              "query": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
             "type": "query"
           }
         ]
