@@ -5191,7 +5191,7 @@ spec:
             "hide": 0,
             "includeAll": true,
             "label": "Cluster ID",
-            "multi": false,
+            "multi": true,
             "name": "cluster_id",
             "options": [],
             "query": {
