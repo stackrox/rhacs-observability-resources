@@ -5081,8 +5081,8 @@ spec:
           {
             "current": {
               "selected": false,
-              "text": "All",
-              "value": "$__all"
+              "text": "ce90s406mnv90blbnu20",
+              "value": "ce90s406mnv90blbnu20"
             },
             "datasource": {
               "type": "prometheus",
@@ -5093,7 +5093,7 @@ spec:
             "hide": 0,
             "includeAll": false,
             "label": "Central",
-            "multi": false,
+            "multi": true,
             "name": "instance_id",
             "options": [],
             "query": {
