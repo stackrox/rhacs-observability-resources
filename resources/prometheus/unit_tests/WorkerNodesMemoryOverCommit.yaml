@@ -12,20 +12,19 @@ tests:
         values: "1"
       - series: kube_node_status_allocatable{node="worker-1", resource="memory", job="kube-state-metrics"}
         values: "100"
-      - series: cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{node="worker-1", resource="memory", job="kube-state-metrics"}
-        values: "81"
+      - series: cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{node="worker-1", resource="memory", job="kube-state-metrics"}
+        values: "201"
     alert_rule_test:
       - eval_time: 1m
-        alertname: WorkerNodesByAZMemoryQuotaOverCommit
+        alertname: WorkerNodesMemoryOverCommit
         exp_alerts: []
       - eval_time: 5m
-        alertname: WorkerNodesByAZMemoryQuotaOverCommit
+        alertname: WorkerNodesMemoryOverCommit
         exp_alerts:
           - exp_labels:
-              alertname: WorkerNodesByAZMemoryQuotaOverCommit
-              availability_zone: us-east-1a
+              alertname: WorkerNodesMemoryOverCommit
               severity: critical
             exp_annotations:
-              description: "During the last 5 minutes, the average memory request commitment on worker nodes in AZ us-east-1a was 81%. This is above the recommended threshold of 80%."
-              summary: "There is a high risk of over-committing Memory resources on worker nodes in AZ us-east-1a."
+              description: "During the last 5 minutes, the average Memory limit commitment on worker nodes was 201%. This is above the recommended threshold of 200%."
+              summary: "There is a high risk of over-committing Memory resources on worker nodes."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
