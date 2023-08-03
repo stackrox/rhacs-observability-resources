@@ -604,7 +604,7 @@ spec:
             /
             availability_zone:strictly_worker_nodes:allocatable_cpu
         - alert: WorkerNodesMemoryQuotaOverCommit
-          expr: sum(availability_zone:strictly_worker_nodes:memory_request_ratio) > 0.8
+          expr: avg(availability_zone:strictly_worker_nodes:memory_request_ratio) > 0.8
           for: 5m
           labels:
             severity: critical
@@ -613,7 +613,7 @@ spec:
             description: "During the last 5 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
         - alert: WorkerNodesCPUQuotaOverCommit
-          expr: sum(availability_zone:strictly_worker_nodes:cpu_request_ratio) > 0.8
+          expr: avg(availability_zone:strictly_worker_nodes:cpu_request_ratio) > 0.8
           for: 5m
           labels:
             severity: critical
@@ -622,7 +622,7 @@ spec:
             description: "During the last 5 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 80%."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
         - alert: WorkerNodesMemoryOverCommit
-          expr: sum(availability_zone:strictly_worker_nodes:memory_limit_ratio) > 2
+          expr: avg(availability_zone:strictly_worker_nodes:memory_limit_ratio) > 2
           for: 5m
           labels:
             severity: critical
