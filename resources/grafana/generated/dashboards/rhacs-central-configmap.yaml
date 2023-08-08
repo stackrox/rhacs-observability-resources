@@ -1,3 +1,5 @@
+# rhacs-central-configmap.yaml is generated from rhacs-central.json
+# the configmap will be using RHOBS metrics and used in saas file app-interface
 apiVersion: v1
 kind: ConfigMap
 metadata:
