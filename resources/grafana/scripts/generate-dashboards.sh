@@ -6,16 +6,16 @@ set -eu
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2>/dev/null)"
 
-for file in "${SCRIPT_DIR}"/../generated/dashboards/*; do
+for file in "${SCRIPT_DIR}"/*.json; do
     name=$(basename "$file" .json)
     if [ "$name" == "rhacs-central" ]
     then
       # in-cluster
-      cat templates/dashboards/"$name"-dashboard.yaml > "$name"-dashboard.yaml
-      sed "s/^/    /" generated/dashboards/"$name".json >> "$name"-dashboard.yaml
+      cat templates/dashboards/"$name"-dashboard.yaml > generated/dashboards/"$name"-dashboard.yaml
+      sed "s/^/    /" "$name".json >> generated/dashboards/"$name"-dashboard.yaml
 
       # cluster-wide
-      cat templates/dashboards/"$name"-configmap.yaml > "$name"-configmap.yaml
-      sed "s/^/    /" generated/dashboards/"$name".json >> "$name"-configmap.yaml
+      cat templates/dashboards/"$name"-configmap.yaml > generated/dashboards/"$name"-configmap.yaml
+      sed "s/^/    /" "$name".json >> generated/dashboards/"$name"-configmap.yaml
     fi
 done
