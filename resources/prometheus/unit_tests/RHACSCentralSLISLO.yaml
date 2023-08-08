@@ -186,3 +186,32 @@ tests:
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.17."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+
+  # Test that the error rate is clamped at 1 even if Prometheus reports inconsistent metrics where
+  # 2xx requests > total requests. This may happen for short periods due to sampling errors.
+  - interval: 1m
+    input_series:
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-ppppqqqqrrrrsssstttt"}
+        values: "1+0x10"
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}
+        values: "0+24x10"
+      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}
+        values: "0+6x10"
+      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-ppppqqqqrrrrsssstttt"}
+        values: "0+6x10"
+    promql_expr_test:
+      - expr: central:incoming_requests:available:rate10m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'central:incoming_requests:available:rate10m{exported_namespace="rhacs-ppppqqqqrrrrsssstttt",  namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}'
+            value: 0.5
+      - expr: central:incoming_requests:total:rate10m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'central:incoming_requests:total:rate10m{exported_namespace="rhacs-ppppqqqqrrrrsssstttt", namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}'
+            value: 0.2
+      - expr: central:sli:error_rate
+        eval_time: 10m
+        exp_samples:
+          - labels: 'central:sli:error_rate{namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}'
+            value: 1
