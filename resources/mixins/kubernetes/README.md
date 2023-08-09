@@ -9,7 +9,7 @@ The Kubernetes mixin requires jsonnet to render its output resources:
 
 ## Update
 
-Execute `make generate` to update the mixin and re-generate all resources.
+Execute `make update` to update the mixin and re-generate all resources.
 
 ## OpenShift platform metrics federation
 

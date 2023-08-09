@@ -1,5 +1,8 @@
 .PHONY: update
-update:
+update: update-jb generate
+
+.PHONY: update-jb
+update-jb:
 	@jb update
 
 .PHONY: alerts
@@ -13,4 +16,4 @@ dashboards: templates/dashboards/*
 	@scripts/generate-dashboards.sh
 
 .PHONY: generate
-generate: update alerts dashboards
+generate: alerts dashboards
