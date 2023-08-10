@@ -1,10 +1,10 @@
-# rhacs-central-configmap.yaml is generated from rhacs-central.json
+# rhacs-consolidated-configmap.yaml is generated from rhacs-central.json
 # the configmap will be using RHOBS metrics and used in saas file app-interface
 apiVersion: v1
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: rhacs-central
+  name: rhacs-consolidated
   labels:
     grafana_dashboard: "true"
   annotations:
