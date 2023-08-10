@@ -1,13 +1,15 @@
-apiVersion: integreatly.org/v1alpha1
-kind: GrafanaDashboard
+# rhacs-central-configmap.yaml is generated from rhacs-central.json
+# the configmap will be using RHOBS metrics and used in saas file app-interface
+apiVersion: v1
+kind: ConfigMap
 metadata:
+  creationTimestamp: null
+  name: rhacs-central
   labels:
-    app: rhacs
-    monitoring-key: middleware
-  name: rhacs-central-dashboard
-  namespace: <namespace>
-spec:
-  name: rhacs-central.json
+    grafana_dashboard: "true"
+  annotations:
+    grafana-folder: /grafana-dashboard-definitions/Addons
+data:
   json: |
     {
       "annotations": {

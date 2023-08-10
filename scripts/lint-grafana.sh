@@ -17,6 +17,10 @@ for var in "$@"; do
 	if [[ "$var" == resources/grafana/mixins/kubernetes* ]]; then
 		continue
 	fi
+	# Don't lint templates folder and files other than yaml/json in grafana folder
+	if [[ "$var" == resources/grafana/templates* || "$var" != *.json || "$var" != *.yaml ]]; then
+		continue
+	fi
 	yq eval '.spec.json' "$var" >"${TMPDIR}"/dashboard.json
 	dashboard-linter lint "${TMPDIR}"/dashboard.json --strict --verbose
     rm -rf "$TMPDIR"

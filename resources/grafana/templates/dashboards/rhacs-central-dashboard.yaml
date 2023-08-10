@@ -1,0 +1,11 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: rhacs
+    monitoring-key: middleware
+  name: rhacs-central-dashboard
+  namespace: <namespace>
+spec:
+  name: rhacs-central.json
+  json: |
