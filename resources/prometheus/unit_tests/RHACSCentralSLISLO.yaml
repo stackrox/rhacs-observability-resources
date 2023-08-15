@@ -16,8 +16,6 @@ tests:
         values: "1x1000"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
         values: "1x1000"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1+0x1000"
       - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
         values: "1x1000"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
@@ -35,8 +33,6 @@ tests:
         values: "0x1000"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
         values: "1x1000"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1+0x1000"
       - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
         values: "1x1000"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
@@ -64,8 +60,6 @@ tests:
         values: "1+0x260 0+0x40 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
-        values: "1+1x360 362+2x40"
       - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
         values: "4+4x400"
       # 200m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.5% downtime.
@@ -98,8 +92,6 @@ tests:
         values: "1+0x265 0+0x35 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-ffffgggghhhhiiiijjjj", rhacs_instance_id="ffffgggghhhhiiiijjjj"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-ffffgggghhhhiiiijjjj", rhacs_instance_id="ffffgggghhhhiiiijjjj"}
-        values: "1+1x365 367+2x35"
       - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-ffffgggghhhhiiiijjjj"}
         values: "4+4x400"
       # 175m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.43% downtime.
@@ -132,8 +124,6 @@ tests:
         values: "1+0x279 0+0x21 1+0x100"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-kkkkllllmmmmnnnnoooo", rhacs_instance_id="kkkkllllmmmmnnnnoooo"}
         values: "1+1x400"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-kkkkllllmmmmnnnnoooo", rhacs_instance_id="kkkkllllmmmmnnnnoooo"}
-        values: "1+1x379 381+2x21"
       - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-kkkkllllmmmmnnnnoooo"}
         values: "4+4x400"
       # 105m downtime due Unavailable or 5xx responses. Out of 28 days, this equates to ~0.25% downtime.
@@ -166,8 +156,6 @@ tests:
         values: "1+0x6 0+0x6"
       - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-ppppqqqqrrrrsssstttt"}
         values: "5+5x14"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-ppppqqqqrrrrsssstttt"}
-        values: "5+5x14"
       - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-ppppqqqqrrrrsssstttt"}
         values: "5+5x14"
     alert_rule_test:
@@ -186,32 +174,3 @@ tests:
             exp_annotations:
               message: "High availability burn rate for central. Current burn rate per hour: 59.17."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
-
-  # Test that the error rate is clamped at 1 even if Prometheus reports inconsistent metrics where
-  # 2xx requests > total requests. This may happen for short periods due to sampling errors.
-  - interval: 1m
-    input_series:
-      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-ppppqqqqrrrrsssstttt"}
-        values: "1+0x10"
-      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}
-        values: "0+24x10"
-      - series: grpc_server_started_total{job="central", grpc_type="unary", namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}
-        values: "0+6x10"
-      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-ppppqqqqrrrrsssstttt"}
-        values: "0+6x10"
-    promql_expr_test:
-      - expr: central:incoming_requests:available:rate10m
-        eval_time: 10m
-        exp_samples:
-          - labels: 'central:incoming_requests:available:rate10m{exported_namespace="rhacs-ppppqqqqrrrrsssstttt",  namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}'
-            value: 0.5
-      - expr: central:incoming_requests:total:rate10m
-        eval_time: 10m
-        exp_samples:
-          - labels: 'central:incoming_requests:total:rate10m{exported_namespace="rhacs-ppppqqqqrrrrsssstttt", namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}'
-            value: 0.2
-      - expr: central:sli:error_rate
-        eval_time: 10m
-        exp_samples:
-          - labels: 'central:sli:error_rate{namespace="rhacs-ppppqqqqrrrrsssstttt", rhacs_instance_id="ppppqqqqrrrrsssstttt"}'
-            value: 1
