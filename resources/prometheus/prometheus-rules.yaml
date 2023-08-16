@@ -400,7 +400,7 @@ spec:
               (central:incoming_requests:total:rate10m > 0),
               0, 1
             )
-          record: central:error_rate10m
+          record: central:success_rate10m
 
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
@@ -413,7 +413,7 @@ spec:
         # reference in dashboards.
         - expr: |
             sum by (namespace, rhacs_instance_id) (
-                floor (central:error_rate10m + 0.35)
+                floor (central:success_rate10m + 0.35)
             )
             or on (namespace, rhacs_instance_id) central:sli:pod_ready
           record: central:sli:error_rate
