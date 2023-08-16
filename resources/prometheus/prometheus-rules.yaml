@@ -358,8 +358,8 @@ spec:
 
         - expr: |
             sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-            (rate(grpc_server_started_total{namespace=~"rhacs-.*", job="central", grpc_type="unary",grpc_service!="v1.PingService"}[10m]))
-          record: central:grpc_server_started:total:rate10m
+            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary",grpc_service!="v1.PingService"}[10m]))
+          record: central:grpc_server_handled:total:rate10m
 
         # HTTP
 
@@ -383,6 +383,25 @@ spec:
             )
           record: central:http_incoming_requests:total:rate10m
 
+        - expr: |
+            central:http_incoming_requests:not_5xx:rate10m
+              + on (namespace) group_left(rhacs_instance_id) central:grpc_server_handled:server_available_code:rate10m
+          record: central:incoming_requests:available:rate10m
+
+        - expr: |
+            central:http_incoming_requests:total:rate10m
+              + on (namespace) group_left(rhacs_instance_id) central:grpc_server_handled:total:rate10m
+          record: central:incoming_requests:total:rate10m
+
+        - expr: |
+            clamp (
+              central:incoming_requests:available:rate10m
+                /
+              (central:incoming_requests:total:rate10m > 0),
+              0, 1
+            )
+          record: central:error_rate10m
+
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
@@ -394,15 +413,7 @@ spec:
         # reference in dashboards.
         - expr: |
             sum by (namespace, rhacs_instance_id) (
-              floor(
-                (
-                  central:http_incoming_requests:not_5xx:rate10m
-                + on (namespace) group_left(rhacs_instance_id) central:grpc_server_handled:server_available_code:rate10m
-                ) / ((
-                  central:http_incoming_requests:total:rate10m
-                + on (namespace) group_left(rhacs_instance_id) central:grpc_server_started:total:rate10m
-                ) > 0) + 0.35
-              )
+                floor (central:error_rate10m + 0.35)
             )
             or on (namespace, rhacs_instance_id) central:sli:pod_ready
           record: central:sli:error_rate
