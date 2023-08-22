@@ -363,9 +363,9 @@
       "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
       "summary": "Processes experience elevated CPU throttling."
     "expr": |
-      sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (container, pod, namespace)
+      sum(increase(container_cpu_cfs_throttled_periods_total{container!="", namespace!~"openshift-.*"}[5m])) by (container, pod, namespace)
         /
-      sum(increase(container_cpu_cfs_periods_total{}[5m])) by (container, pod, namespace)
+      sum(increase(container_cpu_cfs_periods_total{namespace!~"openshift-.*"}[5m])) by (container, pod, namespace)
         > ( 25 / 100 )
     "for": "15m"
     "labels":
