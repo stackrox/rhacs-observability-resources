@@ -412,8 +412,8 @@ spec:
         # We keep the `namespace` and `rhacs_instance_id` labels to be consistent with other SLI metrics and for
         # reference in dashboards.
         - expr: |
-            sum by (namespace, rhacs_instance_id) (
-                floor (central:success_rate10m + 0.35)
+            max by (namespace, rhacs_instance_id) (
+                central:success_rate10m > bool 0.65
             )
             or on (namespace, rhacs_instance_id) central:sli:pod_ready
           record: central:sli:error_rate
