@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 11,
+      "id": 12,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -630,7 +630,7 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "count(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
+              "expr": "count(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"} > 0) or vector(0)",
               "interval": "",
               "legendFormat": "Clusters",
               "range": true,
@@ -1605,8 +1605,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1643,8 +1642,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "orange",
@@ -1710,8 +1708,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "orange",
@@ -1757,8 +1754,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "orange",
@@ -1955,7 +1951,7 @@ spec:
       ],
       "refresh": "",
       "revision": 1,
-      "schemaVersion": 37,
+      "schemaVersion": 38,
       "style": "dark",
       "tags": [
         "rhacs"
@@ -2096,6 +2092,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 4,
+      "version": 3,
       "weekStart": ""
     }
