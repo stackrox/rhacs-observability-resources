@@ -1,0 +1,1445 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: rhacs
+    monitoring-key: middleware
+  name: rhacs-central-slo-dashboard
+  namespace: <namespace>
+spec:
+  name: rhacs-central-slo.json
+  json: |
+    {
+      "annotations": {
+    	"list": [
+    	  {
+    		"builtIn": 1,
+    		"datasource": {
+    		  "type": "grafana",
+    		  "uid": "-- Grafana --"
+    		},
+    		"enable": true,
+    		"hide": true,
+    		"iconColor": "rgba(0, 211, 255, 1)",
+    		"name": "Annotations & Alerts",
+    		"target": {
+    		  "limit": 100,
+    		  "matchAny": false,
+    		  "tags": [],
+    		  "type": "dashboard"
+    		},
+    		"type": "dashboard"
+    	  }
+    	]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 7,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "description": "",
+    	  "gridPos": {
+    		"h": 5,
+    		"w": 23,
+    		"x": 0,
+    		"y": 0
+    	  },
+    	  "id": 4,
+    	  "options": {
+    		"code": {
+    		  "language": "plaintext",
+    		  "showLineNumbers": false,
+    		  "showMiniMap": false
+    		},
+    		"content": "## Definition\n\nThe availability of Central is defined as a combination of pod ready status and API error rate.\n\n`Availability SLI = Pod Ready SLI * Error Rate SLI`\n\nThe SLO target is 99% availability calculated over 28 day rolling intervals.",
+    		"mode": "markdown"
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "type": "text"
+    	},
+    	{
+    	  "collapsed": false,
+    	  "gridPos": {
+    		"h": 1,
+    		"w": 24,
+    		"x": 0,
+    		"y": 5
+    	  },
+    	  "id": 22,
+    	  "panels": [],
+    	  "title": "Summary",
+    	  "type": "row"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"axisCenteredZero": false,
+    			"axisColorMode": "text",
+    			"axisLabel": "",
+    			"axisPlacement": "auto",
+    			"barAlignment": 0,
+    			"drawStyle": "line",
+    			"fillOpacity": 0,
+    			"gradientMode": "none",
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			},
+    			"lineInterpolation": "linear",
+    			"lineWidth": 1,
+    			"pointSize": 5,
+    			"scaleDistribution": {
+    			  "type": "linear"
+    			},
+    			"showPoints": "auto",
+    			"spanNulls": false,
+    			"stacking": {
+    			  "group": "A",
+    			  "mode": "none"
+    			},
+    			"thresholdsStyle": {
+    			  "mode": "off"
+    			}
+    		  },
+    		  "mappings": [],
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  }
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 10,
+    		"w": 12,
+    		"x": 0,
+    		"y": 6
+    	  },
+    	  "id": 25,
+    	  "options": {
+    		"legend": {
+    		  "calcs": [],
+    		  "displayMode": "list",
+    		  "placement": "bottom",
+    		  "showLegend": true
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "count(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} <= 1 and central:sli:availability) or vector(0)",
+    		  "format": "time_series",
+    		  "instant": false,
+    		  "legendFormat": "OK",
+    		  "range": true,
+    		  "refId": "A"
+    		},
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "count(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} > 1 and central:sli:availability) or vector(0)",
+    		  "hide": false,
+    		  "instant": false,
+    		  "legendFormat": "MISS",
+    		  "range": true,
+    		  "refId": "B"
+    		}
+    	  ],
+    	  "title": "SLO count",
+    	  "transformations": [],
+    	  "type": "timeseries"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			}
+    		  },
+    		  "mappings": []
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 10,
+    		"w": 11,
+    		"x": 12,
+    		"y": 6
+    	  },
+    	  "id": 20,
+    	  "options": {
+    		"displayLabels": [
+    		  "percent",
+    		  "name"
+    		],
+    		"legend": {
+    		  "displayMode": "list",
+    		  "placement": "right",
+    		  "showLegend": true
+    		},
+    		"pieType": "pie",
+    		"reduceOptions": {
+    		  "calcs": [
+    			"lastNotNull"
+    		  ],
+    		  "fields": "",
+    		  "values": false
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "count(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} < 0.5 and central:sli:availability)",
+    		  "format": "time_series",
+    		  "instant": true,
+    		  "legendFormat": "x < 0.5",
+    		  "range": false,
+    		  "refId": "A"
+    		},
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "count(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} >= 0.5 and central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} < 0.7 and central:sli:availability)",
+    		  "hide": false,
+    		  "instant": true,
+    		  "legendFormat": "0.5 < x < 0.7",
+    		  "range": false,
+    		  "refId": "B"
+    		},
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "count(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} >= 0.7 and central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} < 1  and central:sli:availability)",
+    		  "hide": false,
+    		  "instant": true,
+    		  "legendFormat": "0.7 < x < 1",
+    		  "range": false,
+    		  "refId": "C"
+    		},
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "count(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} >= 1 and central:sli:availability)",
+    		  "hide": false,
+    		  "instant": true,
+    		  "legendFormat": "x > 1",
+    		  "range": false,
+    		  "refId": "D"
+    		}
+    	  ],
+    	  "title": "Error Budget Exhaustion [28d]",
+    	  "transformations": [],
+    	  "type": "piechart"
+    	},
+    	{
+    	  "collapsed": false,
+    	  "gridPos": {
+    		"h": 1,
+    		"w": 24,
+    		"x": 0,
+    		"y": 16
+    	  },
+    	  "id": 16,
+    	  "panels": [],
+    	  "title": "Table View",
+    	  "type": "row"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "description": "Probe instances are excluded from the table.",
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "thresholds"
+    		  },
+    		  "custom": {
+    			"align": "left",
+    			"cellOptions": {
+    			  "type": "auto"
+    			},
+    			"filterable": true,
+    			"inspect": false,
+    			"minWidth": 50
+    		  },
+    		  "decimals": 3,
+    		  "mappings": [],
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": [
+    		  {
+    			"matcher": {
+    			  "id": "byName",
+    			  "options": "rhacs_org_id"
+    			},
+    			"properties": [
+    			  {
+    				"id": "unit",
+    				"value": "string"
+    			  }
+    			]
+    		  },
+    		  {
+    			"matcher": {
+    			  "id": "byName",
+    			  "options": "Availability"
+    			},
+    			"properties": [
+    			  {
+    				"id": "thresholds",
+    				"value": {
+    				  "mode": "absolute",
+    				  "steps": [
+    					{
+    					  "color": "dark-red",
+    					  "value": null
+    					},
+    					{
+    					  "color": "dark-yellow",
+    					  "value": 0.99
+    					},
+    					{
+    					  "color": "dark-green",
+    					  "value": 0.995
+    					}
+    				  ]
+    				}
+    			  },
+    			  {
+    				"id": "max",
+    				"value": 1
+    			  },
+    			  {
+    				"id": "custom.cellOptions",
+    				"value": {
+    				  "type": "color-text"
+    				}
+    			  },
+    			  {
+    				"id": "custom.inspect",
+    				"value": false
+    			  }
+    			]
+    		  },
+    		  {
+    			"matcher": {
+    			  "id": "byName",
+    			  "options": "Exhaustion"
+    			},
+    			"properties": [
+    			  {
+    				"id": "thresholds",
+    				"value": {
+    				  "mode": "absolute",
+    				  "steps": [
+    					{
+    					  "color": "dark-green",
+    					  "value": null
+    					},
+    					{
+    					  "color": "semi-dark-blue",
+    					  "value": 0.5
+    					},
+    					{
+    					  "color": "dark-yellow",
+    					  "value": 0.7
+    					},
+    					{
+    					  "color": "dark-orange",
+    					  "value": 0.9
+    					},
+    					{
+    					  "color": "dark-red",
+    					  "value": 1
+    					}
+    				  ]
+    				}
+    			  },
+    			  {
+    				"id": "custom.cellOptions",
+    				"value": {
+    				  "mode": "lcd",
+    				  "type": "gauge"
+    				}
+    			  }
+    			]
+    		  }
+    		]
+    	  },
+    	  "gridPos": {
+    		"h": 14,
+    		"w": 23,
+    		"x": 0,
+    		"y": 17
+    	  },
+    	  "id": 18,
+    	  "options": {
+    		"footer": {
+    		  "countRows": false,
+    		  "enablePagination": true,
+    		  "fields": [],
+    		  "reducer": [
+    			"mean"
+    		  ],
+    		  "show": true
+    		},
+    		"showHeader": true,
+    		"sortBy": []
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "central:sli:availability:extended_avg_over_time28d{rhacs_instance_id=~\"$instance_id\"} and central:sli:availability",
+    		  "format": "table",
+    		  "instant": true,
+    		  "interval": "",
+    		  "legendFormat": "xx",
+    		  "range": false,
+    		  "refId": "A"
+    		},
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "sum by (rhacs_instance_id) (central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"} and central:sli:availability)",
+    		  "format": "table",
+    		  "hide": false,
+    		  "instant": true,
+    		  "legendFormat": "__auto",
+    		  "range": false,
+    		  "refId": "B"
+    		},
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "exemplar": false,
+    		  "expr": "process_cpu_seconds_total{rhacs_instance_id=~\"$instance_id\"}",
+    		  "format": "table",
+    		  "hide": false,
+    		  "instant": true,
+    		  "legendFormat": "__auto",
+    		  "range": false,
+    		  "refId": "C"
+    		}
+    	  ],
+    	  "title": "SLOs",
+    	  "transformations": [
+    		{
+    		  "id": "joinByField",
+    		  "options": {
+    			"byField": "rhacs_instance_id",
+    			"mode": "outer"
+    		  }
+    		},
+    		{
+    		  "id": "organize",
+    		  "options": {
+    			"excludeByName": {
+    			  "Time": true,
+    			  "Time 1": true,
+    			  "Time 2": true,
+    			  "Time 3": true,
+    			  "Value": false,
+    			  "Value #C": true,
+    			  "__name__": true,
+    			  "__name__ 1": true,
+    			  "__name__ 2": true,
+    			  "apiserver": true,
+    			  "container": true,
+    			  "endpoint": true,
+    			  "instance": true,
+    			  "job": true,
+    			  "metrics_path": true,
+    			  "namespace": true,
+    			  "namespace 1": true,
+    			  "namespace 2": true,
+    			  "node": true,
+    			  "observability": true,
+    			  "pod": true,
+    			  "prometheus": true,
+    			  "prometheus_replica": true,
+    			  "rhacs_cluster_name": true,
+    			  "rhacs_environment": true,
+    			  "rhacs_instance_type": true,
+    			  "rhacs_version": false,
+    			  "service": true
+    			},
+    			"indexByName": {
+    			  "Time 1": 9,
+    			  "Time 2": 10,
+    			  "Time 3": 13,
+    			  "Value #A": 1,
+    			  "Value #B": 2,
+    			  "Value #C": 28,
+    			  "__name__ 1": 11,
+    			  "__name__ 2": 14,
+    			  "apiserver": 15,
+    			  "container": 23,
+    			  "endpoint": 16,
+    			  "instance": 17,
+    			  "job": 18,
+    			  "metrics_path": 27,
+    			  "namespace 1": 12,
+    			  "namespace 2": 19,
+    			  "node": 26,
+    			  "observability": 7,
+    			  "pod": 24,
+    			  "prometheus": 20,
+    			  "prometheus_replica": 21,
+    			  "rhacs_cluster_name": 6,
+    			  "rhacs_environment": 8,
+    			  "rhacs_instance_id": 0,
+    			  "rhacs_instance_type": 25,
+    			  "rhacs_org_id": 4,
+    			  "rhacs_org_name": 3,
+    			  "rhacs_version": 5,
+    			  "service": 22
+    			},
+    			"renameByName": {
+    			  "Value": "Availability",
+    			  "Value #A": "Availability",
+    			  "Value #B": "Exhaustion",
+    			  "rhacs_cluster_name": "",
+    			  "rhacs_environment": "",
+    			  "rhacs_instance_id": "Instance ID",
+    			  "rhacs_org_id": "Organisation ID",
+    			  "rhacs_org_name": "Organisation",
+    			  "rhacs_version": "Version"
+    			}
+    		  }
+    		},
+    		{
+    		  "id": "sortBy",
+    		  "options": {
+    			"fields": {},
+    			"sort": [
+    			  {
+    				"desc": true,
+    				"field": "Exhaustion"
+    			  }
+    			]
+    		  }
+    		}
+    	  ],
+    	  "type": "table"
+    	},
+    	{
+    	  "collapsed": false,
+    	  "gridPos": {
+    		"h": 1,
+    		"w": 24,
+    		"x": 0,
+    		"y": 31
+    	  },
+    	  "id": 2,
+    	  "panels": [],
+    	  "title": "By Instance",
+    	  "type": "row"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "gridPos": {
+    		"h": 2,
+    		"w": 23,
+    		"x": 0,
+    		"y": 32
+    	  },
+    	  "id": 24,
+    	  "options": {
+    		"code": {
+    		  "language": "plaintext",
+    		  "showLineNumbers": false,
+    		  "showMiniMap": false
+    		},
+    		"content": "Select instances via the variables on top of the dashbord. If multiple Centrals are selected, the SLIs/SLOs are averaged.",
+    		"mode": "markdown"
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "type": "text"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "description": "Target: `99%`",
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "thresholds"
+    		  },
+    		  "decimals": 3,
+    		  "mappings": [],
+    		  "max": 1,
+    		  "min": 0,
+    		  "thresholds": {
+    			"mode": "percentage",
+    			"steps": [
+    			  {
+    				"color": "dark-red",
+    				"value": null
+    			  },
+    			  {
+    				"color": "semi-dark-yellow",
+    				"value": 99
+    			  },
+    			  {
+    				"color": "dark-green",
+    				"value": 99.5
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 5,
+    		"x": 0,
+    		"y": 34
+    	  },
+    	  "id": 6,
+    	  "options": {
+    		"orientation": "auto",
+    		"reduceOptions": {
+    		  "calcs": [
+    			"lastNotNull"
+    		  ],
+    		  "fields": "",
+    		  "values": false
+    		},
+    		"showThresholdLabels": false,
+    		"showThresholdMarkers": true
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:sli:availability:extended_avg_over_time28d{rhacs_instance_id=~\"$instance_id\"})",
+    		  "legendFormat": "__auto",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Availability SLO [28d]",
+    	  "type": "gauge"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "description": "`Pod Ready SLI * Error Rate SLI`",
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"axisCenteredZero": false,
+    			"axisColorMode": "text",
+    			"axisLabel": "",
+    			"axisPlacement": "auto",
+    			"barAlignment": 0,
+    			"drawStyle": "line",
+    			"fillOpacity": 0,
+    			"gradientMode": "none",
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			},
+    			"lineInterpolation": "linear",
+    			"lineWidth": 1,
+    			"pointSize": 5,
+    			"scaleDistribution": {
+    			  "type": "linear"
+    			},
+    			"showPoints": "auto",
+    			"spanNulls": false,
+    			"stacking": {
+    			  "group": "A",
+    			  "mode": "none"
+    			},
+    			"thresholdsStyle": {
+    			  "mode": "off"
+    			}
+    		  },
+    		  "mappings": [],
+    		  "max": 1,
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 6,
+    		"x": 5,
+    		"y": 34
+    	  },
+    	  "id": 9,
+    	  "options": {
+    		"legend": {
+    		  "calcs": [],
+    		  "displayMode": "list",
+    		  "placement": "bottom",
+    		  "showLegend": false
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:sli:availability{rhacs_instance_id=~\"$instance_id\"})",
+    		  "legendFormat": "{{label_name}}",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Availability SLI",
+    	  "type": "timeseries"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "description": "`1` is at least one pod is in ready state. `0` otherwise.",
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"axisCenteredZero": false,
+    			"axisColorMode": "text",
+    			"axisLabel": "",
+    			"axisPlacement": "auto",
+    			"barAlignment": 0,
+    			"drawStyle": "line",
+    			"fillOpacity": 0,
+    			"gradientMode": "none",
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			},
+    			"lineInterpolation": "linear",
+    			"lineWidth": 1,
+    			"pointSize": 5,
+    			"scaleDistribution": {
+    			  "type": "linear"
+    			},
+    			"showPoints": "auto",
+    			"spanNulls": false,
+    			"stacking": {
+    			  "group": "A",
+    			  "mode": "none"
+    			},
+    			"thresholdsStyle": {
+    			  "mode": "off"
+    			}
+    		  },
+    		  "mappings": [],
+    		  "max": 1,
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 6,
+    		"x": 11,
+    		"y": 34
+    	  },
+    	  "id": 13,
+    	  "options": {
+    		"legend": {
+    		  "calcs": [],
+    		  "displayMode": "list",
+    		  "placement": "bottom",
+    		  "showLegend": false
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:sli:pod_ready{namespace=~\"rhacs-$instance_id\"})",
+    		  "legendFormat": "{{label_name}}",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Pod Ready SLI",
+    	  "type": "timeseries"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "description": "`1` if the combined error rate of gRPC and HTTP requests is `<35%`. `0` otherwise.\n\nA gRPC error is defined by a response with `grpc_code != OK`. An HTTP error is defined by a response with status code `5xx`.",
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"axisCenteredZero": false,
+    			"axisColorMode": "text",
+    			"axisLabel": "",
+    			"axisPlacement": "auto",
+    			"barAlignment": 0,
+    			"drawStyle": "line",
+    			"fillOpacity": 0,
+    			"gradientMode": "none",
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			},
+    			"lineInterpolation": "linear",
+    			"lineWidth": 1,
+    			"pointSize": 5,
+    			"scaleDistribution": {
+    			  "type": "linear"
+    			},
+    			"showPoints": "auto",
+    			"spanNulls": false,
+    			"stacking": {
+    			  "group": "A",
+    			  "mode": "none"
+    			},
+    			"thresholdsStyle": {
+    			  "mode": "off"
+    			}
+    		  },
+    		  "mappings": [],
+    		  "max": 1,
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 6,
+    		"x": 17,
+    		"y": 34
+    	  },
+    	  "id": 12,
+    	  "options": {
+    		"legend": {
+    		  "calcs": [],
+    		  "displayMode": "list",
+    		  "placement": "bottom",
+    		  "showLegend": false
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:sli:error_rate{rhacs_instance_id=~\"$instance_id\"})",
+    		  "legendFormat": "{{label_name}}",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Error Rate SLI",
+    	  "type": "timeseries"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "thresholds"
+    		  },
+    		  "mappings": [],
+    		  "min": 0,
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "dark-green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "light-blue",
+    				"value": 0.5
+    			  },
+    			  {
+    				"color": "semi-dark-yellow",
+    				"value": 0.7
+    			  },
+    			  {
+    				"color": "dark-orange",
+    				"value": 0.9
+    			  },
+    			  {
+    				"color": "dark-red",
+    				"value": 1
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 5,
+    		"x": 0,
+    		"y": 42
+    	  },
+    	  "id": 7,
+    	  "options": {
+    		"orientation": "auto",
+    		"reduceOptions": {
+    		  "calcs": [
+    			"lastNotNull"
+    		  ],
+    		  "fields": "",
+    		  "values": false
+    		},
+    		"showThresholdLabels": false,
+    		"showThresholdMarkers": true
+    	  },
+    	  "pluginVersion": "9.4.7",
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"})",
+    		  "legendFormat": "__auto",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Error Budget Exhaustion [28d]",
+    	  "type": "gauge"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"axisCenteredZero": false,
+    			"axisColorMode": "text",
+    			"axisLabel": "",
+    			"axisPlacement": "auto",
+    			"barAlignment": 0,
+    			"drawStyle": "line",
+    			"fillOpacity": 0,
+    			"gradientMode": "none",
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			},
+    			"lineInterpolation": "linear",
+    			"lineWidth": 1,
+    			"pointSize": 5,
+    			"scaleDistribution": {
+    			  "type": "linear"
+    			},
+    			"showPoints": "auto",
+    			"spanNulls": false,
+    			"stacking": {
+    			  "group": "A",
+    			  "mode": "none"
+    			},
+    			"thresholdsStyle": {
+    			  "mode": "off"
+    			}
+    		  },
+    		  "mappings": [],
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  },
+    		  "unit": "percentunit"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 9,
+    		"x": 5,
+    		"y": 42
+    	  },
+    	  "id": 10,
+    	  "options": {
+    		"legend": {
+    		  "calcs": [],
+    		  "displayMode": "list",
+    		  "placement": "bottom",
+    		  "showLegend": false
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:slo:availability:error_budget_exhaustion{rhacs_instance_id=~\"$instance_id\"})",
+    		  "legendFormat": "{{label_name}}",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Error Budget Exhaustion [28d]",
+    	  "type": "timeseries"
+    	},
+    	{
+    	  "datasource": {
+    		"type": "prometheus",
+    		"uid": "PBFA97CFB590B2093"
+    	  },
+    	  "fieldConfig": {
+    		"defaults": {
+    		  "color": {
+    			"mode": "palette-classic"
+    		  },
+    		  "custom": {
+    			"axisCenteredZero": false,
+    			"axisColorMode": "text",
+    			"axisLabel": "",
+    			"axisPlacement": "auto",
+    			"barAlignment": 0,
+    			"drawStyle": "line",
+    			"fillOpacity": 0,
+    			"gradientMode": "none",
+    			"hideFrom": {
+    			  "legend": false,
+    			  "tooltip": false,
+    			  "viz": false
+    			},
+    			"lineInterpolation": "linear",
+    			"lineWidth": 1,
+    			"pointSize": 5,
+    			"scaleDistribution": {
+    			  "type": "linear"
+    			},
+    			"showPoints": "auto",
+    			"spanNulls": false,
+    			"stacking": {
+    			  "group": "A",
+    			  "mode": "none"
+    			},
+    			"thresholdsStyle": {
+    			  "mode": "off"
+    			}
+    		  },
+    		  "mappings": [],
+    		  "thresholds": {
+    			"mode": "absolute",
+    			"steps": [
+    			  {
+    				"color": "green",
+    				"value": null
+    			  },
+    			  {
+    				"color": "red",
+    				"value": 80
+    			  }
+    			]
+    		  },
+    		  "unit": "none"
+    		},
+    		"overrides": []
+    	  },
+    	  "gridPos": {
+    		"h": 8,
+    		"w": 9,
+    		"x": 14,
+    		"y": 42
+    	  },
+    	  "id": 14,
+    	  "options": {
+    		"legend": {
+    		  "calcs": [],
+    		  "displayMode": "list",
+    		  "placement": "bottom",
+    		  "showLegend": false
+    		},
+    		"tooltip": {
+    		  "mode": "single",
+    		  "sort": "none"
+    		}
+    	  },
+    	  "targets": [
+    		{
+    		  "datasource": {
+    			"type": "prometheus",
+    			"uid": "PBFA97CFB590B2093"
+    		  },
+    		  "editorMode": "code",
+    		  "expr": "avg(central:slo:availability:burnrate1h{rhacs_instance_id=~\"$instance_id\"})",
+    		  "legendFormat": "{{label_name}}",
+    		  "range": true,
+    		  "refId": "A"
+    		}
+    	  ],
+    	  "title": "Burn Rate [1h]",
+    	  "type": "timeseries"
+    	}
+      ],
+      "refresh": "",
+      "revision": 1,
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [
+    	"rhacs"
+      ],
+      "templating": {
+    	"list": [
+    	  {
+    		"current": {
+    		  "selected": true,
+    		  "text": [
+    			"All"
+    		  ],
+    		  "value": [
+    			"$__all"
+    		  ]
+    		},
+    		"datasource": {
+    		  "type": "prometheus",
+    		  "uid": "PBFA97CFB590B2093"
+    		},
+    		"definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
+    		"description": "Red Hat SSO Organisation Name",
+    		"hide": 0,
+    		"includeAll": true,
+    		"label": "Organisation",
+    		"multi": true,
+    		"name": "org_name",
+    		"options": [],
+    		"query": {
+    		  "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
+    		  "refId": "StandardVariableQuery"
+    		},
+    		"refresh": 2,
+    		"regex": "",
+    		"skipUrlSync": false,
+    		"sort": 1,
+    		"type": "query"
+    	  },
+    	  {
+    		"current": {
+    		  "selected": true,
+    		  "text": [
+    			"All"
+    		  ],
+    		  "value": [
+    			"$__all"
+    		  ]
+    		},
+    		"datasource": {
+    		  "type": "prometheus",
+    		  "uid": "PBFA97CFB590B2093"
+    		},
+    		"definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
+    		"description": "Red Hat SSO Organisation ID",
+    		"hide": 0,
+    		"includeAll": true,
+    		"label": "Organisation ID",
+    		"multi": true,
+    		"name": "org_id",
+    		"options": [],
+    		"query": {
+    		  "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
+    		  "refId": "StandardVariableQuery"
+    		},
+    		"refresh": 2,
+    		"regex": "",
+    		"skipUrlSync": false,
+    		"sort": 1,
+    		"type": "query"
+    	  },
+    	  {
+    		"current": {
+    		  "selected": true,
+    		  "text": [
+    			"All"
+    		  ],
+    		  "value": [
+    			"$__all"
+    		  ]
+    		},
+    		"datasource": {
+    		  "type": "prometheus",
+    		  "uid": "PBFA97CFB590B2093"
+    		},
+    		"definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
+    		"description": "RHACS Central Instance ID",
+    		"hide": 0,
+    		"includeAll": true,
+    		"label": "Instance",
+    		"multi": true,
+    		"name": "instance_id",
+    		"options": [],
+    		"query": {
+    		  "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
+    		  "refId": "StandardVariableQuery"
+    		},
+    		"refresh": 2,
+    		"regex": "",
+    		"skipUrlSync": false,
+    		"sort": 1,
+    		"type": "query"
+    	  },
+    	  {
+    		"current": {
+    		  "selected": true,
+    		  "text": [
+    			"All"
+    		  ],
+    		  "value": [
+    			"$__all"
+    		  ]
+    		},
+    		"datasource": {
+    		  "type": "prometheus",
+    		  "uid": "PBFA97CFB590B2093"
+    		},
+    		"definition": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+    		"description": "RHACS Cluster ID",
+    		"hide": 0,
+    		"includeAll": true,
+    		"label": "Cluster ID",
+    		"multi": true,
+    		"name": "cluster_id",
+    		"options": [],
+    		"query": {
+    		  "query": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+    		  "refId": "StandardVariableQuery"
+    		},
+    		"refresh": 2,
+    		"regex": "",
+    		"skipUrlSync": false,
+    		"sort": 0,
+    		"type": "query"
+    	  }
+    	]
+      },
+      "time": {
+    	"from": "now-28d",
+    	"to": "now"
+      },
+      "timepicker": {
+    	"refresh_intervals": [
+    	  "5s",
+    	  "10s",
+    	  "30s",
+    	  "1m",
+    	  "5m",
+    	  "15m",
+    	  "30m",
+    	  "1h",
+    	  "2h",
+    	  "1d"
+    	]
+      },
+      "timezone": "",
+      "title": "RHACS Dataplane - Central SLOs",
+      "uid": "vH7ntMs4k",
+      "version": 2,
+      "weekStart": ""
+    }
+    

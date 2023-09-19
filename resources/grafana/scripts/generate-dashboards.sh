@@ -2,20 +2,16 @@
 
 set -eu
 
-! [ -x "$(command -v yq)" ] && echo 'yq not installed, the hook requires it.' && exit 1
-
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2>/dev/null)"
 
-for file in "${SCRIPT_DIR}"/*.json; do
+for file in "${SCRIPT_DIR}"/../sources/*.json; do
     name=$(basename "$file" .json)
-    if [ "$name" == "rhacs-central" ]
-    then
-      # in-cluster
-      cat templates/dashboards/"$name"-dashboard.yaml > generated/dashboards/"$name"-dashboard.yaml
-      sed "s/^/    /" "$name".json >> generated/dashboards/"$name"-dashboard.yaml
+    echo "generating dashboard for source $name"
+    # in-cluster
+    cat templates/dashboards/"$name"-dashboard.yaml > generated/dashboards/"$name"-dashboard.yaml
+    sed "s/^/    /" "$file" >> generated/dashboards/"$name"-dashboard.yaml
 
-      # cluster-wide
-      cat templates/dashboards/"$name"-configmap.yaml > generated/dashboards/"$name"-configmap.yaml
-      sed "s/^/    /" "$name".json >> generated/dashboards/"$name"-configmap.yaml
-    fi
+    # cluster-wide
+    cat templates/dashboards/"$name"-configmap.yaml > generated/dashboards/"$name"-configmap.yaml
+    sed "s/^/    /" "$file" >> generated/dashboards/"$name"-configmap.yaml
 done

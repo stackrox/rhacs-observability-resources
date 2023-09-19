@@ -24,6 +24,19 @@ The [Sync master -> production action](https://github.com/stackrox/rhacs-observa
 
 ## Contributing
 
+### Dashboards
+
+To make changes to the rhacs dashboards:
+
+* Update the dashboard .json in `resources/grafana/sources`.
+* Run `make generate` to generate the corresponding resources for the Grafana operator.
+
+To make changes to Kubernetes mixin resources:
+* Update `resources/mixins/kubernetes/mixin.libsonnet`.
+* Run `make generate` to generate the corresponding mixin resources.
+
+### Pre-commit hook
+
 This repository makes use of [pre-commit](https://pre-commit.com/) framework. Refer to the [installation instructions](https://pre-commit.com/#installation) for further information.
 To enable pre-commits, run the following in the root of the repository:
 ```bash
