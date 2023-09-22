@@ -18,9 +18,18 @@ Please follow the instructions in the fleet manager repository to install the He
 
 ## Branches
 
-The ACS cloud service data plane `stage` environment tracks the `master` branch. Conversely, the production environment tracks the `production` branch.
-Changes are merged from the `master` to the `production` branch after sufficient soak time on the stage environment.
-The [Sync master -> production action](https://github.com/stackrox/rhacs-observability-resources/actions/workflows/sync.yaml) triggers this branch synchronization.
+The ACS cloud service data plane environments track the following branches:
+
+| Environment | Branch     |
+| ----------- | ---------- |
+| integration | master     |
+| stage       | stage      |
+| production  | production |
+
+New changes should propagate through the branches with sufficient soak time. Use the
+[Sync master -> stage action](https://github.com/stackrox/rhacs-observability-resources/actions/workflows/sync-stage-from-master.yaml)
+and [Sync stage -> production action](https://github.com/stackrox/rhacs-observability-resources/actions/workflows/sync-prod-from-stage.yaml)
+GitHub actions to trigger branch synchronization.
 
 ## Contributing
 
