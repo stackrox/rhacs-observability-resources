@@ -1,3 +1,4 @@
 match[]:
-  # Federate all metrics to obtain all metrics for the Kubernetes mixin.
-  - '{__name__=~".*"}'
+  # Federate all platform metrics except ACS metrics. We want all base metrics for the Kubernetes mixin.
+  - '{__name__=~".*", job!="central"}'
+  - '{__name__=~".*", job="central", endpoint!="monitoring-tls"}'

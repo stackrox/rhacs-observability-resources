@@ -1,4 +1,4 @@
-name: Sync master -> production
+name: Sync stage -> production
 on:
   workflow_dispatch:
 jobs:
@@ -7,11 +7,11 @@ jobs:
     name: Syncing branches
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.4.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "master"
+          FROM_BRANCH: "stage"
           TO_BRANCH: "production"
