@@ -351,11 +351,15 @@ spec:
         # The error rate over the last 10 minutes must be smaller than 35% to count as available.
 
         # GRPC
+        # Tracks count of successful GRPC request over the last 10 minutes
+        # TODO(QUESTION): Why is ping service excluded?
         - expr: |
             sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
             (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_service!="v1.PingService", grpc_code!~"DeadlineExceeded|Internal|Unavailable|Unknown"}[10m]))
           record: central:grpc_server_handled:server_available_code:rate10m
 
+        # Tracks count of total GRPC requests over the last 10 minutes
+        # TODO(QUESTION): Why is ping service excluded?
         - expr: |
             sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
             (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary",grpc_service!="v1.PingService"}[10m]))
@@ -383,16 +387,19 @@ spec:
             )
           record: central:http_incoming_requests:total:rate10m
 
+        # Combine HTTP and GRPC successful response counts
         - expr: |
             central:http_incoming_requests:not_5xx:rate10m
               + on (namespace) group_left(rhacs_instance_id) central:grpc_server_handled:server_available_code:rate10m
           record: central:incoming_requests:available:rate10m
 
+        # Combine HTTP and GRPC total response counts to an aggregate over the last 10 minutes
         - expr: |
             central:http_incoming_requests:total:rate10m
               + on (namespace) group_left(rhacs_instance_id) central:grpc_server_handled:total:rate10m
           record: central:incoming_requests:total:rate10m
 
+        # Calculate Central HTTP success rate over the last 10 minutes
         - expr: |
             clamp (
               central:incoming_requests:available:rate10m
@@ -405,6 +412,7 @@ spec:
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
+        # 0 indicates the request error rate impacted the SLI, 1 is available.
 
         # If no requests have been registered in the rate period, we default to `central:sli:pod_ready`.
         # The fallback mechanism helps to avoid undefined values in the metric series, which are otherwise simply
@@ -424,6 +432,22 @@ spec:
         - expr: |
             central:sli:pod_ready * on (namespace, rhacs_instance_id) central:sli:error_rate
           record: central:sli:availability
+
+          # TODO(Steps):
+          # 28days is the contract we are alinging with, it slowly declines and this intentional
+          # For on-call it is not good because on-call engineer cannot fix it immediately.
+          # More useful is to alert on recent spikes in unavailabilities
+          # Idea:
+          # Create a second collection which triggers warnings (faster) and is resetable
+          # Burnrate could be used for it?
+
+          # Two objectives:
+          # 1. We want to ensure the contract is fulfilled and need to track availability over 28 days which slowly declines
+          # 2. We want to be alerted when the burn rate increases at an unusual rate
+          ### 1. GRPC alert at a failure rate (alert on Sensor GRPC failures, should it include Scanner?)
+          ### 2. HTTP alert  at a failure rate (do we have internal calls? Trigger an alert on high unsuccesful rates???)
+          # Suggestion: Alert on 35% of requests are failing over last 10 minutes
+          # How to exclude HTTP & GRPC calls which do not affect service availability?
 
         - expr: |
             sum by (namespace, rhacs_instance_id) (count_over_time(central:sli:availability[1h]))
@@ -482,6 +506,7 @@ spec:
         # 100% exhaustion means the SLO target has been reached.
         # >100% exhaustion means the SLO target has been violated.
         - expr: |
+            # 1 - 0.95 / (0.01)
             (1 - central:sli:availability:extended_avg_over_time28d) / (1 - scalar(central:slo:availability))
           record: central:slo:availability:error_budget_exhaustion
 
