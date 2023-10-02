@@ -351,9 +351,10 @@ spec:
         # The error rate over the last 10 minutes must be smaller than 35% to count as available.
 
         # GRPC
+        # TODO(ROX-19917): Re-add `grpc_code="Unknown"` to the list of server errors.
         - expr: |
             sum by (namespace, rhacs_instance_id, rhacs_org_id, rhacs_org_name, rhacs_cluster_name, rhacs_environment)
-            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_service!="v1.PingService", grpc_code!~"DeadlineExceeded|Internal|Unavailable|Unknown"}[10m]))
+            (rate(grpc_server_handled_total{namespace=~"rhacs-.*", job="central", grpc_type="unary", grpc_service!="v1.PingService", grpc_code!~"DeadlineExceeded|Internal|Unavailable"}[10m]))
           record: central:grpc_server_handled:server_available_code:rate10m
 
         - expr: |
