@@ -41,6 +41,10 @@ To make changes to the rhacs dashboards:
 * Run `make generate` to generate the corresponding resources for the Grafana operator.
 
 To make changes to Kubernetes mixin resources:
+
+First, make sure you have `go-jsonnet` and `jsonnet-bundler` installed.
+
+Then:
 * Update `resources/mixins/kubernetes/mixin.libsonnet`.
 * Run `make generate` to generate the corresponding mixin resources.
 
