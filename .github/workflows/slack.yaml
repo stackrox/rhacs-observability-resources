@@ -1,0 +1,22 @@
+name: Notify on push to production
+on:
+  push:
+    branches: ['production']
+
+jobs:
+  slack:
+    name: Slack
+    runs-on: ubuntu-latest
+    steps:
+    - name: Post to Slack about push to production
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} 
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: 'C04CV2JKV16' #forum-acs-cs-release
+        payload: >-
+          { "text":
+          ":warning: <${{ github.event.compare }}|Something>
+          has been pushed to the `${{ github.ref_name }}` branch of
+          <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>."
+          }
