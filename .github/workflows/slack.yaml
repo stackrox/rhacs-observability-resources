@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: Post to Slack about push to production
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} 
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: 'C04CV2JKV16' #forum-acs-cs-release
