@@ -1,5 +1,9 @@
 .PHONY: update
-update: update-jb generate
+update: install update-jb generate
+
+.PHONY: install
+install:
+	@jb install github.com/kubernetes-monitoring/kubernetes-mixin
 
 .PHONY: update-jb
 update-jb:
@@ -16,4 +20,4 @@ dashboards: templates/dashboards/*
 	@scripts/generate-dashboards.sh
 
 .PHONY: generate
-generate: alerts dashboards
+generate: install alerts dashboards
