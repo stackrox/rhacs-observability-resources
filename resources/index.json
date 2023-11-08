@@ -46,7 +46,8 @@
         "grafana/mixins/kubernetes/workload-total.yaml",
         "grafana/generated/dashboards/rhacs-central-dashboard.yaml",
         "grafana/generated/dashboards/rhacs-central-slo-dashboard.yaml",
-        "grafana/generated/dashboards/rhacs-cluster-overview-dashboard.yaml"
+        "grafana/generated/dashboards/rhacs-cluster-overview-dashboard.yaml",
+        "grafana/generated/dashboards/rhacs-cluster-resource-adjustment-dashboard.yaml"
       ],
       "grafanaVersion": "10.2.0"
     },
