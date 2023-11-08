@@ -1,11 +1,11 @@
-apiVersion: v1
-kind: ConfigMap
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
 metadata:
-  creationTimestamp: null
-  name: rhacs-cluster-resource-adjustment
   labels:
-    grafana_dashboard: "true"
-  annotations:
-    grafana-folder: /grafana-dashboard-definitions/Addons
-data:
+    app: rhacs
+    monitoring-key: middleware
+  name: rhacs-cluster-resource-adjustment-dashboard
+  namespace: <namespace>
+spec:
+  name: rhacs-cluster-resource-adjustment.json
   json: |
