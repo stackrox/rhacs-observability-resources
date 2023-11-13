@@ -549,7 +549,7 @@ spec:
       rules:
         - record: strictly_worker_nodes
           expr: |
-            kube_node_role{role="worker"} * on (node) (sum(kube_node_role) by (node) == 1)
+            kube_node_role{role="acscs-worker"} * on (node) (sum(kube_node_role) by (node) == 1)
         - record: node_availability_zone
           expr: |
             sum(label_replace(kube_node_labels, "availability_zone", "$1", "label_failure_domain_beta_kubernetes_io_zone", "(.*)")) by (availability_zone, node) > 0
