@@ -728,7 +728,7 @@
 			"uid": "PBFA97CFB590B2093"
 		  },
 		  "editorMode": "code",
-		  "expr": "availability_zone:strictly_worker_nodes:cpu_limit_ratio",
+		  "expr": "availability_zone:acscs_worker_nodes:cpu_limit_ratio",
 		  "interval": "",
 		  "legendFormat": "Limit / {{availability_zone}}",
 		  "range": true,
@@ -740,7 +740,7 @@
 			"uid": "PBFA97CFB590B2093"
 		  },
 		  "editorMode": "code",
-		  "expr": "availability_zone:strictly_worker_nodes:cpu_request_ratio",
+		  "expr": "availability_zone:acscs_worker_nodes:cpu_request_ratio",
 		  "hide": false,
 		  "interval": "",
 		  "legendFormat": "Request / {{availability_zone}}",
@@ -837,7 +837,7 @@
 			"uid": "PBFA97CFB590B2093"
 		  },
 		  "editorMode": "code",
-		  "expr": "availability_zone:strictly_worker_nodes:memory_limit_ratio",
+		  "expr": "availability_zone:acscs_worker_nodes:memory_limit_ratio",
 		  "interval": "",
 		  "legendFormat": "Limit / {{availability_zone}}",
 		  "range": true,
@@ -849,7 +849,7 @@
 			"uid": "PBFA97CFB590B2093"
 		  },
 		  "editorMode": "code",
-		  "expr": "availability_zone:strictly_worker_nodes:memory_request_ratio",
+		  "expr": "availability_zone:acscs_worker_nodes:memory_request_ratio",
 		  "hide": false,
 		  "interval": "",
 		  "legendFormat": "Request / {{availability_zone}}",

@@ -6,7 +6,7 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: kube_node_role{node="worker-1", role="worker"}
+      - series: kube_node_role{node="worker-1", role="acscs-worker"}
         values: "1"
       - series: kube_node_labels{node="worker-1", label_failure_domain_beta_kubernetes_io_zone="us-east-1a"}
         values: "1"
