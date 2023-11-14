@@ -12,6 +12,11 @@ repos:
       - id: end-of-file-fixer
   - repo: local
     hooks:
+      - id: make-generate
+        name: make generate
+        entry: ./scripts/run-make-generate.sh
+        language: system
+        pass_filenames: false
       - id: grafana-lint
         name: grafana lint
         entry: ./scripts/lint-grafana.sh
