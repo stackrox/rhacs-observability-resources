@@ -188,6 +188,17 @@ spec:
             summary: RHACS Operator '{{ $labels.workload }}' is reaching its memory limit.
             description: The RHACS operator '{{ $labels.workload }}' reached {{ $value | humanizePercentage }} of its memory limit and is at risk of being OOM killed.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-037-operator-memory-high.md"
+        - alert: RHACSOperatorMemoryUtilizationCritical
+          expr: |
+            rhacs_operator:namespace:workload:max_memory_usage_ratio > 0.9
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: RHACS Operator '{{ $labels.workload }}' is critically close to its memory limit.
+            description: The RHACS operator '{{ $labels.workload }}' reached {{ $value | humanizePercentage }} of its memory limit and is at high risk of being OOM killed.
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-037-operator-memory-high.md"
+
 
     - name: rhacs-aws-quota
       rules:

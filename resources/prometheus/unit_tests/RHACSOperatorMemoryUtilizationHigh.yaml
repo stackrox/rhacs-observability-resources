@@ -32,3 +32,31 @@ tests:
               description: "The RHACS operator 'operator-workload' reached 70% of its memory limit and is at risk of being OOM killed."
               summary: "RHACS Operator 'operator-workload' is reaching its memory limit."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-037-operator-memory-high.md"
+  - interval: 1m
+    input_series:
+      - series: kube_pod_info{namespace="rhacs", pod="operator-pod"}
+        values: "1+0x20"
+      - series: kube_pod_labels{namespace="rhacs", pod="operator-pod", label_app="rhacs-operator"}
+        values: "1+0x20"
+      - series: namespace_workload_pod:kube_pod_owner:relabel{namespace="rhacs", pod="operator-pod", workload="operator-workload"}
+        values: "1+0x20"
+      - series: container_memory_max_usage_bytes{namespace="rhacs", pod="operator-pod", container="operator-container"}
+        values: "50+0x10 95+0x10"
+      - series: container_spec_memory_limit_bytes{namespace="rhacs", pod="operator-pod", container="operator-container"}
+        values: "100+0x20"
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: RHACSOperatorMemoryUtilizationCritical
+        exp_alerts: []
+      - eval_time: 17m
+        alertname: RHACSOperatorMemoryUtilizationCritical
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSOperatorMemoryUtilizationCritical
+              severity: critical
+              namespace: rhacs
+              workload: operator-workload
+            exp_annotations:
+              description: "The RHACS operator 'operator-workload' reached 95% of its memory limit and is at high risk of being OOM killed."
+              summary: "RHACS Operator 'operator-workload' is critically close to its memory limit."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-037-operator-memory-high.md"
