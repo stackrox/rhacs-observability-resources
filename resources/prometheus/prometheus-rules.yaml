@@ -158,6 +158,37 @@ spec:
             summary: "Fleetshard synchronizer manages `{{ $value }}` centrals."
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
+
+    - name: rhacs-operator
+      rules:
+        - expr: |
+            sum (kube_pod_info{namespace="rhacs"}
+            * on (pod, namespace) group_left() kube_pod_labels{namespace="rhacs", label_app="rhacs-operator"}
+            * on (pod, namespace) group_left(workload) namespace_workload_pod:kube_pod_owner:relabel) by (namespace, workload, pod)
+          record: rhacs_operator:namespace:workload:pod
+        - expr: |
+            rhacs_operator:namespace:workload:pod
+            * on (pod, namespace) group_left() sum(container_memory_max_usage_bytes{container!=""}) by (pod, namespace)
+          record: rhacs_operator:namespace:workload:pod:max_memory_usage_bytes
+        - expr: |
+            rhacs_operator:namespace:workload:pod
+            * on (pod, namespace) group_left() sum(container_spec_memory_limit_bytes{container!=""}) by (pod, namespace)
+          record: rhacs_operator:namespace:workload:pod:memory_limit_bytes
+        - expr: |
+            sum(rhacs_operator:namespace:workload:pod:max_memory_usage_bytes / rhacs_operator:namespace:workload:pod:memory_limit_bytes)
+            by (namespace, workload)
+          record: rhacs_operator:namespace:workload:max_memory_usage_ratio
+        - alert: RHACSOperatorMemoryUtilizationHigh
+          expr: |
+            rhacs_operator:namespace:workload:max_memory_usage_ratio > 0.6
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: RHACS Operator '{{ $labels.workload }}' is reaching its memory limit.
+            description: The RHACS operator '{{ $labels.workload }}' reached {{ $value | humanizePercentage }} of its memory limit and is at risk of being OOM killed.
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-011-rhacs-operator-unavailable.md"
+
     - name: rhacs-aws-quota
       rules:
         - alert: RHACSCentralDBClustersUtilizationHigh
