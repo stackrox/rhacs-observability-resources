@@ -159,6 +159,38 @@ spec:
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
 
+    - name: tenant-resources
+      rules:
+        - expr: |
+            sum(container_memory_max_usage_bytes{namespace=~"rhacs-.{20}",container!="POD",container!=""}) by (namespace, container, pod)
+          record: rhacs_tenants:namespace:pod:container:max_memory_usage_bytes
+        - expr: |
+            sum(container_spec_memory_limit_bytes{namespace=~"rhacs-.{20}",container!="POD",container!=""}) by (namespace, container, pod)
+          record: rhacs_tenants:namespace:pod:container:memory_limit_bytes
+        - expr: |
+            rhacs_tenants:namespace:pod:container:max_memory_usage_bytes / rhacs_tenants:namespace:pod:container:memory_limit_bytes
+          record: rhacs_tenants:namespace:pod:container:max_memory_usage_ratio
+        - alert: RHACSTenantWorkloadMemoryUtilizationHigh
+          expr: |
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.75
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' is reaching its memory limit.
+            description: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' reached {{ $value | humanizePercentage }} of its memory limit and is at risk of being OOM killed.
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-038-tenant-workload-memory-high.md"
+        - alert: RHACSTenantWorkloadMemoryUtilizationCritical
+          expr: |
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.9
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' is critically reaching its memory limit.
+            description: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' reached {{ $value | humanizePercentage }} of its memory limit and is at high risk of being OOM killed.
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-038-tenant-workload-memory-high.md"
+
     - name: rhacs-operator
       rules:
         - expr: |
