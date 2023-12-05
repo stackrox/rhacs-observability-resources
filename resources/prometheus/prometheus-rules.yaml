@@ -162,7 +162,7 @@ spec:
     - name: tenant-resources
       rules:
         - expr: |
-            sum(container_memory_max_usage_bytes{namespace=~"rhacs-.{20}",container!="POD",container!=""}) by (namespace, container, pod)
+            sum(container_memory_working_set_bytes{namespace=~"rhacs-.{20}",container!="POD",container!=""}) by (namespace, container, pod)
           record: rhacs_tenants:namespace:pod:container:max_memory_usage_bytes
         - expr: |
             sum(container_spec_memory_limit_bytes{namespace=~"rhacs-.{20}",container!="POD",container!=""}) by (namespace, container, pod)

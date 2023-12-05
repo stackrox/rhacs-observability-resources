@@ -6,7 +6,7 @@ evaluation_interval: 1m
 tests:
   - interval: 1m
     input_series:
-      - series: container_memory_max_usage_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa", pod="mypod", container="container-1"}
+      - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa", pod="mypod", container="container-1"}
         values: "50+0x10 75+0x10"
       - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod", container="container-1"}
         values: "100+0x20"
@@ -29,7 +29,7 @@ tests:
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-038-tenant-workload-memory-high.md"
   - interval: 1m
     input_series:
-      - series: container_memory_max_usage_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="container-1"}
+      - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="container-1"}
         values: "50+0x10 90+0x10"
       - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="container-1"}
         values: "100+0x20"
