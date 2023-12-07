@@ -173,23 +173,23 @@ spec:
         - alert: RHACSTenantWorkloadMemoryUtilizationHigh
           expr: |
             rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.75
-          for: 5m
+          for: 10m
           labels:
             severity: warning
           annotations:
             summary: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' is reaching its memory limit.
             description: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' reached {{ $value | humanizePercentage }} of its memory limit and is at risk of being OOM killed.
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-038-tenant-workload-memory-high.md"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"
         - alert: RHACSTenantWorkloadMemoryUtilizationCritical
           expr: |
             rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.9
-          for: 5m
+          for: 10m
           labels:
             severity: critical
           annotations:
             summary: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' is critically reaching its memory limit.
             description: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' reached {{ $value | humanizePercentage }} of its memory limit and is at high risk of being OOM killed.
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-038-tenant-workload-memory-high.md"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"
 
     - name: rhacs-operator
       rules:
