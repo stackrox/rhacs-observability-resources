@@ -1,0 +1,52 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa", pod="mypod", container="container-1"}
+        values: "50+0x10 75+0x10"
+      - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod", container="container-1"}
+        values: "100+0x20"
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: RHACSTenantWorkloadMemoryUtilizationHigh
+        exp_alerts: []
+      - eval_time: 21m
+        alertname: RHACSTenantWorkloadMemoryUtilizationHigh
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSTenantWorkloadMemoryUtilizationHigh
+              severity: warning
+              namespace: rhacs-aaaaaaaaaaaaaaaaaaaa
+              pod: mypod
+              container: container-1
+            exp_annotations:
+              summary: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'container-1' in pod 'mypod' is reaching its memory limit.
+              description: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'container-1' in pod 'mypod' reached 75% of its memory limit and is at risk of being OOM killed.
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"
+  - interval: 1m
+    input_series:
+      - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="container-1"}
+        values: "50+0x10 90+0x10"
+      - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="container-1"}
+        values: "100+0x20"
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: RHACSTenantWorkloadMemoryUtilizationCritical
+        exp_alerts: []
+      - eval_time: 21m
+        alertname: RHACSTenantWorkloadMemoryUtilizationCritical
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSTenantWorkloadMemoryUtilizationCritical
+              severity: critical
+              namespace: rhacs-aaaaaaaaaaaaaaaaaaaa
+              pod: mypod
+              container: container-1
+            exp_annotations:
+              description: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'container-1' in pod 'mypod' reached 90% of its memory limit and is at high risk of being OOM killed.
+              summary: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'container-1' in pod 'mypod' is critically reaching its memory limit.
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"

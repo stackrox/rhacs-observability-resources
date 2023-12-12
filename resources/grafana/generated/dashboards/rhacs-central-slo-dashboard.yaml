@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 7,
+      "id": 15,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -61,7 +61,7 @@ spec:
     		"content": "## Definition\n\nThe availability of Central is defined as a combination of pod ready status and API error rate.\n\n`Availability SLI = Pod Ready SLI * Error Rate SLI`\n\nThe SLO target is 99% availability calculated over 28 day rolling intervals.",
     		"mode": "markdown"
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "type": "text"
     	},
     	{
@@ -88,6 +88,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -101,6 +102,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -460,6 +462,7 @@ spec:
     	  },
     	  "id": 18,
     	  "options": {
+    		"cellHeight": "sm",
     		"footer": {
     		  "countRows": false,
     		  "enablePagination": true,
@@ -472,7 +475,7 @@ spec:
     		"showHeader": true,
     		"sortBy": []
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "targets": [
     		{
     		  "datasource": {
@@ -640,7 +643,7 @@ spec:
     		"uid": "PBFA97CFB590B2093"
     	  },
     	  "gridPos": {
-    		"h": 2,
+    		"h": 3,
     		"w": 23,
     		"x": 0,
     		"y": 32
@@ -652,10 +655,10 @@ spec:
     		  "showLineNumbers": false,
     		  "showMiniMap": false
     		},
-    		"content": "Select instances via the variables on top of the dashbord. If multiple Centrals are selected, the SLIs/SLOs are averaged.",
+    		"content": "Select instances via the variables on top of the dashbord. If multiple Centrals are selected, the SLIs/SLOs are averaged.\n\nWe plot a proxy of the SLI based on the number of unavailability drops per hour (percentage gauges are exact). This renders better in Grafana for long ranges. Note that the actual down time may be shorter than is rendered. It might still be necessary to zoom in around burn rate spikes to get full resolution.",
     		"mode": "markdown"
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "type": "text"
     	},
     	{
@@ -698,10 +701,12 @@ spec:
     		"h": 8,
     		"w": 5,
     		"x": 0,
-    		"y": 34
+    		"y": 35
     	  },
     	  "id": 6,
     	  "options": {
+    		"minVizHeight": 75,
+    		"minVizWidth": 75,
     		"orientation": "auto",
     		"reduceOptions": {
     		  "calcs": [
@@ -713,7 +718,7 @@ spec:
     		"showThresholdLabels": false,
     		"showThresholdMarkers": true
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "targets": [
     		{
     		  "datasource": {
@@ -735,13 +740,14 @@ spec:
     		"type": "prometheus",
     		"uid": "PBFA97CFB590B2093"
     	  },
-    	  "description": "`Pod Ready SLI * Error Rate SLI`",
+    	  "description": "`Pod Ready SLI * Error Rate SLI`\n\nWe show a proxy of the SLI based on the number of unavailability drops because it renders better in Grafana.",
     	  "fieldConfig": {
     		"defaults": {
     		  "color": {
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -755,6 +761,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -794,7 +801,7 @@ spec:
     		"h": 8,
     		"w": 6,
     		"x": 5,
-    		"y": 34
+    		"y": 35
     	  },
     	  "id": 9,
     	  "options": {
@@ -816,7 +823,7 @@ spec:
     			"uid": "PBFA97CFB590B2093"
     		  },
     		  "editorMode": "code",
-    		  "expr": "avg(central:sli:availability{rhacs_instance_id=~\"$instance_id\"})",
+    		  "expr": "1 - clamp_max(avg(changes(central:sli:availability{namespace=~\"rhacs-$instance_id\"}[1h])), 1)",
     		  "legendFormat": "{{label_name}}",
     		  "range": true,
     		  "refId": "A"
@@ -830,13 +837,14 @@ spec:
     		"type": "prometheus",
     		"uid": "PBFA97CFB590B2093"
     	  },
-    	  "description": "`1` is at least one pod is in ready state. `0` otherwise.",
+    	  "description": "`1` is at least one pod is in ready state. `0` otherwise.\n\nWe show a proxy of the SLI based on the number of unavailability drops because it renders better in Grafana.",
     	  "fieldConfig": {
     		"defaults": {
     		  "color": {
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -850,6 +858,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -889,7 +898,7 @@ spec:
     		"h": 8,
     		"w": 6,
     		"x": 11,
-    		"y": 34
+    		"y": 35
     	  },
     	  "id": 13,
     	  "options": {
@@ -911,8 +920,8 @@ spec:
     			"uid": "PBFA97CFB590B2093"
     		  },
     		  "editorMode": "code",
-    		  "expr": "avg(central:sli:pod_ready{namespace=~\"rhacs-$instance_id\"})",
-    		  "legendFormat": "{{label_name}}",
+    		  "expr": "1 - clamp_max(avg(changes(central:sli:pod_ready{namespace=~\"rhacs-$instance_id\"}[1h])), 1)",
+    		  "legendFormat": "SLI",
     		  "range": true,
     		  "refId": "A"
     		}
@@ -925,13 +934,14 @@ spec:
     		"type": "prometheus",
     		"uid": "PBFA97CFB590B2093"
     	  },
-    	  "description": "`1` if the combined error rate of gRPC and HTTP requests is `<35%`. `0` otherwise.\n\nA gRPC error is defined by a response with `grpc_code != OK`. An HTTP error is defined by a response with status code `5xx`.",
+    	  "description": "`1` if the combined error rate of gRPC and HTTP requests is `<35%`. `0` otherwise.\n\nA gRPC error is defined by a response with `grpc_code != OK`. An HTTP error is defined by a response with status code `5xx`.\n\nWe show a proxy of the SLI based on the number of unavailability drops because it renders better in Grafana.",
     	  "fieldConfig": {
     		"defaults": {
     		  "color": {
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -945,6 +955,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -984,7 +995,7 @@ spec:
     		"h": 8,
     		"w": 6,
     		"x": 17,
-    		"y": 34
+    		"y": 35
     	  },
     	  "id": 12,
     	  "options": {
@@ -1006,7 +1017,7 @@ spec:
     			"uid": "PBFA97CFB590B2093"
     		  },
     		  "editorMode": "code",
-    		  "expr": "avg(central:sli:error_rate{rhacs_instance_id=~\"$instance_id\"})",
+    		  "expr": "1 - clamp_max(avg(changes(central:sli:error_rate{namespace=~\"rhacs-$instance_id\"}[1h])), 1)",
     		  "legendFormat": "{{label_name}}",
     		  "range": true,
     		  "refId": "A"
@@ -1060,10 +1071,12 @@ spec:
     		"h": 8,
     		"w": 5,
     		"x": 0,
-    		"y": 42
+    		"y": 43
     	  },
     	  "id": 7,
     	  "options": {
+    		"minVizHeight": 75,
+    		"minVizWidth": 75,
     		"orientation": "auto",
     		"reduceOptions": {
     		  "calcs": [
@@ -1075,7 +1088,7 @@ spec:
     		"showThresholdLabels": false,
     		"showThresholdMarkers": true
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "targets": [
     		{
     		  "datasource": {
@@ -1103,6 +1116,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -1116,6 +1130,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -1154,7 +1169,7 @@ spec:
     		"h": 8,
     		"w": 9,
     		"x": 5,
-    		"y": 42
+    		"y": 43
     	  },
     	  "id": 10,
     	  "options": {
@@ -1196,6 +1211,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -1209,6 +1225,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -1247,7 +1264,7 @@ spec:
     		"h": 8,
     		"w": 9,
     		"x": 14,
-    		"y": 42
+    		"y": 43
     	  },
     	  "id": 14,
     	  "options": {
@@ -1279,10 +1296,9 @@ spec:
     	  "type": "timeseries"
     	}
       ],
-      "refresh": "",
+      "refresh": false,
       "revision": 1,
-      "schemaVersion": 37,
-      "style": "dark",
+      "schemaVersion": 38,
       "tags": [
     	"rhacs"
       ],
@@ -1439,6 +1455,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central SLOs",
       "uid": "vH7ntMs4k",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
