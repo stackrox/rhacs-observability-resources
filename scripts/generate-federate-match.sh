@@ -3,6 +3,13 @@
 set -eou pipefail
 shopt -s inherit_errexit
 
+! [ -x "$(command -v jq)" ] && echo 'jq not installed, the script requires it.' && exit 1
+! [ -x "$(command -v mimirtool)" ] && echo 'mimirtool not installed, the script requires it.' && exit 1
+! [ -x "$(command -v realpath)" ] && echo 'realpath not installed, the script requires it.' && exit 1
+! [ -x "$(command -v sort)" ] && echo 'sort not installed, the script requires it.' && exit 1
+! [ -x "$(command -v uniq)" ] && echo 'uniq not installed, the script requires it.' && exit 1
+! [ -x "$(command -v yq)" ] && echo 'yq not installed, the script requires it.' && exit 1
+
 function log() {
     echo "${1:-}" >&2
 }
@@ -11,27 +18,6 @@ function log_exit() {
     log "${1:-}"
 
     exit 1
-}
-
-function check_command() {
-    local cmd="${1:-}"
-
-    echo "- Looking for '${cmd}'"
-    command -v "${cmd}" || log_exit "-- Command '${cmd}' required."
-    echo "- Found '${cmd}'!"
-}
-
-function check_dependencies() {
-    echo "--- Checking command dependencies"
-
-    check_command mimirtool
-    check_command realpath
-    check_command jq
-    check_command yq
-    check_command sort
-    check_command uniq
-
-    echo "--- Done!"
 }
 
 function get_rules_metrics() {
@@ -56,8 +42,6 @@ function get_rules_metrics() {
 }
 
 function main() {
-    check_dependencies
-
     local script_dir
     script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2>/dev/null)"
 
