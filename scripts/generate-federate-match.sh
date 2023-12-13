@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO:
-# - add entry in Makefile
-# - get metrics needed for combined dashboards
-# - create CI step that will fail if federated yaml in repo is different from generated one
-#   (to cover case where someone forgets to re-generate it locally)
-
 set -eou pipefail
 shopt -s inherit_errexit
 
@@ -18,7 +12,6 @@ function log_exit() {
 
     exit 1
 }
-
 
 function check_command() {
     local cmd="${1:-}"
@@ -98,6 +91,7 @@ function main() {
 
     # Clean up the temp directory with all transient files
     rm -rf "${working_tmp_dir}"
+    log "Deleted temp dir: '${working_tmp_dir}'"
 }
 
 main "$@"
