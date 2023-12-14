@@ -172,7 +172,7 @@ spec:
           record: rhacs_tenants:namespace:pod:container:max_memory_usage_ratio
         - alert: RHACSTenantWorkloadMemoryUtilizationHigh
           expr: |
-            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.75
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.85
           for: 10m
           labels:
             severity: warning
@@ -182,7 +182,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"
         - alert: RHACSTenantWorkloadMemoryUtilizationCritical
           expr: |
-            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.9
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.95
           for: 10m
           labels:
             severity: critical
