@@ -85,14 +85,14 @@ spec:
                   "legendLink": null
                 },
                 {
-                  "expr": "sum(\n    kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"cpu\"}\n)\n",
+                  "expr": "sum(\\n    kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"cpu\"}\\n)\\n",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "requests",
                   "legendLink": null
                 },
                 {
-                  "expr": "sum(\n    kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"cpu\"}\n)\n",
+                  "expr": "sum(\\n    kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"cpu\"}\\n)\\n",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "limits",
@@ -542,14 +542,14 @@ spec:
                   "legendLink": null
                 },
                 {
-                  "expr": "sum(\n    kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"memory\"}\n)\n",
+                  "expr": "sum(\\n    kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"memory\"}\\n)\\n",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "requests",
                   "legendLink": null
                 },
                 {
-                  "expr": "sum(\n    kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"memory\"}\n)\n",
+                  "expr": "sum(\\n    kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", resource=\"memory\"}\\n)\\n",
                   "format": "time_series",
                   "intervalFactor": 2,
                   "legendFormat": "limits",

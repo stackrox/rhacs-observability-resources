@@ -1,0 +1,355 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: rhacs
+    monitoring-key: middleware
+  name: rhacs-central-release-dashboard
+  namespace: <namespace>
+spec:
+  name: rhacs-central-release.json
+  json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 23,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "The number of Central deployments with at least one pod in ready state per ACS version",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 27,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "count by (rhacs_version) (clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1) * on(namespace) group_left(rhacs_version) count by (namespace, rhacs_version) (process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"}))",
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Central count by version",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Reflects the current state of deployed ACSCS versions",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": [],
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 16,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 28,
+          "options": {
+            "displayLabels": [
+              "name"
+            ],
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true,
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "count by (rhacs_version) (rate(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"}[$__rate_interval]))",
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "ACS version chart",
+          "type": "piechart"
+        }
+      ],
+      "refresh": "",
+      "revision": 1,
+      "schemaVersion": 38,
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
+            "description": "Red Hat SSO Organisation Name",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Organisation",
+            "multi": true,
+            "name": "org_name",
+            "options": [],
+            "query": {
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
+            "description": "Red Hat SSO Organisation ID",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Organisation ID",
+            "multi": true,
+            "name": "org_id",
+            "options": [],
+            "query": {
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
+            "description": "RHACS Central Instance ID",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Central",
+            "multi": true,
+            "name": "instance_id",
+            "options": [],
+            "query": {
+              "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "type": "query"
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "definition": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+            "description": "RHACS Cluster ID",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Cluster ID",
+            "multi": true,
+            "name": "cluster_id",
+            "options": [],
+            "query": {
+              "query": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-24h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "RHACS Release",
+      "uid": "bbcb22ed-4982-488c-82bb-d5cf9280eaa3",
+      "version": 1,
+      "weekStart": ""
+    }
