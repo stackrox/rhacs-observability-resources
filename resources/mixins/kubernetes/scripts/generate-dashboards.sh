@@ -8,5 +8,6 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2
 
 for file in "${SCRIPT_DIR}"/../templates/dashboards/*; do
 	name=$(basename "$file" .yaml)
-	yq ".spec.json = ($(cat generated/dashboards/"$name".json) | to_json)" templates/dashboards/"$name".yaml > ../../grafana/mixins/kubernetes/"$name".yaml
+	export json_file=generated/dashboards/"$name".json
+	yq '.spec.json = loadstr(strenv(json_file))' templates/dashboards/"$name".yaml > ../../grafana/mixins/kubernetes/"$name".yaml
 done
