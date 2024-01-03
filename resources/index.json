@@ -48,7 +48,7 @@
         "grafana/generated/dashboards/rhacs-central-slo-dashboard.yaml",
         "grafana/generated/dashboards/rhacs-cluster-overview-dashboard.yaml",
         "grafana/generated/dashboards/rhacs-cluster-resource-adjustment-dashboard.yaml",
-        "grafana/templates/dashboards/rhacs-central-release-dashboard.yaml"
+        "grafana/generated/dashboards/rhacs-central-release-dashboard.yaml"
       ],
       "grafanaVersion": "10.2.0"
     },
