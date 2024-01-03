@@ -730,7 +730,7 @@
               "datasource": {
                 "uid": "${datasource}"
               },
-              "expr": "sum(container_memory_usage_bytes{namespace=\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"})",
+              "expr": "sum(container_memory_working_set_bytes{namespace=\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"})",
               "interval": "",
               "legendFormat": "Used",
               "refId": "B"
