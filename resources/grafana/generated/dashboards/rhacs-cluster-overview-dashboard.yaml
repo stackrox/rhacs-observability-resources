@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 12,
+      "id": 19,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -64,6 +64,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -77,6 +78,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -160,6 +162,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -173,6 +176,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -256,6 +260,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -269,6 +274,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -364,6 +370,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -377,6 +384,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -460,6 +468,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -473,6 +482,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -556,6 +566,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -569,6 +580,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -658,230 +670,13 @@ spec:
     		"type": "prometheus",
     		"uid": "PBFA97CFB590B2093"
     	  },
-    	  "description": "",
     	  "fieldConfig": {
     		"defaults": {
     		  "color": {
     			"mode": "palette-classic"
     		  },
     		  "custom": {
-    			"axisCenteredZero": false,
-    			"axisColorMode": "text",
-    			"axisLabel": "",
-    			"axisPlacement": "auto",
-    			"barAlignment": 0,
-    			"drawStyle": "line",
-    			"fillOpacity": 10,
-    			"gradientMode": "none",
-    			"hideFrom": {
-    			  "legend": false,
-    			  "tooltip": false,
-    			  "viz": false
-    			},
-    			"lineInterpolation": "linear",
-    			"lineWidth": 1,
-    			"pointSize": 5,
-    			"scaleDistribution": {
-    			  "type": "linear"
-    			},
-    			"showPoints": "never",
-    			"spanNulls": false,
-    			"stacking": {
-    			  "group": "A",
-    			  "mode": "none"
-    			},
-    			"thresholdsStyle": {
-    			  "mode": "off"
-    			}
-    		  },
-    		  "mappings": [],
-    		  "thresholds": {
-    			"mode": "absolute",
-    			"steps": [
-    			  {
-    				"color": "green",
-    				"value": null
-    			  },
-    			  {
-    				"color": "red",
-    				"value": 80
-    			  }
-    			]
-    		  },
-    		  "unit": "percentunit"
-    		},
-    		"overrides": []
-    	  },
-    	  "gridPos": {
-    		"h": 8,
-    		"w": 12,
-    		"x": 0,
-    		"y": 26
-    	  },
-    	  "id": 12,
-    	  "options": {
-    		"legend": {
-    		  "calcs": [],
-    		  "displayMode": "list",
-    		  "placement": "bottom",
-    		  "showLegend": true
-    		},
-    		"tooltip": {
-    		  "mode": "multi",
-    		  "sort": "none"
-    		}
-    	  },
-    	  "pluginVersion": "9.1.0",
-    	  "targets": [
-    		{
-    		  "datasource": {
-    			"type": "prometheus",
-    			"uid": "PBFA97CFB590B2093"
-    		  },
-    		  "editorMode": "code",
-    		  "expr": "availability_zone:acscs_worker_nodes:cpu_limit_ratio",
-    		  "interval": "",
-    		  "legendFormat": "Limit / {{availability_zone}}",
-    		  "range": true,
-    		  "refId": "A"
-    		},
-    		{
-    		  "datasource": {
-    			"type": "prometheus",
-    			"uid": "PBFA97CFB590B2093"
-    		  },
-    		  "editorMode": "code",
-    		  "expr": "availability_zone:acscs_worker_nodes:cpu_request_ratio",
-    		  "hide": false,
-    		  "interval": "",
-    		  "legendFormat": "Request / {{availability_zone}}",
-    		  "range": true,
-    		  "refId": "B"
-    		}
-    	  ],
-    	  "title": "Availability Zone CPU Usage",
-    	  "type": "timeseries"
-    	},
-    	{
-    	  "datasource": {
-    		"type": "prometheus",
-    		"uid": "PBFA97CFB590B2093"
-    	  },
-    	  "description": "",
-    	  "fieldConfig": {
-    		"defaults": {
-    		  "color": {
-    			"mode": "palette-classic"
-    		  },
-    		  "custom": {
-    			"axisCenteredZero": false,
-    			"axisColorMode": "text",
-    			"axisLabel": "",
-    			"axisPlacement": "auto",
-    			"barAlignment": 0,
-    			"drawStyle": "line",
-    			"fillOpacity": 10,
-    			"gradientMode": "none",
-    			"hideFrom": {
-    			  "legend": false,
-    			  "tooltip": false,
-    			  "viz": false
-    			},
-    			"lineInterpolation": "linear",
-    			"lineWidth": 1,
-    			"pointSize": 5,
-    			"scaleDistribution": {
-    			  "type": "linear"
-    			},
-    			"showPoints": "never",
-    			"spanNulls": false,
-    			"stacking": {
-    			  "group": "A",
-    			  "mode": "none"
-    			},
-    			"thresholdsStyle": {
-    			  "mode": "off"
-    			}
-    		  },
-    		  "mappings": [],
-    		  "thresholds": {
-    			"mode": "absolute",
-    			"steps": [
-    			  {
-    				"color": "green",
-    				"value": null
-    			  },
-    			  {
-    				"color": "red",
-    				"value": 80
-    			  }
-    			]
-    		  },
-    		  "unit": "percentunit"
-    		},
-    		"overrides": []
-    	  },
-    	  "gridPos": {
-    		"h": 8,
-    		"w": 12,
-    		"x": 12,
-    		"y": 26
-    	  },
-    	  "id": 26,
-    	  "options": {
-    		"legend": {
-    		  "calcs": [],
-    		  "displayMode": "list",
-    		  "placement": "bottom",
-    		  "showLegend": true
-    		},
-    		"tooltip": {
-    		  "mode": "multi",
-    		  "sort": "none"
-    		}
-    	  },
-    	  "pluginVersion": "9.1.0",
-    	  "targets": [
-    		{
-    		  "datasource": {
-    			"type": "prometheus",
-    			"uid": "PBFA97CFB590B2093"
-    		  },
-    		  "editorMode": "code",
-    		  "expr": "availability_zone:acscs_worker_nodes:memory_limit_ratio",
-    		  "interval": "",
-    		  "legendFormat": "Limit / {{availability_zone}}",
-    		  "range": true,
-    		  "refId": "A"
-    		},
-    		{
-    		  "datasource": {
-    			"type": "prometheus",
-    			"uid": "PBFA97CFB590B2093"
-    		  },
-    		  "editorMode": "code",
-    		  "expr": "availability_zone:acscs_worker_nodes:memory_request_ratio",
-    		  "hide": false,
-    		  "interval": "",
-    		  "legendFormat": "Request / {{availability_zone}}",
-    		  "range": true,
-    		  "refId": "B"
-    		}
-    	  ],
-    	  "title": "Availability Zone Memory Usage",
-    	  "type": "timeseries"
-    	},
-    	{
-    	  "datasource": {
-    		"type": "prometheus",
-    		"uid": "PBFA97CFB590B2093"
-    	  },
-    	  "fieldConfig": {
-    		"defaults": {
-    		  "color": {
-    			"mode": "palette-classic"
-    		  },
-    		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -896,6 +691,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -934,7 +730,7 @@ spec:
     		"h": 8,
     		"w": 12,
     		"x": 0,
-    		"y": 34
+    		"y": 26
     	  },
     	  "id": 6,
     	  "options": {
@@ -979,6 +775,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -992,6 +789,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -1030,7 +828,7 @@ spec:
     		"h": 8,
     		"w": 12,
     		"x": 12,
-    		"y": 34
+    		"y": 26
     	  },
     	  "id": 5,
     	  "options": {
@@ -1074,6 +872,7 @@ spec:
     			"mode": "palette-classic"
     		  },
     		  "custom": {
+    			"axisBorderShow": false,
     			"axisCenteredZero": false,
     			"axisColorMode": "text",
     			"axisLabel": "",
@@ -1087,6 +886,7 @@ spec:
     			  "tooltip": false,
     			  "viz": false
     			},
+    			"insertNulls": false,
     			"lineInterpolation": "linear",
     			"lineWidth": 1,
     			"pointSize": 5,
@@ -1125,7 +925,7 @@ spec:
     		"h": 8,
     		"w": 12,
     		"x": 0,
-    		"y": 42
+    		"y": 34
     	  },
     	  "id": 4,
     	  "options": {
@@ -1164,7 +964,7 @@ spec:
     		"h": 1,
     		"w": 24,
     		"x": 0,
-    		"y": 50
+    		"y": 42
     	  },
     	  "id": 23,
     	  "panels": [],
@@ -1370,10 +1170,11 @@ spec:
     		"h": 12,
     		"w": 24,
     		"x": 0,
-    		"y": 51
+    		"y": 43
     	  },
     	  "id": 19,
     	  "options": {
+    		"cellHeight": "sm",
     		"footer": {
     		  "countRows": false,
     		  "enablePagination": true,
@@ -1391,7 +1192,7 @@ spec:
     		  }
     		]
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "targets": [
     		{
     		  "datasource": {
@@ -1605,7 +1406,8 @@ spec:
     			"mode": "absolute",
     			"steps": [
     			  {
-    				"color": "green"
+    				"color": "green",
+    				"value": null
     			  },
     			  {
     				"color": "red",
@@ -1642,7 +1444,8 @@ spec:
     				  "mode": "percentage",
     				  "steps": [
     					{
-    					  "color": "green"
+    					  "color": "green",
+    					  "value": null
     					},
     					{
     					  "color": "orange",
@@ -1708,7 +1511,8 @@ spec:
     				  "mode": "percentage",
     				  "steps": [
     					{
-    					  "color": "green"
+    					  "color": "green",
+    					  "value": null
     					},
     					{
     					  "color": "orange",
@@ -1754,7 +1558,8 @@ spec:
     				  "mode": "percentage",
     				  "steps": [
     					{
-    					  "color": "green"
+    					  "color": "green",
+    					  "value": null
     					},
     					{
     					  "color": "orange",
@@ -1779,10 +1584,11 @@ spec:
     		"h": 13,
     		"w": 24,
     		"x": 0,
-    		"y": 63
+    		"y": 55
     	  },
     	  "id": 21,
     	  "options": {
+    		"cellHeight": "sm",
     		"footer": {
     		  "countRows": false,
     		  "fields": "",
@@ -1799,7 +1605,7 @@ spec:
     		  }
     		]
     	  },
-    	  "pluginVersion": "9.4.7",
+    	  "pluginVersion": "10.2.0",
     	  "targets": [
     		{
     		  "datasource": {
@@ -1952,7 +1758,6 @@ spec:
       "refresh": "",
       "revision": 1,
       "schemaVersion": 38,
-      "style": "dark",
       "tags": [
     	"rhacs"
       ],
@@ -2092,6 +1897,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 3,
+      "version": 4,
       "weekStart": ""
     }
