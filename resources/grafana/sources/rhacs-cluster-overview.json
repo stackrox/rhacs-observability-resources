@@ -670,7 +670,6 @@
 			"axisColorMode": "text",
 			"axisLabel": "",
 			"axisPlacement": "auto",
-			"axisWidth": -3,
 			"barAlignment": 0,
 			"drawStyle": "line",
 			"fillOpacity": 10,
@@ -985,8 +984,7 @@
 			"mode": "absolute",
 			"steps": [
 			  {
-				"color": "green",
-				"value": null
+				"color": "green"
 			  },
 			  {
 				"color": "red",
@@ -1023,8 +1021,7 @@
 				  "mode": "percentage",
 				  "steps": [
 					{
-					  "color": "green",
-					  "value": null
+					  "color": "green"
 					},
 					{
 					  "color": "orange",
@@ -1395,8 +1392,7 @@
 			"mode": "absolute",
 			"steps": [
 			  {
-				"color": "green",
-				"value": null
+				"color": "green"
 			  },
 			  {
 				"color": "red",
@@ -1433,8 +1429,7 @@
 				  "mode": "percentage",
 				  "steps": [
 					{
-					  "color": "green",
-					  "value": null
+					  "color": "green"
 					},
 					{
 					  "color": "orange",
@@ -1500,8 +1495,7 @@
 				  "mode": "percentage",
 				  "steps": [
 					{
-					  "color": "green",
-					  "value": null
+					  "color": "green"
 					},
 					{
 					  "color": "orange",
@@ -1547,8 +1541,7 @@
 				  "mode": "percentage",
 				  "steps": [
 					{
-					  "color": "green",
-					  "value": null
+					  "color": "green"
 					},
 					{
 					  "color": "orange",
@@ -1886,6 +1879,6 @@
   "timezone": "",
   "title": "RHACS Dataplane - Cluster Metrics",
   "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
