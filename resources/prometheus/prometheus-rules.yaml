@@ -214,7 +214,7 @@ spec:
           record: rhacs_operator:namespace:workload:container:max_memory_usage_ratio
         - alert: RHACSOperatorMemoryUtilizationHigh
           expr: |
-            rhacs_operator:namespace:workload:container:max_memory_usage_ratio > 0.6
+            rhacs_operator:namespace:workload:container:max_memory_usage_ratio > 0.7
           for: 5m
           labels:
             severity: warning
