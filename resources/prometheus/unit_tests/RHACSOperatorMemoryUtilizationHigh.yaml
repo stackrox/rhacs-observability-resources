@@ -11,7 +11,7 @@ tests:
       - series: kube_pod_labels{namespace="rhacs",label_app="rhacs-operator",pod="operator-pod"}
         values: "1+0x20"
       - series: container_memory_max_usage_bytes{namespace="rhacs", pod="operator-pod",container="manager"}
-        values: "50+0x10 70+0x10"
+        values: "50+0x10 80+0x10"
       - series: container_spec_memory_limit_bytes{namespace="rhacs",pod="operator-pod",container="manager"}
         values: "100+0x20"
     alert_rule_test:
@@ -28,7 +28,7 @@ tests:
               workload: operator-workload
               container: manager
             exp_annotations:
-              description: The container 'manager' in operator 'operator-workload' reached 70% of its memory limit and is at risk of being OOM killed.
+              description: The container 'manager' in operator 'operator-workload' reached 80% of its memory limit and is at risk of being OOM killed.
               summary: "The container 'manager' in operator 'operator-workload' is reaching its memory limit."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-037-operator-memory-high.md"
   - interval: 1m
