@@ -296,7 +296,6 @@ spec:
       rules:
         - alert: AWSSESReputationBounceRateTooHigh
           expr: avg_over_time(aws_ses_reputation_bounce_rate_sum[1h]) > 0.05
-          for: 1s
           labels:
             severity: warning
           annotations:
@@ -305,7 +304,6 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-040-aws-ses-violation.md"
         - alert: AWSSESReputationComplaintRateTooHigh
           expr: avg_over_time(aws_ses_reputation_complaint_rate_sum[1h]) > 0.01
-          for: 1s
           labels:
             severity: warning
           annotations:
@@ -316,12 +314,11 @@ spec:
           # cloudwatch is setup to collect aws_ses_send_sum in 2 minute intervals (120 seconds)
           # and the max send rate is 14/s.
           expr: (max_over_time(aws_ses_send_sum[1h]) / 120) > 12
-          for: 1s
           labels:
               severity: warning
           annotations:
               summary: 'AWS SES Send rate too high'
-              description: 'The SES send rate is {{ $value }} per second, which is dangerously approaching the maximum limit of 14 per second.'
+              description: 'The maximum send rate over the last hour is {{ $value }} messages/second, which is dangerously approaching the maximum limit of 14 per second.'
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-040-aws-ses-violation.md"
 
 
