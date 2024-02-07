@@ -1,0 +1,60 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: aws_ses_reputation_bounce_rate_sum
+        values: "0.05+0x60 0.06+0x90"
+    alert_rule_test:
+      - eval_time: 60m
+        alertname: AWSSESReputationBounceRateTooHigh
+        exp_alerts: []
+      - eval_time: 130m
+        alertname: AWSSESReputationBounceRateTooHigh
+        exp_alerts:
+          - exp_labels:
+              alertname: AWSSESReputationBounceRateTooHigh
+              severity: warning
+            exp_annotations:
+              summary: 'AWS SES Bounce rate too high'
+              description: 'The SES bounce rate is 6%, which is higher than the maximum limit of 5%.'
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-040-aws-ses-violation.md"
+  - interval: 1m
+    input_series:
+      - series: aws_ses_reputation_complaint_rate_sum
+        values: "0.01+0x60 0.02+0x90"
+    alert_rule_test:
+      - eval_time: 60m
+        alertname: AWSSESReputationComplaintRateTooHigh
+        exp_alerts: []
+      - eval_time: 130m
+        alertname: AWSSESReputationComplaintRateTooHigh
+        exp_alerts:
+          - exp_labels:
+              alertname: AWSSESReputationComplaintRateTooHigh
+              severity: warning
+            exp_annotations:
+              summary: 'AWS SES Complaint rate too high'
+              description: 'The SES complaint rate is 2%, which is higher than the maximum limit of 1%.'
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-040-aws-ses-violation.md"
+  - interval: 2m
+    input_series:
+      - series: aws_ses_send_sum
+        values: "0+0x5 1680x20"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: AWSSESSendRateTooHigh
+        exp_alerts: []
+      - eval_time: 30m
+        alertname: AWSSESSendRateTooHigh
+        exp_alerts:
+          - exp_labels:
+              alertname: AWSSESSendRateTooHigh
+              severity: warning
+            exp_annotations:
+              summary: 'AWS SES Send rate too high'
+              description: 'The SES send rate is 14 per second, which is dangerously approaching the maximum limit of 14 per second.'
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-040-aws-ses-violation.md"
