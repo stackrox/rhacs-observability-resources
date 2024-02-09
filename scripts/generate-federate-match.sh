@@ -41,6 +41,13 @@ function get_rules_metrics() {
     rm -rf "${json_file}"
 }
 
+function append_consolidated_dashboard_fields() {
+    local federation_config_file="${1:-}"
+    [[ "${federation_config_file}" = "" ]] && log_exit "Variable 'federation_config_file' is empty."
+
+    yq --inplace '."match[]" += [ "container_memory_usage_bytes" ]' "${federation_config_file}"
+}
+
 function main() {
     local script_dir
     script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd 2>/dev/null)"
@@ -72,6 +79,9 @@ function main() {
 
     # Create federation-config.yaml
     sed -e 's/^/- /'  "${metrics_list_file}.filter" | yq '{ "match[]": . }' > "${repo_dir}/resources/prometheus/federation-config.yaml"
+
+    # Add missing fields from consolidated dashboard
+    append_consolidated_dashboard_fields "${repo_dir}/resources/prometheus/federation-config.yaml"
 
     # Clean up the temp directory with all transient files
     rm -rf "${working_tmp_dir}"

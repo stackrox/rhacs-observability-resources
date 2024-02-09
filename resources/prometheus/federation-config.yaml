@@ -169,3 +169,4 @@ match[]:
   - workqueue_adds_total
   - workqueue_depth
   - workqueue_queue_duration_seconds_bucket
+  - container_memory_usage_bytes
