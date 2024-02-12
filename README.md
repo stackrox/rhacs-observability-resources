@@ -57,7 +57,7 @@ Then:
 
 ### Federated metrics
 
-If you make changes to Alerts or Recording rules and if they include metrics collected by OSD Prometheus, ensure that the federation config includes new metrics.
+If you make changes to Alerts, Recording rules, or Grafana dashboards, and if they include metrics collected by OSD Prometheus, ensure that the federation config includes new metrics.
 
 * Run `make generate-federate` to update federation config.
 * And commit changes in `resources/prometheus/federation-config.yaml` file to the repo.

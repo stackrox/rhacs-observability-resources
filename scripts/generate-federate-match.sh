@@ -3,22 +3,26 @@
 set -eou pipefail
 shopt -s inherit_errexit
 
-! [ -x "$(command -v jq)" ] && echo 'jq not installed, the script requires it.' && exit 1
-! [ -x "$(command -v mimirtool)" ] && echo 'mimirtool not installed, the script requires it.' && exit 1
-! [ -x "$(command -v realpath)" ] && echo 'realpath not installed, the script requires it.' && exit 1
-! [ -x "$(command -v sort)" ] && echo 'sort not installed, the script requires it.' && exit 1
-! [ -x "$(command -v uniq)" ] && echo 'uniq not installed, the script requires it.' && exit 1
-! [ -x "$(command -v yq)" ] && echo 'yq not installed, the script requires it.' && exit 1
-
 function log() {
-    echo "${1:-}" >&2
+    echo "$@" >&2
 }
 
 function log_exit() {
-    log "${1:-}"
+    log "$@"
 
     exit 1
 }
+
+function log_requirements_and_exit() {
+    log_exit "ERROR: One of the required commands is not available. Please ensure that the following commands are installed: jq, yq, mimirtool, realpath, sort, and uniq"
+}
+
+! [ -x "$(command -v jq)" ] && log_requirements_and_exit
+! [ -x "$(command -v mimirtool)" ] && log_requirements_and_exit
+! [ -x "$(command -v realpath)" ] && log_requirements_and_exit
+! [ -x "$(command -v sort)" ] && log_requirements_and_exit
+! [ -x "$(command -v uniq)" ] && log_requirements_and_exit
+! [ -x "$(command -v yq)" ] && log_requirements_and_exit
 
 function get_rules_metrics() {
     local os_prom_rule_file="${1:-}"
@@ -33,19 +37,14 @@ function get_rules_metrics() {
     local json_file
     json_file=$(mktemp)
 
+    log "exporting federated metrics for Prometheus rules file: '${os_prom_rule_file}'"
+
     yq '.spec' "${os_prom_rule_file}" > "${rules_file}"
     mimirtool analyze rule-file "${rules_file}" --output="${json_file}"
     jq '.ruleGroups[].metrics | select( . != null ) | .[]' "${json_file}" --raw-output >> "${metrics_list_file}"
 
-    rm -rf "${rules_file}"
-    rm -rf "${json_file}"
-}
-
-function append_consolidated_dashboard_fields() {
-    local federation_config_file="${1:-}"
-    [[ "${federation_config_file}" = "" ]] && log_exit "Variable 'federation_config_file' is empty."
-
-    yq --inplace '."match[]" += [ "container_memory_usage_bytes" ]' "${federation_config_file}"
+    rm -f "${rules_file}"
+    rm -f "${json_file}"
 }
 
 function main() {
@@ -62,26 +61,27 @@ function main() {
     local metrics_list_file="${working_tmp_dir}/metrics_list"
 
     # Get metrics used in Dashboards
+    log "exporting federated metrics for Prometheus dashboards in 'grafana/sources'"
     mimirtool analyze dashboard "${repo_dir}"/resources/grafana/sources/* --output="${working_tmp_dir}/acs.json"
     jq '.dashboards[].metrics[]' "${working_tmp_dir}/acs.json" --raw-output >> "${metrics_list_file}"
 
+    log "exporting federated metrics for Prometheus dashboards in 'mixins/kubernetes/generated/dashboards'"
     mimirtool analyze dashboard "${repo_dir}"/resources/mixins/kubernetes/generated/dashboards/* --output="${working_tmp_dir}/mixins.json"
     jq '.dashboards[].metrics[]' "${working_tmp_dir}/mixins.json" --raw-output >> "${metrics_list_file}"
 
     # Get metrics used in recording rules and alerts
-    get_rules_metrics "${repo_dir}/resources/prometheus/billing-rules.yaml" "${metrics_list_file}"
-    get_rules_metrics "${repo_dir}/resources/prometheus/kubernetes-mixin-alerts.yaml" "${metrics_list_file}"
-    get_rules_metrics "${repo_dir}/resources/prometheus/prometheus-rules.yaml" "${metrics_list_file}"
-    get_rules_metrics "${repo_dir}/resources/prometheus/rhacs-recording-rules.yaml" "${metrics_list_file}"
+    local rules_files
+    rules_files=$(jq '.config.prometheus.rules[]' "${repo_dir}/resources/index.json" --raw-output)
+    while IFS= read -r rules_file; do
+        get_rules_metrics "${repo_dir}/resources/${rules_file}" "${metrics_list_file}"
+    done <<< "${rules_files}"
 
     # Filter metrics (exclude metrics that are collected by observability Prometheus or created by recording rules)
-    sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" > "${metrics_list_file}.filter"
+    # sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" > "${metrics_list_file}.filter"
+    sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" | awk '{ print $1 "{job!~\"central|scanner\"}" }' > "${metrics_list_file}.filter"
 
     # Create federation-config.yaml
     sed -e 's/^/- /'  "${metrics_list_file}.filter" | yq '{ "match[]": . }' > "${repo_dir}/resources/prometheus/federation-config.yaml"
-
-    # Add missing fields from consolidated dashboard
-    append_consolidated_dashboard_fields "${repo_dir}/resources/prometheus/federation-config.yaml"
 
     # Clean up the temp directory with all transient files
     rm -rf "${working_tmp_dir}"
