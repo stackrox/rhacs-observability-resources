@@ -1,7 +1,7 @@
 match[]:
   - :node_memory_MemAvailable_bytes:sum{job!~"central|scanner"}
-  - aggregator_unavailable_apiservice{job!~"central|scanner"}
   - aggregator_unavailable_apiservice_total{job!~"central|scanner"}
+  - aggregator_unavailable_apiservice{job!~"central|scanner"}
   - apiserver_request:availability30d{job!~"central|scanner"}
   - apiserver_request:burnrate1d{job!~"central|scanner"}
   - apiserver_request:burnrate1h{job!~"central|scanner"}
@@ -95,9 +95,9 @@ match[]:
   - kube_statefulset_replicas{job!~"central|scanner"}
   - kube_statefulset_status_current_revision{job!~"central|scanner"}
   - kube_statefulset_status_observed_generation{job!~"central|scanner"}
-  - kube_statefulset_status_replicas{job!~"central|scanner"}
   - kube_statefulset_status_replicas_ready{job!~"central|scanner"}
   - kube_statefulset_status_replicas_updated{job!~"central|scanner"}
+  - kube_statefulset_status_replicas{job!~"central|scanner"}
   - kube_statefulset_status_update_revision{job!~"central|scanner"}
   - kubelet_certificate_manager_client_expiration_renew_errors{job!~"central|scanner"}
   - kubelet_cgroup_manager_duration_seconds_bucket{job!~"central|scanner"}
@@ -121,9 +121,9 @@ match[]:
   - kubelet_server_expiration_renew_errors{job!~"central|scanner"}
   - kubelet_volume_stats_available_bytes{job!~"central|scanner"}
   - kubelet_volume_stats_capacity_bytes{job!~"central|scanner"}
-  - kubelet_volume_stats_inodes{job!~"central|scanner"}
   - kubelet_volume_stats_inodes_free{job!~"central|scanner"}
   - kubelet_volume_stats_inodes_used{job!~"central|scanner"}
+  - kubelet_volume_stats_inodes{job!~"central|scanner"}
   - kubelet_volume_stats_used_bytes{job!~"central|scanner"}
   - kubeproxy_network_programming_duration_seconds_bucket{job!~"central|scanner"}
   - kubeproxy_network_programming_duration_seconds_count{job!~"central|scanner"}

@@ -80,7 +80,8 @@ function main() {
     sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" | awk '{ print $1 "{job!~\"central|scanner\"}" }' > "${metrics_list_file}.filter"
 
     # Create federation-config.yaml
-    sed -e 's/^/- /'  "${metrics_list_file}.filter" | yq '{ "match[]": . }' > "${repo_dir}/resources/prometheus/federation-config.yaml"
+    local yq_expression='. *+ load("'"${repo_dir}/resources/prometheus/federation-config-base.yaml"'")."match[]" | unique | sort | { "match[]": . }'
+    sed -e 's/^/- /'  "${metrics_list_file}.filter" | yq "${yq_expression}" > "${repo_dir}/resources/prometheus/federation-config.yaml"
 
     # Clean up the temp directory with all transient files
     rm -rf "${working_tmp_dir}"

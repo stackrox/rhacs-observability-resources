@@ -62,6 +62,8 @@ If you make changes to Alerts, Recording rules, or Grafana dashboards, and if th
 * Run `make generate-federate` to update federation config.
 * And commit changes in `resources/prometheus/federation-config.yaml` file to the repo.
 
+You can add additional federated metrics that are not used in any Alert, Recording rule, or Grafana dashboard to `resources/prometheus/federation-config-base.yaml,` and they will be merged with other metrics. Always add a comment with the reason why metrics are added to the base list.
+
 ### Pre-commit hook
 
 This repository makes use of [pre-commit](https://pre-commit.com/) framework. Refer to the [installation instructions](https://pre-commit.com/#installation) for further information.
