@@ -77,7 +77,6 @@ function main() {
     done <<< "${rules_files}"
 
     # Filter metrics (exclude metrics that are collected by observability Prometheus or created by recording rules)
-    # sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" > "${metrics_list_file}.filter"
     sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" | awk '{ print $1 "{job!~\"central|scanner\"}" }' > "${metrics_list_file}.filter"
 
     # Create federation-config.yaml
