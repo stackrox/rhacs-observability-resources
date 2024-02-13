@@ -1,0 +1,5 @@
+# Use this list to add any required federated metrics that are not used by Rules, Alerts, or Grafana dashboards.
+# Listed metrics will be merged with metrics used in Rules, Alerts, and Grafana dashboards.
+match[]:
+  # This is an example.
+  - up{job!~"central|scanner"}
