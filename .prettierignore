@@ -1,0 +1,5 @@
+resources/mixins/kubernetes/generated/**
+resources/grafana/generated/**
+resources/grafana/mixins/**
+resources/prometheus/kubernetes-mixin-alerts.yaml
+resources/prometheus/kubernetes-mixin-rules.yaml
