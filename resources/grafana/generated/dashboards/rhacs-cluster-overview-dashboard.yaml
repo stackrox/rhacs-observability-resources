@@ -1160,6 +1160,40 @@ spec:
                     "value": 264
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rhacs_expired_at"
+                },
+                "properties": [
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "NaN": {
+                            "text": "-",
+                            "index": 0
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "right"
+                  }
+                ]
               }
             ]
           },
@@ -1305,6 +1339,21 @@ spec:
               "legendFormat": "__auto",
               "range": false,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_expired_at)",
+              "format": "table",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "Expired At",
+              "instant": false,
+              "exemplar": false
             }
           ],
           "title": "Central Overview Table",
@@ -1336,7 +1385,8 @@ spec:
                   "job": true,
                   "pod": true,
                   "rhacs_cluster_name": true,
-                  "rhacs_environment": true
+                  "rhacs_environment": true,
+                  "Value #Expired At": true
                 },
                 "indexByName": {
                   "Time 1": 9,
@@ -1372,7 +1422,8 @@ spec:
                   "Value #Secured Cores": "Secured Cores",
                   "Value #Version": "",
                   "rhacs_org_name": "Organisation",
-                  "rhacs_version": "Version"
+                  "rhacs_version": "Version",
+                  "rhacs_expired_at": "Expired At"
                 }
               }
             }
