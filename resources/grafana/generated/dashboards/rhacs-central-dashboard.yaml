@@ -125,9 +125,7 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
@@ -205,9 +203,7 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
@@ -269,9 +265,7 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
@@ -349,9 +343,7 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
@@ -5016,9 +5008,7 @@ spec:
       "revision": 1,
       "schemaVersion": 38,
       "style": "dark",
-      "tags": [
-        "rhacs"
-      ],
+      "tags": ["rhacs"],
       "templating": {
         "list": [
           {
@@ -5043,12 +5033,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -5075,12 +5061,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -5135,12 +5117,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -5168,12 +5146,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -5201,12 +5175,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -5238,25 +5208,8 @@ spec:
       },
       "timepicker": {
         "hidden": false,
-        "refresh_intervals": [
-          "15s",
-          "30s",
-          "1m",
-          "5m",
-          "10m",
-          "15m"
-        ],
-        "time_options": [
-          "5m",
-          "15m",
-          "1h",
-          "6h",
-          "12h",
-          "24h",
-          "2d",
-          "7d",
-          "30d"
-        ]
+        "refresh_intervals": ["15s", "30s", "1m", "5m", "10m", "15m"],
+        "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
       },
       "timezone": "",
       "title": "RHACS Dataplane - Central Metrics",
