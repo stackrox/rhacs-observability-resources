@@ -1,25 +1,25 @@
 {
   "annotations": {
-	"list": [
-	  {
-		"builtIn": 1,
-		"datasource": {
-		  "type": "datasource",
-		  "uid": "grafana"
-		},
-		"enable": true,
-		"hide": true,
-		"iconColor": "rgba(0, 211, 255, 1)",
-		"name": "Annotations & Alerts",
-		"target": {
-		  "limit": 100,
-		  "matchAny": false,
-		  "tags": [],
-		  "type": "dashboard"
-		},
-		"type": "dashboard"
-	  }
-	]
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
@@ -28,1852 +28,1866 @@
   "links": [],
   "liveNow": false,
   "panels": [
-	{
-	  "collapsed": false,
-	  "gridPos": {
-		"h": 1,
-		"w": 24,
-		"x": 0,
-		"y": 0
-	  },
-	  "id": 14,
-	  "panels": [],
-	  "title": "Instances",
-	  "type": "row"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "description": "The number of Central deployments with at least one pod in ready state.",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "short"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 0,
-		"y": 1
-	  },
-	  "id": 9,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": false
-		},
-		"tooltip": {
-		  "mode": "multi",
-		  "sort": "none"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "count(clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1))",
-		  "interval": "",
-		  "legendFormat": "Count",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Total Central Count",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "description": "The number of Central deployments with at least one pod in ready state per organisation.",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "short"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 12,
-		"y": 1
-	  },
-	  "id": 17,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "multi",
-		  "sort": "desc"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "count by (rhacs_org_name) (clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1) * on(namespace) group_left(rhacs_org_name) count by (namespace, rhacs_org_name) (process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"}))",
-		  "interval": "",
-		  "legendFormat": "{{rhacs_org_name}}",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Central Count By Organisation",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "description": "",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "short"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 0,
-		"y": 9
-	  },
-	  "id": 11,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "multi",
-		  "sort": "none"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
-		  "interval": "",
-		  "legendFormat": "Cores",
-		  "range": true,
-		  "refId": "A"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "sum(rox_central_cluster_metrics_node_count{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
-		  "hide": false,
-		  "legendFormat": "Nodes",
-		  "range": true,
-		  "refId": "B"
-		}
-	  ],
-	  "title": "Total Secured Cores / Nodes",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "description": "",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "short"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 12,
-		"y": 9
-	  },
-	  "id": 10,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "single",
-		  "sort": "desc"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) by (namespace)",
-		  "interval": "",
-		  "legendFormat": "{{rhacs_instance_id}}",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Secured Cores",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "description": "",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "short"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 0,
-		"y": 17
-	  },
-	  "id": 24,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": false
-		},
-		"tooltip": {
-		  "mode": "multi",
-		  "sort": "none"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "count(max by (exported_instance) (acs_fleetshard_pause_reconcile_instances == 1)) or vector(0)",
-		  "interval": "",
-		  "legendFormat": "Count",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Paused Reconcile Count",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "description": "",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "short"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 12,
-		"y": 17
-	  },
-	  "id": 25,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "multi",
-		  "sort": "none"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "count(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"} > 0) or vector(0)",
-		  "interval": "",
-		  "legendFormat": "Clusters",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Secured Clusters",
-	  "type": "timeseries"
-	},
-	{
-	  "collapsed": false,
-	  "gridPos": {
-		"h": 1,
-		"w": 24,
-		"x": 0,
-		"y": 25
-	  },
-	  "id": 16,
-	  "panels": [],
-	  "title": "Resources",
-	  "type": "row"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "percentunit"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 0,
-		"y": 26
-	  },
-	  "id": 6,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "single",
-		  "sort": "desc"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
-		  "format": "time_series",
-		  "interval": "",
-		  "legendFormat": "{{namespace}}",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Central Memory Usage",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "Bps"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 12,
-		"y": 26
-	  },
-	  "id": 5,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "single",
-		  "sort": "none"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
-		  "interval": "",
-		  "legendFormat": "{{namespace}}",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Network Transmitted",
-	  "type": "timeseries"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "palette-classic"
-		  },
-		  "custom": {
-			"axisBorderShow": false,
-			"axisCenteredZero": false,
-			"axisColorMode": "text",
-			"axisLabel": "",
-			"axisPlacement": "auto",
-			"barAlignment": 0,
-			"drawStyle": "line",
-			"fillOpacity": 10,
-			"gradientMode": "none",
-			"hideFrom": {
-			  "legend": false,
-			  "tooltip": false,
-			  "viz": false
-			},
-			"insertNulls": false,
-			"lineInterpolation": "linear",
-			"lineWidth": 1,
-			"pointSize": 5,
-			"scaleDistribution": {
-			  "type": "linear"
-			},
-			"showPoints": "never",
-			"spanNulls": false,
-			"stacking": {
-			  "group": "A",
-			  "mode": "none"
-			},
-			"thresholdsStyle": {
-			  "mode": "off"
-			}
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green",
-				"value": null
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  },
-		  "unit": "Bps"
-		},
-		"overrides": []
-	  },
-	  "gridPos": {
-		"h": 8,
-		"w": 12,
-		"x": 0,
-		"y": 34
-	  },
-	  "id": 4,
-	  "options": {
-		"legend": {
-		  "calcs": [],
-		  "displayMode": "list",
-		  "placement": "bottom",
-		  "showLegend": true
-		},
-		"tooltip": {
-		  "mode": "single",
-		  "sort": "none"
-		}
-	  },
-	  "pluginVersion": "9.1.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
-		  "interval": "",
-		  "legendFormat": "{{namespace}}",
-		  "range": true,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Network Received",
-	  "type": "timeseries"
-	},
-	{
-	  "collapsed": false,
-	  "gridPos": {
-		"h": 1,
-		"w": 24,
-		"x": 0,
-		"y": 42
-	  },
-	  "id": 23,
-	  "panels": [],
-	  "title": "Instance Table",
-	  "type": "row"
-	},
-	{
-	  "datasource": {
-		"type": "datasource",
-		"uid": "-- Mixed --"
-	  },
-	  "description": "",
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "thresholds"
-		  },
-		  "custom": {
-			"align": "auto",
-			"cellOptions": {
-			  "type": "auto"
-			},
-			"filterable": true,
-			"inspect": false,
-			"minWidth": 200
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green"
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  }
-		},
-		"overrides": [
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Memory consumption"
-			},
-			"properties": [
-			  {
-				"id": "custom.cellOptions",
-				"value": {
-				  "mode": "lcd",
-				  "type": "gauge"
-				}
-			  },
-			  {
-				"id": "unit",
-				"value": "percentunit"
-			  },
-			  {
-				"id": "max",
-				"value": 1
-			  },
-			  {
-				"id": "thresholds",
-				"value": {
-				  "mode": "percentage",
-				  "steps": [
-					{
-					  "color": "green"
-					},
-					{
-					  "color": "orange",
-					  "value": 70
-					},
-					{
-					  "color": "red",
-					  "value": 90
-					}
-				  ]
-				}
-			  },
-			  {
-				"id": "custom.width",
-				"value": 261
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "CPU throttle periods (30m)"
-			},
-			"properties": [
-			  {
-				"id": "custom.cellOptions",
-				"value": {
-				  "type": "color-text"
-				}
-			  },
-			  {
-				"id": "custom.width",
-				"value": 223
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Network received"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "binBps"
-			  },
-			  {
-				"id": "custom.width",
-				"value": 192
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Network transmitted"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "binBps"
-			  },
-			  {
-				"id": "custom.width",
-				"value": 185
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Version"
-			},
-			"properties": [
-			  {
-				"id": "custom.width",
-				"value": 109
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Paused"
-			},
-			"properties": [
-			  {
-				"id": "custom.width",
-				"value": 82
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Organisation"
-			},
-			"properties": [
-			  {
-				"id": "custom.width",
-				"value": 223
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Secured Cores"
-			},
-			"properties": [
-			  {
-				"id": "custom.width",
-				"value": 160
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "namespace"
-			},
-			"properties": [
-			  {
-				"id": "custom.width",
-				"value": 264
-			  }
-			]
-		  }
-		]
-	  },
-	  "gridPos": {
-		"h": 12,
-		"w": 24,
-		"x": 0,
-		"y": 43
-	  },
-	  "id": 19,
-	  "options": {
-		"cellHeight": "sm",
-		"footer": {
-		  "countRows": false,
-		  "enablePagination": true,
-		  "fields": "",
-		  "reducer": [
-			"sum"
-		  ],
-		  "show": false
-		},
-		"showHeader": true,
-		"sortBy": [
-		  {
-			"desc": true,
-			"displayName": "Memory consumption"
-		  }
-		]
-	  },
-	  "pluginVersion": "10.2.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
-		  "format": "table",
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Memory consumption"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Secured Cores"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_org_name)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Organisation"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[30m])) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "CPU throttle"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"central-.*\"}[5m])) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Network received"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"central-.*\"}[5m])) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Network transmitted"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "expr": "min(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_version)",
-		  "format": "table",
-		  "hide": false,
-		  "legendFormat": "__auto",
-		  "range": true,
-		  "refId": "Version"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "clamp_max(label_replace(acs_fleetshard_pause_reconcile_instances, \"namespace\", \"rhacs-$1\", \"exported_instance\", \"(.*)\"), 1)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "A"
-		}
-	  ],
-	  "title": "Central Overview Table",
-	  "transformations": [
-		{
-		  "id": "seriesToColumns",
-		  "options": {
-			"byField": "namespace"
-		  }
-		},
-		{
-		  "id": "organize",
-		  "options": {
-			"excludeByName": {
-			  "Time 1": true,
-			  "Time 2": true,
-			  "Time 3": true,
-			  "Time 4": true,
-			  "Time 5": true,
-			  "Time 6": true,
-			  "Time 7": true,
-			  "Time 8": true,
-			  "Value #Organisation": true,
-			  "Value #Version": true,
-			  "__name__": true,
-			  "container": true,
-			  "exported_instance": true,
-			  "instance": true,
-			  "job": true,
-			  "pod": true,
-			  "rhacs_cluster_name": true,
-			  "rhacs_environment": true
-			},
-			"indexByName": {
-			  "Time 1": 9,
-			  "Time 2": 10,
-			  "Time 3": 11,
-			  "Time 4": 12,
-			  "Time 5": 13,
-			  "Time 6": 15,
-			  "Time 7": 16,
-			  "Time 8": 17,
-			  "Value #CPU consumption": 3,
-			  "Value #CPU throttle": 4,
-			  "Value #Memory consumption": 1,
-			  "Value #Memory total": 2,
-			  "Value #Network received": 5,
-			  "Value #Network transmitted": 6,
-			  "Value #Organisation": 14,
-			  "Value #Secured Cores": 7,
-			  "namespace": 0,
-			  "rhacs_org_name": 8
-			},
-			"renameByName": {
-			  "Time 2": "",
-			  "Time 4": "",
-			  "Value #A": "Paused",
-			  "Value #CPU consumption": "CPU consumption",
-			  "Value #CPU throttle": "CPU throttle periods (30m)",
-			  "Value #Memory consumption": "Memory consumption",
-			  "Value #Memory total": "Absolute memory usage",
-			  "Value #Network received": "Network received",
-			  "Value #Network transmitted": "Network transmitted",
-			  "Value #Organisation": "CPU seconds",
-			  "Value #Secured Cores": "Secured Cores",
-			  "Value #Version": "",
-			  "rhacs_org_name": "Organisation",
-			  "rhacs_version": "Version"
-			}
-		  }
-		}
-	  ],
-	  "type": "table"
-	},
-	{
-	  "datasource": {
-		"type": "prometheus",
-		"uid": "PBFA97CFB590B2093"
-	  },
-	  "fieldConfig": {
-		"defaults": {
-		  "color": {
-			"mode": "thresholds"
-		  },
-		  "custom": {
-			"align": "auto",
-			"cellOptions": {
-			  "type": "auto"
-			},
-			"inspect": false
-		  },
-		  "mappings": [],
-		  "thresholds": {
-			"mode": "absolute",
-			"steps": [
-			  {
-				"color": "green"
-			  },
-			  {
-				"color": "red",
-				"value": 80
-			  }
-			]
-		  }
-		},
-		"overrides": [
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Value #Memory consumption"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "percentunit"
-			  },
-			  {
-				"id": "custom.cellOptions",
-				"value": {
-				  "mode": "lcd",
-				  "type": "gauge"
-				}
-			  },
-			  {
-				"id": "max",
-				"value": 1
-			  },
-			  {
-				"id": "thresholds",
-				"value": {
-				  "mode": "percentage",
-				  "steps": [
-					{
-					  "color": "green"
-					},
-					{
-					  "color": "orange",
-					  "value": 70
-					},
-					{
-					  "color": "red",
-					  "value": 90
-					}
-				  ]
-				}
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Network received"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "Bps"
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "Network transmitted"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "Bps"
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "CPU consumption"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "percentunit"
-			  },
-			  {
-				"id": "max",
-				"value": 1
-			  },
-			  {
-				"id": "custom.cellOptions",
-				"value": {
-				  "mode": "lcd",
-				  "type": "gauge"
-				}
-			  },
-			  {
-				"id": "thresholds",
-				"value": {
-				  "mode": "percentage",
-				  "steps": [
-					{
-					  "color": "green"
-					},
-					{
-					  "color": "orange",
-					  "value": 60
-					},
-					{
-					  "color": "red",
-					  "value": 80
-					}
-				  ]
-				}
-			  },
-			  {
-				"id": "decimals",
-				"value": 2
-			  }
-			]
-		  },
-		  {
-			"matcher": {
-			  "id": "byName",
-			  "options": "CPU throttle"
-			},
-			"properties": [
-			  {
-				"id": "unit",
-				"value": "percentunit"
-			  },
-			  {
-				"id": "max",
-				"value": 1
-			  },
-			  {
-				"id": "custom.cellOptions",
-				"value": {
-				  "mode": "lcd",
-				  "type": "gauge"
-				}
-			  },
-			  {
-				"id": "thresholds",
-				"value": {
-				  "mode": "percentage",
-				  "steps": [
-					{
-					  "color": "green"
-					},
-					{
-					  "color": "orange",
-					  "value": 10
-					},
-					{
-					  "color": "red",
-					  "value": 50
-					}
-				  ]
-				}
-			  },
-			  {
-				"id": "decimals",
-				"value": 1
-			  }
-			]
-		  }
-		]
-	  },
-	  "gridPos": {
-		"h": 13,
-		"w": 24,
-		"x": 0,
-		"y": 55
-	  },
-	  "id": 21,
-	  "options": {
-		"cellHeight": "sm",
-		"footer": {
-		  "countRows": false,
-		  "fields": "",
-		  "reducer": [
-			"sum"
-		  ],
-		  "show": false
-		},
-		"showHeader": true,
-		"sortBy": [
-		  {
-			"desc": true,
-			"displayName": "Memory consumption"
-		  }
-		]
-	  },
-	  "pluginVersion": "10.2.0",
-	  "targets": [
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"scanner\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"scanner\", job=~\"kubelet\"}) by (namespace)",
-		  "format": "table",
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Memory consumption"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"scanner-.*\"}[5m])) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Network received"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"scanner-.*\"}[5m])) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Network Transmitted"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace) /\nsum(container_spec_cpu_quota{namespace=~\"rhacs-$instance_id\", container=\"scanner\"} / container_spec_cpu_period{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "CPU consumption"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace) / sum(increase(container_cpu_cfs_periods_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "CPU throttle"
-		},
-		{
-		  "datasource": {
-			"type": "prometheus",
-			"uid": "PBFA97CFB590B2093"
-		  },
-		  "editorMode": "code",
-		  "exemplar": false,
-		  "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"scanner\"}) by (namespace, rhacs_org_name)",
-		  "format": "table",
-		  "hide": false,
-		  "instant": true,
-		  "legendFormat": "__auto",
-		  "range": false,
-		  "refId": "Organisation"
-		}
-	  ],
-	  "title": "Scanner Overview Table",
-	  "transformations": [
-		{
-		  "id": "seriesToColumns",
-		  "options": {
-			"byField": "namespace"
-		  }
-		},
-		{
-		  "id": "organize",
-		  "options": {
-			"excludeByName": {
-			  "Time": true,
-			  "Time 1": true,
-			  "Time 2": true,
-			  "Time 3": true,
-			  "Time 4": true,
-			  "Time 5": true,
-			  "Time 6": true,
-			  "Value": false,
-			  "Value #Organisation": true
-			},
-			"indexByName": {
-			  "Time 1": 7,
-			  "Time 2": 8,
-			  "Time 3": 9,
-			  "Time 4": 10,
-			  "Time 5": 11,
-			  "Time 6": 12,
-			  "Value #CPU consumption": 2,
-			  "Value #CPU throttle": 3,
-			  "Value #Memory consumption": 1,
-			  "Value #Network Transmitted": 5,
-			  "Value #Network received": 4,
-			  "Value #Organisation": 13,
-			  "namespace": 0,
-			  "rhacs_org_name": 6
-			},
-			"renameByName": {
-			  "Time": "",
-			  "Value": "CPU consumption",
-			  "Value #A": "",
-			  "Value #CPU Throttle": "CPU throttle",
-			  "Value #CPU consumption": "CPU consumption",
-			  "Value #CPU throttle": "CPU throttle",
-			  "Value #Memory consumption": "Memory consumption",
-			  "Value #Network Transmitted": "Network transmitted",
-			  "Value #Network received": "Network received",
-			  "Value #Organisation": "",
-			  "namespace": "",
-			  "rhacs_org_name": "Organisation"
-			}
-		  }
-		}
-	  ],
-	  "type": "table"
-	}
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Instances",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "The number of Central deployments with at least one pod in ready state.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "count(clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1))",
+          "interval": "",
+          "legendFormat": "Count",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Central Count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "The number of Central deployments with at least one pod in ready state per organisation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "count by (rhacs_org_name) (clamp_max(count by (namespace) (kube_pod_container_status_ready{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kube-state-metrics\"}), 1) * on(namespace) group_left(rhacs_org_name) count by (namespace, rhacs_org_name) (process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=\"central\", rhacs_org_id=~\"$org_id\"}))",
+          "interval": "",
+          "legendFormat": "{{rhacs_org_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Central Count By Organisation",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
+          "interval": "",
+          "legendFormat": "Cores",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(rox_central_cluster_metrics_node_count{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) or vector(0)",
+          "hide": false,
+          "legendFormat": "Nodes",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Total Secured Cores / Nodes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"}) by (namespace)",
+          "interval": "",
+          "legendFormat": "{{rhacs_instance_id}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Secured Cores",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "count(max by (exported_instance) (acs_fleetshard_pause_reconcile_instances == 1)) or vector(0)",
+          "interval": "",
+          "legendFormat": "Count",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Paused Reconcile Count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "count(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\",job=~\"central\"} > 0) or vector(0)",
+          "interval": "",
+          "legendFormat": "Clusters",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Secured Clusters",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 16,
+      "panels": [],
+      "title": "Resources",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 26
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
+          "format": "time_series",
+          "interval": "",
+          "legendFormat": "{{namespace}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Central Memory Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 26
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+          "interval": "",
+          "legendFormat": "{{namespace}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Network Transmitted",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 34
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+          "interval": "",
+          "legendFormat": "{{namespace}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Network Received",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 23,
+      "panels": [],
+      "title": "Instance Table",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "uid": "-- Mixed --",
+        "type": "datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "filterable": true,
+            "minWidth": 200
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory consumption"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 261
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU throttle periods (30m)"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 223
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network received"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              },
+              {
+                "id": "custom.width",
+                "value": 192
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network transmitted"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              },
+              {
+                "id": "custom.width",
+                "value": 185
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Paused"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 82
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Organisation"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 223
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Secured Cores"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "namespace"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 264
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "rhacs_expired_at"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              },
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "NaN": {
+                        "index": 0,
+                        "text": "-"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.align",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 19,
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": ["sum"],
+          "countRows": false,
+          "fields": "",
+          "enablePagination": true
+        },
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Memory consumption"
+          }
+        ]
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Memory consumption"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rox_central_cluster_metrics_cpu_capacity{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Secured Cores"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_org_name, rhacs_version, rhacs_expired_at)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Metadata"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{namespace=~\"rhacs-$instance_id\", container=\"central\"}[30m])) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "CPU throttle"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"central-.*\"}[5m])) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Network received"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"central-.*\"}[5m])) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Network transmitted"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "clamp_max(label_replace(acs_fleetshard_pause_reconcile_instances, \"namespace\", \"rhacs-$1\", \"exported_instance\", \"(.*)\"), 1)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Central Overview Table",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "namespace",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Value #Expired At": true,
+              "Value #Organisation": true,
+              "Value #Version": true,
+              "__name__": true,
+              "container": true,
+              "exported_instance": true,
+              "instance": true,
+              "job": true,
+              "pod": true,
+              "rhacs_cluster_name": true,
+              "rhacs_environment": true,
+              "Value #Metadata": true
+            },
+            "indexByName": {
+              "namespace": 0,
+              "Value #Memory consumption": 1,
+              "Value #Network received": 2,
+              "Value #Network transmitted": 3,
+              "Value #Secured Cores": 4,
+              "rhacs_org_name": 5,
+              "Time 1": 6,
+              "Time 2": 7,
+              "Time 3": 8,
+              "Time 4": 9,
+              "Time 5": 10,
+              "Time 6": 11,
+              "rhacs_version": 12,
+              "Value #Metadata": 13,
+              "container": 14,
+              "exported_instance": 15,
+              "instance": 16,
+              "job": 17,
+              "pod": 18,
+              "rhacs_cluster_name": 19,
+              "rhacs_environment": 20,
+              "Value #A": 21,
+              "rhacs_expired_at": 22
+            },
+            "renameByName": {
+              "Time 2": "",
+              "Time 4": "",
+              "Value #A": "Paused",
+              "Value #CPU consumption": "CPU consumption",
+              "Value #CPU throttle": "CPU throttle periods (30m)",
+              "Value #Memory consumption": "Memory consumption",
+              "Value #Memory total": "Absolute memory usage",
+              "Value #Network received": "Network received",
+              "Value #Network transmitted": "Network transmitted",
+              "Value #Organisation": "CPU seconds",
+              "Value #Secured Cores": "Secured Cores",
+              "Value #Version": "",
+              "rhacs_expired_at": "Expired At",
+              "rhacs_org_name": "Organisation",
+              "rhacs_version": "Version"
+            }
+          }
+        }
+      ],
+      "type": "table",
+      "description": ""
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #Memory consumption"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network received"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Bps"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network transmitted"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Bps"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU consumption"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 60
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU throttle"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 10
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
+      "id": 21,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Memory consumption"
+          }
+        ]
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"scanner\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"scanner\", job=~\"kubelet\"}) by (namespace)",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Memory consumption"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"scanner-.*\"}[5m])) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Network received"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\", pod=~\"scanner-.*\"}[5m])) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Network Transmitted"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace) /\nsum(container_spec_cpu_quota{namespace=~\"rhacs-$instance_id\", container=\"scanner\"} / container_spec_cpu_period{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "CPU consumption"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace) / sum(increase(container_cpu_cfs_periods_total{namespace=~\"rhacs-$instance_id\", container=\"scanner\"}[5m])) by (namespace)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "CPU throttle"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"scanner\"}) by (namespace, rhacs_org_name)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Organisation"
+        }
+      ],
+      "title": "Scanner Overview Table",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "namespace"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Value": false,
+              "Value #Organisation": true
+            },
+            "indexByName": {
+              "Time 1": 7,
+              "Time 2": 8,
+              "Time 3": 9,
+              "Time 4": 10,
+              "Time 5": 11,
+              "Time 6": 12,
+              "Value #CPU consumption": 2,
+              "Value #CPU throttle": 3,
+              "Value #Memory consumption": 1,
+              "Value #Network Transmitted": 5,
+              "Value #Network received": 4,
+              "Value #Organisation": 13,
+              "namespace": 0,
+              "rhacs_org_name": 6
+            },
+            "renameByName": {
+              "Time": "",
+              "Value": "CPU consumption",
+              "Value #A": "",
+              "Value #CPU Throttle": "CPU throttle",
+              "Value #CPU consumption": "CPU consumption",
+              "Value #CPU throttle": "CPU throttle",
+              "Value #Memory consumption": "Memory consumption",
+              "Value #Network Transmitted": "Network transmitted",
+              "Value #Network received": "Network received",
+              "Value #Organisation": "",
+              "namespace": "",
+              "rhacs_org_name": "Organisation"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
   ],
   "refresh": "",
   "revision": 1,
   "schemaVersion": 38,
-  "tags": [
-	"rhacs"
-  ],
+  "tags": ["rhacs"],
   "templating": {
-	"list": [
-	  {
-		"current": {
-		  "selected": true,
-		  "text": [
-			"All"
-		  ],
-		  "value": [
-			"$__all"
-		  ]
-		},
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "PBFA97CFB590B2093"
-		},
-		"definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
-		"description": "Red Hat SSO Organisation Name",
-		"hide": 0,
-		"includeAll": true,
-		"label": "Organisation",
-		"multi": true,
-		"name": "org_name",
-		"options": [],
-		"query": {
-		  "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
-		  "refId": "StandardVariableQuery"
-		},
-		"refresh": 2,
-		"regex": "",
-		"skipUrlSync": false,
-		"sort": 1,
-		"type": "query"
-	  },
-	  {
-		"current": {
-		  "selected": true,
-		  "text": [
-			"All"
-		  ],
-		  "value": [
-			"$__all"
-		  ]
-		},
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "PBFA97CFB590B2093"
-		},
-		"definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
-		"description": "Red Hat SSO Organisation ID",
-		"hide": 0,
-		"includeAll": true,
-		"label": "Organisation ID",
-		"multi": true,
-		"name": "org_id",
-		"options": [],
-		"query": {
-		  "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
-		  "refId": "StandardVariableQuery"
-		},
-		"refresh": 2,
-		"regex": "",
-		"skipUrlSync": false,
-		"sort": 1,
-		"type": "query"
-	  },
-	  {
-		"current": {
-		  "selected": true,
-		  "text": [
-			"All"
-		  ],
-		  "value": [
-			"$__all"
-		  ]
-		},
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "PBFA97CFB590B2093"
-		},
-		"definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
-		"description": "RHACS Central Instance ID",
-		"hide": 0,
-		"includeAll": true,
-		"label": "Central",
-		"multi": true,
-		"name": "instance_id",
-		"options": [],
-		"query": {
-		  "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
-		  "refId": "StandardVariableQuery"
-		},
-		"refresh": 2,
-		"regex": "",
-		"skipUrlSync": false,
-		"sort": 1,
-		"type": "query"
-	  },
-	  {
-		"current": {
-		  "selected": false,
-		  "text": "All",
-		  "value": "$__all"
-		},
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "PBFA97CFB590B2093"
-		},
-		"definition": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
-		"description": "RHACS Cluster ID",
-		"hide": 0,
-		"includeAll": true,
-		"label": "Cluster ID",
-		"multi": true,
-		"name": "cluster_id",
-		"options": [],
-		"query": {
-		  "query": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
-		  "refId": "StandardVariableQuery"
-		},
-		"refresh": 2,
-		"regex": "",
-		"skipUrlSync": false,
-		"sort": 0,
-		"type": "query"
-	  }
-	]
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
+        "description": "Red Hat SSO Organisation Name",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Organisation",
+        "multi": true,
+        "name": "org_name",
+        "options": [],
+        "query": {
+          "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
+        "description": "Red Hat SSO Organisation ID",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Organisation ID",
+        "multi": true,
+        "name": "org_id",
+        "options": [],
+        "query": {
+          "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id!=\"16536854\",cluster_id=~\"$cluster_id\"}, rhacs_org_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
+        "description": "RHACS Central Instance ID",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Central",
+        "multi": true,
+        "name": "instance_id",
+        "options": [],
+        "query": {
+          "query": "label_values(process_cpu_seconds_total{job=\"central\", rhacs_org_name=~\"$org_name\", rhacs_org_id=~\"$org_id\",cluster_id=~\"$cluster_id\"}, rhacs_instance_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+        "description": "RHACS Cluster ID",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Cluster ID",
+        "multi": true,
+        "name": "cluster_id",
+        "options": [],
+        "query": {
+          "query": "label_values(process_cpu_seconds_total{job=\"central\"}, cluster_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
-	"from": "now-24h",
-	"to": "now"
+    "from": "now-24h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
