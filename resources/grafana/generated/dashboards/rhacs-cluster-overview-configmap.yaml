@@ -972,22 +972,18 @@ data:
         },
         {
           "datasource": {
-            "type": "datasource",
-            "uid": "-- Mixed --"
+            "uid": "-- Mixed --",
+            "type": "datasource"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
               "custom": {
                 "align": "auto",
                 "cellOptions": {
                   "type": "auto"
                 },
-                "filterable": true,
                 "inspect": false,
+                "filterable": true,
                 "minWidth": 200
               },
               "mappings": [],
@@ -995,13 +991,17 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
                     "value": 80
                   }
                 ]
+              },
+              "color": {
+                "mode": "thresholds"
               }
             },
             "overrides": [
@@ -1032,7 +1032,8 @@ data:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green"
+                          "color": "green",
+                          "value": null
                         },
                         {
                           "color": "orange",
@@ -1160,6 +1161,40 @@ data:
                     "value": 264
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rhacs_expired_at"
+                },
+                "properties": [
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "NaN": {
+                            "index": 0,
+                            "text": "-"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "right"
+                  }
+                ]
               }
             ]
           },
@@ -1167,19 +1202,19 @@ data:
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 43
+            "y": 3
           },
           "id": 19,
           "options": {
+            "showHeader": true,
             "cellHeight": "sm",
             "footer": {
-              "countRows": false,
-              "enablePagination": true,
-              "fields": "",
+              "show": false,
               "reducer": ["sum"],
-              "show": false
+              "countRows": false,
+              "fields": "",
+              "enablePagination": true
             },
-            "showHeader": true,
             "sortBy": [
               {
                 "desc": true,
@@ -1225,13 +1260,13 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_org_name)",
+              "expr": "sum(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_org_name, rhacs_version, rhacs_expired_at)",
               "format": "table",
               "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
-              "refId": "Organisation"
+              "refId": "Metadata"
             },
             {
               "datasource": {
@@ -1284,19 +1319,6 @@ data:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "min(process_cpu_seconds_total{namespace=~\"rhacs-$instance_id\", job=~\"central\"}) by (namespace, rhacs_version)",
-              "format": "table",
-              "hide": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "Version"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
               "exemplar": false,
               "expr": "clamp_max(label_replace(acs_fleetshard_pause_reconcile_instances, \"namespace\", \"rhacs-$1\", \"exported_instance\", \"(.*)\"), 1)",
               "format": "table",
@@ -1312,7 +1334,8 @@ data:
             {
               "id": "seriesToColumns",
               "options": {
-                "byField": "namespace"
+                "byField": "namespace",
+                "mode": "outer"
               }
             },
             {
@@ -1327,6 +1350,7 @@ data:
                   "Time 6": true,
                   "Time 7": true,
                   "Time 8": true,
+                  "Value #Expired At": true,
                   "Value #Organisation": true,
                   "Value #Version": true,
                   "__name__": true,
@@ -1336,27 +1360,33 @@ data:
                   "job": true,
                   "pod": true,
                   "rhacs_cluster_name": true,
-                  "rhacs_environment": true
+                  "rhacs_environment": true,
+                  "Value #Metadata": true
                 },
                 "indexByName": {
-                  "Time 1": 9,
-                  "Time 2": 10,
-                  "Time 3": 11,
-                  "Time 4": 12,
-                  "Time 5": 13,
-                  "Time 6": 15,
-                  "Time 7": 16,
-                  "Time 8": 17,
-                  "Value #CPU consumption": 3,
-                  "Value #CPU throttle": 4,
-                  "Value #Memory consumption": 1,
-                  "Value #Memory total": 2,
-                  "Value #Network received": 5,
-                  "Value #Network transmitted": 6,
-                  "Value #Organisation": 14,
-                  "Value #Secured Cores": 7,
                   "namespace": 0,
-                  "rhacs_org_name": 8
+                  "Value #Memory consumption": 1,
+                  "Value #Network received": 2,
+                  "Value #Network transmitted": 3,
+                  "Value #Secured Cores": 4,
+                  "rhacs_org_name": 5,
+                  "Time 1": 6,
+                  "Time 2": 7,
+                  "Time 3": 8,
+                  "Time 4": 9,
+                  "Time 5": 10,
+                  "Time 6": 11,
+                  "rhacs_version": 12,
+                  "Value #Metadata": 13,
+                  "container": 14,
+                  "exported_instance": 15,
+                  "instance": 16,
+                  "job": 17,
+                  "pod": 18,
+                  "rhacs_cluster_name": 19,
+                  "rhacs_environment": 20,
+                  "Value #A": 21,
+                  "rhacs_expired_at": 22
                 },
                 "renameByName": {
                   "Time 2": "",
@@ -1371,13 +1401,15 @@ data:
                   "Value #Organisation": "CPU seconds",
                   "Value #Secured Cores": "Secured Cores",
                   "Value #Version": "",
+                  "rhacs_expired_at": "Expired At",
                   "rhacs_org_name": "Organisation",
                   "rhacs_version": "Version"
                 }
               }
             }
           ],
-          "type": "table"
+          "type": "table",
+          "description": ""
         },
         {
           "datasource": {
