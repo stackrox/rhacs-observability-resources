@@ -21,7 +21,6 @@ match[]:
   - code_resource:apiserver_request_total:rate5m{job!~"central|scanner"}
   - container_cpu_cfs_periods_total{job!~"central|scanner"}
   - container_cpu_cfs_throttled_periods_total{job!~"central|scanner"}
-  - container_cpu_usage_seconds_total{job!~"central|scanner"}
   - container_fs_reads_bytes_total{job!~"central|scanner"}
   - container_fs_reads_total{job!~"central|scanner"}
   - container_fs_writes_bytes_total{job!~"central|scanner"}
@@ -37,8 +36,6 @@ match[]:
   - container_network_transmit_bytes_total{job!~"central|scanner"}
   - container_network_transmit_packets_dropped_total{job!~"central|scanner"}
   - container_network_transmit_packets_total{job!~"central|scanner"}
-  - container_spec_cpu_period{job!~"central|scanner"}
-  - container_spec_cpu_quota{job!~"central|scanner"}
   - container_spec_memory_limit_bytes{job!~"central|scanner"}
   - go_gc_duration_seconds{job!~"central|scanner"}
   - go_goroutines{job!~"central|scanner"}
