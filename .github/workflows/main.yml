@@ -17,6 +17,11 @@ jobs:
         run: |
           curl -s -S -L -o /tmp/promtool https://github.com/prometheus/prometheus/releases/download/v2.36.0/prometheus-2.36.0.linux-amd64.tar.gz
           tar -zxf /tmp/promtool --strip-components=1 --directory /usr/local/bin &> /dev/null
+      - name: Install mimirtool
+        run: |
+          curl --silent --show-error --fail --location https://github.com/grafana/mimir/releases/download/mimir-2.10.5/mimirtool-linux-amd64 --output /usr/local/bin/mimirtool
+          echo "72f46c82c303c48566844612f83ab53d4b804c665644163ad7f0f8945caa0521 /usr/local/bin/mimirtool" | sha256sum --check --status
+          chmod +x /usr/local/bin/mimirtool
       - name: Patch PATH to include GOBIN
         run: echo "PATH=$(echo $PATH):/home/runner/go/bin" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.1
