@@ -21,6 +21,7 @@ match[]:
   - code_resource:apiserver_request_total:rate5m{job!~"central|scanner"}
   - container_cpu_cfs_periods_total{job!~"central|scanner"}
   - container_cpu_cfs_throttled_periods_total{job!~"central|scanner"}
+  - container_cpu_usage_seconds_total{job!~"central|scanner"}
   - container_fs_reads_bytes_total{job!~"central|scanner"}
   - container_fs_reads_total{job!~"central|scanner"}
   - container_fs_writes_bytes_total{job!~"central|scanner"}
