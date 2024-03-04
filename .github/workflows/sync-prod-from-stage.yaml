@@ -10,8 +10,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Opening pull request
         id: pull
-        uses: tretuna/sync-branches@1.4.0
+        # We need main for PULL_REQUEST_AUTO_MERGE_METHOD, which is currently not yet released.
+        uses: tretuna/sync-branches@main
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "stage"
           TO_BRANCH: "production"
+          PULL_REQUEST_AUTO_MERGE_METHOD: merge

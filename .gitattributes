@@ -3,3 +3,4 @@ resources/grafana/generated/** linguist-generated=true
 resources/grafana/mixins/** linguist-generated=true
 resources/prometheus/kubernetes-mixin-alerts.yaml linguist-generated=true
 resources/prometheus/kubernetes-mixin-rules.yaml linguist-generated=true
+resources/prometheus/federation-config.yaml linguist-generated=true

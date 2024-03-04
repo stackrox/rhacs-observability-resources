@@ -33,6 +33,13 @@ GitHub actions to trigger branch synchronization.
 
 ## Contributing
 
+### Prerequisites
+
+The following tools are required for development:
+- `jq` - please follow [the installation instructions](https://jqlang.github.io/jq/download).
+- `mimirtool` - please follow [the installation instructions](https://grafana.com/docs/mimir/latest/manage/tools/mimirtool/#installation).
+- `yq` - please follow [the installation instructions](https://github.com/mikefarah/yq/#install).
+
 ### Dashboards
 
 To make changes to the rhacs dashboards:
@@ -47,6 +54,15 @@ First, make sure you have `go-jsonnet` and `jsonnet-bundler` installed.
 Then:
 * Update `resources/mixins/kubernetes/mixin.libsonnet`.
 * Run `make generate` to generate the corresponding mixin resources.
+
+### Federated metrics
+
+If you make changes to Alerts, Recording rules, or Grafana dashboards, and if they include metrics collected by OSD Prometheus, ensure that the federation config includes new metrics.
+
+* Run `make generate-federate` to update federation config.
+* And commit changes in `resources/prometheus/federation-config.yaml` file to the repo.
+
+You can add additional federated metrics that are not used in any Alert, Recording rule, or Grafana dashboard to `resources/prometheus/federation-config-base.yaml,` and they will be merged with other metrics. Always add a comment with the reason why metrics are added to the base list.
 
 ### Pre-commit hook
 
