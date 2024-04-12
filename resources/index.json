@@ -7,7 +7,6 @@
         "prometheus/pod_monitors/rhacs-central-metrics.yaml",
         "prometheus/pod_monitors/rhacs-cloudwatch-exporter.yaml",
         "prometheus/pod_monitors/rhacs-fleetshard-sync-metrics.yaml",
-        "prometheus/pod_monitors/rhacs-probe-metrics.yaml",
         "prometheus/pod_monitors/rhacs-scanner-metrics.yaml"
       ],
       "rules": [
