@@ -531,6 +531,78 @@ spec:
             )
           record: central:sli:availability:extended_avg_over_time28d
 
+        # - Queries the 90th percentile of central's handled GRPC/HTTP API requests latencies over the last 10 minutes.
+        - expr: |
+            (histogram_quantile(0.9, sum  by(le, namespace, grpc_service, grpc_method) (rate(grpc_server_handling_seconds_bucket{container="central", grpc_method!~"ScanImageInternal|DeleteImages|EnrichLocalImageInternal|RunReport|ScanImage|TriggerExternalBackup|Ping"}[10m]))) > 0) < bool 0.1
+          record: central:grpc_server_handling_seconds:rate10m:p90
+        - expr: |
+            (histogram_quantile(0.9, sum  by(le, namespace, path) (rate(http_incoming_request_duration_histogram_seconds_bucket{container="central", code!~"5.*|4.*", path!~"/api/extensions/scannerdefinitions|/api/graphql|/sso/|/|/api/cli/download/"}[10m]))) > 0) > 0.1
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90
+
+        # - Queries the current central API latency (GRPC and HTTP) SLI by calculating the ratio of successful
+        #   instances of central:xxx:rate10m:p90 over its total instances for a certain period.
+        # - Note that to get the current SLI with a variable PERIOD, simply run the following query where PERIOD is the desired period in
+        #   promql duration format. This query is useful for dynamically determining an SLI regardless of an SLO.
+        #
+        #   sum_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[PERIOD]) / count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[PERIOD])
+        #
+        - expr: |
+            sum_over_time(central:grpc_server_handling_seconds:rate10m:p90[28d]) / count_over_time(central:grpc_server_handling_seconds:rate10m:p90[28d])
+          record: central:grpc_server_handling_seconds:rate10m:p90:sli
+        - expr: |
+            sum_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[28d]) / count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[28d])
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sli
+
+        # - Queries the error rate or the ratio of the instances of central:xxx:rate10m:p90
+        #   were equal to 0 over the total instances of central:xxx:rate10m:p90 within a period.
+        - expr: |
+            1 - central:grpc_server_handling_seconds:rate10m:p90:sli
+          record: central:grpc_server_handling_seconds:rate10m:p90:error_rate28d
+        - expr: |
+            1 - central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sli
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_rate28d
+
+        # - Queries error rate for a 1h window.
+        - expr: |
+            1 - (sum_over_time(central:grpc_server_handling_seconds:rate10m:p90[1h]) / count_over_time(central:grpc_server_handling_seconds:rate10m:p90[1h]))
+          record: central:grpc_server_handling_seconds:rate10m:p90:error_rate1h
+        - expr: |
+            1 - (sum_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[1h]) / count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[1h]))
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_rate1h
+
+        # - Queries the error budget exhaustion (or consumption) for the whole slo window (28d).
+        - expr: |
+            (1 - central:grpc_server_handling_seconds:rate10m:p90:sli) / 0.01
+          record: central:grpc_server_handling_seconds:rate10m:p90:error_budget_exhaustion28d
+        - expr: |
+            (1 - central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sli) / 0.01
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_budget_exhaustion28d
+
+        # - Queries error budget burn rate (a.k.a. burn rate) is the ratio of central:xxx:rate10m:p90:error_rateyyy
+        #   over the error budget for a period (e.g. 1h, 1d, etc).
+        - expr: |
+            central:grpc_server_handling_seconds:rate10m:p90:error_rate1h / 0.01
+          record: central:grpc_server_handling_seconds:rate10m:p90:burn_rate1h
+        - expr: |
+            central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_rate1h / 0.01
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:burn_rate1h
+
+        # - A sample count filter that ignores central:xxx:rate10m:p90 instances that has samples less than the expected sample count.
+        # - The expected count of 10m samples of central:xxx:rate10m:p90 over 28 days (e.g. 28d/10m) is equal to 4032.
+        # - The expected count of 10m samples of central:xxx:rate10m:p90 over an hour (e.g. 1h / 10m) is equal to 6.
+        - expr: |
+            (count_over_time(central:grpc_server_handling_seconds:rate10m:p90[28d]) >= 4032) / count_over_time(central:grpc_server_handling_seconds:rate10m:p90[28d])
+          record: central:grpc_server_handling_seconds:rate10m:p90:sample_count_filter28d
+        - expr: |
+            (count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[28d]) >= 4032) / count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[28d])
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sample_count_filter28d
+        - expr: |
+            (count_over_time(central:grpc_server_handling_seconds:rate10m:p90[1h]) >= 6) / count_over_time(central:grpc_server_handling_seconds:rate10m:p90[1h])
+          record: central:grpc_server_handling_seconds:rate10m:p90:sample_count_filter1h
+        - expr: |
+            (count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[1h]) >= 6) / (count_over_time(central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90[1h]))
+          record: central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sample_count_filter1h
+
     - name: rhacs-central.slo
       rules:
         # Availability SLO
@@ -610,6 +682,11 @@ spec:
             severity: critical
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+            rhacs_org_name: "{{ $labels.rhacs_org_name }}"
+            rhacs_org_id: "{{ $labels.rhacs_org_id }}"
+            rhacs_cluster_name: "{{ $labels.rhacs_cluster_name }}"
+            rhacs_environment: "{{ $labels.rhacs_environment }}"
+
     - name: az-resources
       rules:
         - record: acscs_worker_nodes
@@ -725,3 +802,96 @@ spec:
             summary: "There is a high risk of over-committing Memory resources on worker nodes."
             description: "During the last 5 minutes, the average Memory limit commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
+
+        - alert: Central latency error budget exhaustion for GRPC API - 90%
+          annotations:
+            message: "Latency error budget exhaustion for central's GRPC API. Current exhaustion: {{ $value | humanizePercentage }}."
+          expr: |
+            (central:grpc_server_handling_seconds:rate10m:p90:sample_count_filter28d * central:grpc_server_handling_seconds:rate10m:p90:error_budget_exhaustion28d) >= 0.9
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            grpc_service: "{{ $labels.grpc_service }}"
+            grpc_method: "{{ $labels.grpc_method }}"
+            severity: critical
+        - alert: Central latency error budget exhaustion for GRPC API - 70%
+          annotations:
+            message: "Latency error budget exhaustion for central's GRPC API. Current exhaustion: {{ $value | humanizePercentage }}."
+          expr: |
+            (central:grpc_server_handling_seconds:rate10m:p90:sample_count_filter28d * central:grpc_server_handling_seconds:rate10m:p90:error_budget_exhaustion28d) >= 0.7
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            grpc_service: "{{ $labels.grpc_service }}"
+            grpc_method: "{{ $labels.grpc_method }}"
+            severity: warning
+        - alert: Central latency error budget exhaustion for GRPC API - 50%
+          annotations:
+            message: "Latency error budget exhaustion for central's GRPC API. Current exhaustion: {{ $value | humanizePercentage }}."
+          expr: |
+            (central:grpc_server_handling_seconds:rate10m:p90:sample_count_filter28d * central:grpc_server_handling_seconds:rate10m:p90:error_budget_exhaustion28d) >= 0.5
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            grpc_service: "{{ $labels.grpc_service }}"
+            grpc_method: "{{ $labels.grpc_method }}"
+            severity: warning
+        - alert: Central latency error budget exhaustion for HTTP API - 90%
+          annotations:
+            message: "Latency error budget exhaustion for central's HTTP API. Current exhaustion: {{ $value | humanizePercentage }}."
+          expr: |
+            (central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sample_count_filter28d * central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_budget_exhaustion28d) >= 0.9
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            path: "{{ $labels.path }}"
+            severity: critical
+        - alert: Central latency error budget exhaustion for HTTP API - 70%
+          annotations:
+            message: "Latency error budget exhaustion for central's HTTP API. Current exhaustion: {{ $value | humanizePercentage }}."
+          expr: |
+            (central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sample_count_filter28d * central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_budget_exhaustion28d) >= 0.7
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            path: "{{ $labels.path }}"
+            severity: warning
+        - alert: Central latency error budget exhaustion for HTTP API - 50%
+          annotations:
+            message: "Latency error budget exhaustion for central's HTTP API. Current exhaustion: {{ $value | humanizePercentage }}."
+          expr: |
+            (central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sample_count_filter28d * central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:error_budget_exhaustion28d) >= 0.5
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            path: "{{ $labels.path }}"
+            severity: warning
+        - alert: Central latency burn rate for GRPC API
+          annotations:
+            message: "Latency  burn rate for central's GRPC API. Current burn rate per hour: {{ $value | humanize }}."
+          expr: |
+            (central:grpc_server_handling_seconds:rate10m:p90:sample_count_filter1h * central:grpc_server_handling_seconds:rate10m:p90:burn_rate1h) >= 0.5
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            grpc_service: "{{ $labels.grpc_service }}"
+            grpc_method: "{{ $labels.grpc_method }}"
+            severity: warning
+        - alert: Central latency burn rate for HTTP API
+          annotations:
+            message: "Latency  burn rate for central's HTTP API. Current burn rate per hour: {{ $value | humanize }}."
+          expr: |
+            (central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:sample_count_filter1h * central:http_incoming_request_duration_histogram_seconds_bucket:rate10m:p90:burn_rate1h) >= 0.5
+          labels:
+            service: central
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.namespace }}"
+            path: "{{ $labels.path }}"
+            severity: warning
