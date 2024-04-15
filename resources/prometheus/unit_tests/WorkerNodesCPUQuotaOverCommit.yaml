@@ -7,48 +7,24 @@ tests:
   - interval: 1m
     input_series:
       - series: kube_node_role{node="worker-1", role="acscs-worker"}
-        values: "1"
+        values: "1+0x20"
       - series: kube_node_labels{node="worker-1", label_failure_domain_beta_kubernetes_io_zone="us-east-1a"}
-        values: "1"
+        values: "1+0x20"
       - series: kube_node_status_allocatable{node="worker-1", resource="cpu", job="kube-state-metrics"}
-        values: "100"
+        values: "200+0x20"
       - series: cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{node="worker-1", resource="cpu", job="kube-state-metrics"}
-        values: "86"
-    alert_rule_test:
-      - eval_time: 1m
-        alertname: WorkerNodesCPUQuotaOverCommitWarning
-        exp_alerts: []
-      - eval_time: 5m
-        alertname: WorkerNodesCPUQuotaOverCommitWarning
-        exp_alerts:
-          - exp_labels:
-              alertname: WorkerNodesCPUQuotaOverCommitWarning
-              severity: warning
-            exp_annotations:
-              description: "During the last 5 minutes, the average CPU request commitment on worker nodes was 86%. This is above the recommended threshold of 85%."
-              summary: "There is a risk of over-committing CPU resources on worker nodes."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-  - interval: 1m
-    input_series:
-      - series: kube_node_role{node="worker-1", role="acscs-worker"}
-        values: "1"
-      - series: kube_node_labels{node="worker-1", label_failure_domain_beta_kubernetes_io_zone="us-east-1a"}
-        values: "1"
-      - series: kube_node_status_allocatable{node="worker-1", resource="cpu", job="kube-state-metrics"}
-        values: "100"
-      - series: cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{node="worker-1", resource="cpu", job="kube-state-metrics"}
-        values: "96"
+        values: "199+0x20"
     alert_rule_test:
       - eval_time: 1m
         alertname: WorkerNodesCPUQuotaOverCommit
         exp_alerts: []
-      - eval_time: 5m
+      - eval_time: 16m
         alertname: WorkerNodesCPUQuotaOverCommit
         exp_alerts:
           - exp_labels:
               alertname: WorkerNodesCPUQuotaOverCommit
-              severity: critical
+              severity: warning
             exp_annotations:
-              description: "During the last 5 minutes, the average CPU request commitment on worker nodes was 96%. This is above the critical threshold of 95%."
-              summary: "There is a high risk of over-committing CPU resources on worker nodes."
+              summary: "There is a risk of over-committing CPU resources on worker nodes."
+              description: "During the last 15 minutes, the average CPU request commitment on worker nodes was 99.5%. This could make pods unschedulable."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"

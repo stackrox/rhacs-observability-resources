@@ -680,41 +680,23 @@ spec:
             cpu_resource_limits:acscs_worker_nodes:by_availability_zone:sum
             /
             availability_zone:acscs_worker_nodes:allocatable_cpu
-        - alert: WorkerNodesMemoryQuotaOverCommitWarning
-          expr: avg(availability_zone:acscs_worker_nodes:memory_request_ratio) > 0.85
-          for: 5m
+        - alert: WorkerNodesMemoryQuotaOverCommit
+          expr: avg(availability_zone:acscs_worker_nodes:memory_request_ratio) > 0.99
+          for: 15m
           labels:
             severity: warning
           annotations:
             summary: "There is a risk of over-committing Memory resources on worker nodes."
-            description: "During the last 5 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 85%."
+            description: "During the last 15 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This could make pods unschedulable."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-        - alert: WorkerNodesMemoryQuotaOverCommit
-          expr: avg(availability_zone:acscs_worker_nodes:memory_request_ratio) > 0.95
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: "There is a high risk of over-committing Memory resources on worker nodes."
-            description: "During the last 5 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the critical threshold of 95%."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-        - alert: WorkerNodesCPUQuotaOverCommitWarning
-          expr: avg(availability_zone:acscs_worker_nodes:cpu_request_ratio) > 0.85
-          for: 5m
+        - alert: WorkerNodesCPUQuotaOverCommit
+          expr: avg(availability_zone:acscs_worker_nodes:cpu_request_ratio) > 0.1
+          for: 15m
           labels:
             severity: warning
           annotations:
             summary: "There is a risk of over-committing CPU resources on worker nodes."
-            description: "During the last 5 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 85%."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-        - alert: WorkerNodesCPUQuotaOverCommit
-          expr: avg(availability_zone:acscs_worker_nodes:cpu_request_ratio) > 0.95
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: "There is a high risk of over-committing CPU resources on worker nodes."
-            description: "During the last 5 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the critical threshold of 95%."
+            description: "During the last 15 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This could make pods unschedulable."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
         - alert: WorkerNodesMemoryOverCommit
           expr: avg(availability_zone:acscs_worker_nodes:memory_limit_ratio) > 2
