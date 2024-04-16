@@ -7,18 +7,21 @@ tests:
   - interval: 1m
     input_series:
       - series: kube_node_role{node="worker-1", role="acscs-worker"}
-        values: "1+0x20"
+        values: "1+0x40"
       - series: kube_node_labels{node="worker-1", label_failure_domain_beta_kubernetes_io_zone="us-east-1a"}
-        values: "1+0x20"
+        values: "1+0x40"
       - series: kube_node_status_allocatable{node="worker-1", resource="memory", job="kube-state-metrics"}
-        values: "200+0x20"
+        values: "200+0x40"
       - series: cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{node="worker-1", resource="memory", job="kube-state-metrics"}
-        values: "199+0x20"
+        values: "196+0x20 199+0x20"
     alert_rule_test:
       - eval_time: 1m
         alertname: WorkerNodesMemoryQuotaOverCommit
         exp_alerts: []
       - eval_time: 16m
+        alertname: WorkerNodesMemoryQuotaOverCommit
+        exp_alerts: []
+      - eval_time: 36m
         alertname: WorkerNodesMemoryQuotaOverCommit
         exp_alerts:
           - exp_labels:
