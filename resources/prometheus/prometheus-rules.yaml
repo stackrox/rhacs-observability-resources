@@ -680,41 +680,23 @@ spec:
             cpu_resource_limits:acscs_worker_nodes:by_availability_zone:sum
             /
             availability_zone:acscs_worker_nodes:allocatable_cpu
-        - alert: WorkerNodesMemoryQuotaOverCommitWarning
-          expr: avg(availability_zone:acscs_worker_nodes:memory_request_ratio) > 0.85
-          for: 5m
+        - alert: WorkerNodesMemoryQuotaOverCommit
+          expr: avg(availability_zone:acscs_worker_nodes:memory_request_ratio) > 0.99
+          for: 15m
           labels:
             severity: warning
           annotations:
             summary: "There is a risk of over-committing Memory resources on worker nodes."
-            description: "During the last 5 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 85%."
+            description: "During the last 15 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This could make pods unschedulable."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-        - alert: WorkerNodesMemoryQuotaOverCommit
-          expr: avg(availability_zone:acscs_worker_nodes:memory_request_ratio) > 0.95
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: "There is a high risk of over-committing Memory resources on worker nodes."
-            description: "During the last 5 minutes, the average memory request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the critical threshold of 95%."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-        - alert: WorkerNodesCPUQuotaOverCommitWarning
-          expr: avg(availability_zone:acscs_worker_nodes:cpu_request_ratio) > 0.85
-          for: 5m
+        - alert: WorkerNodesCPUQuotaOverCommit
+          expr: avg(availability_zone:acscs_worker_nodes:cpu_request_ratio) > 0.99
+          for: 15m
           labels:
             severity: warning
           annotations:
             summary: "There is a risk of over-committing CPU resources on worker nodes."
-            description: "During the last 5 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 85%."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
-        - alert: WorkerNodesCPUQuotaOverCommit
-          expr: avg(availability_zone:acscs_worker_nodes:cpu_request_ratio) > 0.95
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: "There is a high risk of over-committing CPU resources on worker nodes."
-            description: "During the last 5 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the critical threshold of 95%."
+            description: "During the last 15 minutes, the average CPU request commitment on worker nodes was {{ $value | humanizePercentage }}. This could make pods unschedulable."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
         - alert: WorkerNodesMemoryOverCommit
           expr: avg(availability_zone:acscs_worker_nodes:memory_limit_ratio) > 2
@@ -725,3 +707,52 @@ spec:
             summary: "There is a high risk of over-committing Memory resources on worker nodes."
             description: "During the last 5 minutes, the average Memory limit commitment on worker nodes was {{ $value | humanizePercentage }}. This is above the recommended threshold of 200%."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-027-cluster-scale-up.md"
+    - name: cluster-autoscaler
+      rules:
+        # Copied from: https://github.com/openshift/cluster-autoscaler-operator/blob/287595b0ee37b893c02d51d3a461ba118b90c3dc/pkg/controller/clusterautoscaler/monitoring.go#L153
+        # However, different severity levels are used to ensure timely response.
+        # Additional information about alerts: https://github.com/openshift/cluster-autoscaler-operator/blob/287595b0ee37b893c02d51d3a461ba118b90c3dc/docs/user/alerts.md
+        - alert: ClusterAutoscalerUnschedulablePods
+          expr: cluster_autoscaler_unschedulable_pods_count{service="cluster-autoscaler-default"} > 0
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Cluster Autoscaler has {{ $value }} unschedulable pods."
+            description: "The cluster autoscaler is unable to scale up and is alerting that there are unschedulable pods because of this condition.
+This may be caused by the cluster autoscaler reaching its resources limits, or by Kubernetes waiting for new nodes to become ready."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"
+        - alert: ClusterAutoscalerNotSafeToScale
+          expr: cluster_autoscaler_cluster_safe_to_autoscale{service="cluster-autoscaler-default"} != 1
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Cluster Autoscaler is reporting that the cluster is not ready for scaling."
+            description: "The cluster autoscaler has detected that the number of unready nodes is too high
+and it is not safe to continute scaling operations. It makes this determination by checking that the number of ready nodes is greater than the minimum ready count
+(default of 3) and the ratio of unready to ready nodes is less than the maximum unready node percentage (default of 45%). If either of those conditions are not
+true then the cluster autoscaler will enter an unsafe to scale state until the conditions change."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"
+        - alert: ClusterAutoscalerUnableToScaleCPULimitReached
+          expr: increase(cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="up",reason="CpuResourceLimit"}[15m]) > 0
+          for: 15m
+          labels:
+            severity: info
+          annotations:
+            summary: "Cluster Autoscaler has reached its maximum CPU core limit and is unable to scale out."
+            description: "The number of total cores in the cluster has exceeded the maximum number set on the
+cluster autoscaler. This is calculated by summing the cpu capacity for all nodes in the cluster and comparing that number against the maximum cores value set for the
+cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"
+        - alert: ClusterAutoscalerUnableToScaleMemoryLimitReached
+          expr: increase(cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="up",reason="MemoryResourceLimit"}[15m]) > 0
+          for: 15m
+          labels:
+            severity: info
+          annotations:
+            summary: "Cluster Autoscaler has reached its maximum Memory bytes limit and is unable to scale out."
+            description: "The number of total bytes of RAM in the cluster has exceeded the maximum number set on
+the cluster autoscaler. This is calculated by summing the memory capacity for all nodes in the cluster and comparing that number against the maximum memory bytes value set
+for the cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"

@@ -1,0 +1,37 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: cluster_autoscaler_cluster_safe_to_autoscale{service="custom-autoscaler"}
+        values: "0+0x20"
+    alert_rule_test:
+      - eval_time: 16m
+        alertname: ClusterAutoscalerNotSafeToScale
+        exp_alerts: []
+
+  - interval: 1m
+    input_series:
+      - series: cluster_autoscaler_cluster_safe_to_autoscale{service="cluster-autoscaler-default"}
+        values: "1+0x20 0+0x20"
+    alert_rule_test:
+      - eval_time: 16m
+        alertname: ClusterAutoscalerNotSafeToScale
+        exp_alerts: []
+      - eval_time: 36m
+        alertname: ClusterAutoscalerNotSafeToScale
+        exp_alerts:
+          - exp_labels:
+              alertname: ClusterAutoscalerNotSafeToScale
+              severity: warning
+              service: cluster-autoscaler-default
+            exp_annotations:
+              summary: "Cluster Autoscaler is reporting that the cluster is not ready for scaling."
+              description: "The cluster autoscaler has detected that the number of unready nodes is too high
+and it is not safe to continute scaling operations. It makes this determination by checking that the number of ready nodes is greater than the minimum ready count
+(default of 3) and the ratio of unready to ready nodes is less than the maximum unready node percentage (default of 45%). If either of those conditions are not
+true then the cluster autoscaler will enter an unsafe to scale state until the conditions change."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"

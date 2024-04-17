@@ -1,0 +1,42 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: cluster_autoscaler_skipped_scale_events_count{service="custom-autoscaler",direction="up",reason="CpuResourceLimit"}
+        values: "0+0x10 0+1x30"
+      - series: cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="down",reason="CpuResourceLimit"}
+        values: "0+0x10 0+1x30"
+      - series: cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="up",reason="SomeResourceLimit"}
+        values: "0+0x10 0+1x30"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: ClusterAutoscalerUnableToScaleCPULimitReached
+        exp_alerts: []
+
+  - interval: 1m
+    input_series:
+      - series: cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="up",reason="CpuResourceLimit"}
+        values: "0+0x10 0+1x30"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: ClusterAutoscalerUnableToScaleCPULimitReached
+        exp_alerts: []
+      - eval_time: 30m
+        alertname: ClusterAutoscalerUnableToScaleCPULimitReached
+        exp_alerts:
+          - exp_labels:
+              alertname: ClusterAutoscalerUnableToScaleCPULimitReached
+              severity: info
+              service: cluster-autoscaler-default
+              direction: up
+              reason: CpuResourceLimit
+            exp_annotations:
+              summary: "Cluster Autoscaler has reached its maximum CPU core limit and is unable to scale out."
+              description: "The number of total cores in the cluster has exceeded the maximum number set on the
+  cluster autoscaler. This is calculated by summing the cpu capacity for all nodes in the cluster and comparing that number against the maximum cores value set for the
+  cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"
