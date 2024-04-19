@@ -37,12 +37,12 @@ spec:
 
       metricRelabelings:
         - action: replace
-          source_labels: [__name__]
+          sourceLabels: [__name__]
           regex: 'aws_(.*)_selinux_denials_sample_count'
-          target_label: __name__
+          targetLabel: __name__
           replacement: selinux_denials_sample_count
         - action: replace
-          source_labels: [__name__]
+          sourceLabels: [__name__]
           regex: 'aws_(.*)_network_policy_denials_sample_count'
-          target_label: __name__
+          targetLabel: __name__
           replacement: network_policy_denials_sample_count
