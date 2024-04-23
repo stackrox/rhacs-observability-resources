@@ -34,3 +34,15 @@ spec:
 
         - action: labeldrop
           regex: rhacs_tenant
+
+      metricRelabelings:
+        - action: replace
+          sourceLabels: [__name__]
+          regex: 'aws_(.*)_selinux_denials_sample_count'
+          targetLabel: __name__
+          replacement: selinux_denials_sample_count
+        - action: replace
+          sourceLabels: [__name__]
+          regex: 'aws_(.*)_network_policy_denials_sample_count'
+          targetLabel: __name__
+          replacement: network_policy_denials_sample_count

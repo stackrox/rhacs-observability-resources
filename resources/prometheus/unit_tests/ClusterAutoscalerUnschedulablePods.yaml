@@ -1,0 +1,34 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: cluster_autoscaler_unschedulable_pods_count{service="custom-autoscaler"}
+        values: "1+0x40"
+    alert_rule_test:
+      - eval_time: 35m
+        alertname: ClusterAutoscalerUnschedulablePods
+        exp_alerts: []
+
+  - interval: 1m
+    input_series:
+      - series: cluster_autoscaler_unschedulable_pods_count{service="cluster-autoscaler-default"}
+        values: "0+0x20 2+0x50"
+    alert_rule_test:
+      - eval_time: 25m
+        alertname: ClusterAutoscalerUnschedulablePods
+        exp_alerts: []
+      - eval_time: 60m
+        alertname: ClusterAutoscalerUnschedulablePods
+        exp_alerts:
+          - exp_labels:
+              alertname: ClusterAutoscalerUnschedulablePods
+              severity: critical
+              service: cluster-autoscaler-default
+            exp_annotations:
+              summary: "Cluster Autoscaler has 2 unschedulable pods."
+              description: "The cluster autoscaler is unable to scale up and is alerting that there are unschedulable pods because of this condition. This may be caused by the cluster autoscaler reaching its resources limits, or by Kubernetes waiting for new nodes to become ready."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"
