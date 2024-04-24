@@ -1844,194 +1844,6 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Shows occurrence intensity of SELinux AVC denials.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "scaleDistribution": {
-              "type": "linear"
-            }
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 29
-      },
-      "id": 142,
-      "interval": "60s",
-      "options": {
-        "calculate": false,
-        "cellGap": 2,
-        "cellValues": {
-          "unit": "none"
-        },
-        "color": {
-          "exponent": 0.5,
-          "fill": "dark-orange",
-          "max": 30,
-          "min": -20,
-          "mode": "scheme",
-          "reverse": true,
-          "scale": "exponential",
-          "scheme": "Oranges",
-          "steps": 64
-        },
-        "exemplars": {
-          "color": "rgba(255,0,255,0.7)"
-        },
-        "filterValues": {
-          "le": 1e-9
-        },
-        "legend": {
-          "show": false
-        },
-        "rowsFrame": {
-          "layout": "auto"
-        },
-        "tooltip": {
-          "show": true,
-          "yHistogram": false
-        },
-        "yAxis": {
-          "axisPlacement": "hidden",
-          "reverse": false,
-          "unit": "none"
-        }
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "sum by() (selinux_denials_sample_count{rhacs_cluster_name=\"acs-int-us-01\"})",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "hide": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "selinux_denials_sample_count occurrences",
-          "useBackend": false
-        }
-      ],
-      "title": "SELinux Violations occurences",
-      "transformations": [],
-      "type": "heatmap"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Shows occurrence intensity of Network Policy ACL denials.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "scaleDistribution": {
-              "type": "linear"
-            }
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 29
-      },
-      "id": 143,
-      "interval": "60s",
-      "options": {
-        "calculate": false,
-        "cellGap": 2,
-        "cellValues": {
-          "unit": "none"
-        },
-        "color": {
-          "exponent": 0.5,
-          "fill": "dark-orange",
-          "max": 30,
-          "min": -20,
-          "mode": "scheme",
-          "reverse": true,
-          "scale": "exponential",
-          "scheme": "Oranges",
-          "steps": 64
-        },
-        "exemplars": {
-          "color": "rgba(255,0,255,0.7)"
-        },
-        "filterValues": {
-          "le": 1e-9
-        },
-        "legend": {
-          "show": false
-        },
-        "rowsFrame": {
-          "layout": "auto"
-        },
-        "tooltip": {
-          "show": true,
-          "yHistogram": false
-        },
-        "yAxis": {
-          "axisPlacement": "hidden",
-          "reverse": false,
-          "unit": "none"
-        }
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "sum by() (network_policy_denials_sample_count{rhacs_cluster_name=\"acs-int-us-01\"})",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "hide": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "selinux_denials_sample_count occurrences",
-          "useBackend": false
-        }
-      ],
-      "title": "Network Policy Violations occurences",
-      "transformations": [],
-      "type": "heatmap"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
       "description": "Shows the SELinux AVC Denials per minute, as logged to CloudWatch.",
       "fieldConfig": {
         "defaults": {
@@ -2092,7 +1904,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 37
+        "y": 29
       },
       "id": 141,
       "interval": "60s",
@@ -2101,7 +1913,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -2123,27 +1935,9 @@
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
-          "legendFormat": "selinux_denials_sample_count { region=\"{{region}}\", rhacs_cluster_name=\"{{rhacs_cluster_name}}\" }",
-          "range": true,
-          "refId": "selinux_denials_sample_count per minute",
-          "useBackend": false
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sgn(selinux_denials_sample_count{rhacs_cluster_name=\"acs-int-us-01\"})",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "hide": true,
-          "includeNullMetadata": true,
-          "instant": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "selinux_denials_sample_count occurrences",
+          "refId": "selinux_denials_sample_count per minute",
           "useBackend": false
         }
       ],
@@ -2215,7 +2009,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 29
       },
       "id": 144,
       "interval": "60s",
@@ -2224,7 +2018,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -2246,7 +2040,7 @@
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
-          "legendFormat": "selinux_denials_sample_count { region=\"{{region}}\", rhacs_cluster_name=\"{{rhacs_cluster_name}}\" }",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "network_policy_denials_sample_count per minute",
           "useBackend": false

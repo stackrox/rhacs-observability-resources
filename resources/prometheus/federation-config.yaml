@@ -142,6 +142,7 @@ match[]:
   - namespace_memory:kube_pod_container_resource_limits:sum{job!~"central|scanner"}
   - namespace_memory:kube_pod_container_resource_requests:sum{job!~"central|scanner"}
   - namespace_workload_pod:kube_pod_owner:relabel{job!~"central|scanner"}
+  - network_policy_denials_sample_count{job!~"central|scanner"}
   - node_memory_MemTotal_bytes{job!~"central|scanner"}
   - node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{job!~"central|scanner"}
   - node_namespace_pod_container:container_memory_cache{job!~"central|scanner"}
@@ -168,6 +169,7 @@ match[]:
   - scheduler_scheduling_algorithm_duration_seconds_count{job!~"central|scanner"}
   - scheduler_volume_scheduling_duration_seconds_bucket{job!~"central|scanner"}
   - scheduler_volume_scheduling_duration_seconds_count{job!~"central|scanner"}
+  - selinux_denials_sample_count{job!~"central|scanner"}
   - storage_operation_duration_seconds_bucket{job!~"central|scanner"}
   - storage_operation_duration_seconds_count{job!~"central|scanner"}
   - storage_operation_errors_total{job!~"central|scanner"}
