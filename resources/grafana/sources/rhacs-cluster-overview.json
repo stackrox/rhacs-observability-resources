@@ -1856,6 +1856,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisWidth": 5,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -1902,7 +1903,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 17,
         "x": 0,
         "y": 29
       },
@@ -1943,6 +1944,31 @@
       ],
       "title": "SELinux Violations per minute",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "\n",
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 17,
+        "y": 29
+      },
+      "id": 145,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Description\n\nThis graph shows the occurences per minute of **SELinux AVC denials** on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that network traffic was prevented due to a Kubernetes Network Policy.\nAs an example, a violation could indicate that communication between RHACS tenant namespaces\nwas attempted, which is strictly forbidden.\n\n### Drill-Down\n\nLog into the cluster's AWS account. All CloudWwatch related resources are located in the `us-east-1` region.\nNavigate to `CloudWatch / Log Insights` and use a query similar to the following on the log group named `acs-<cluster name>.audit`:\n\n```\nfields @timestamp, @message, @logStream, @log\n| filter @logStream like /linux-audit/\n| filter @message like /AVC/\n| sort @timestamp desc\n| limit 1000\n```\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.2.0",
+      "type": "text"
     },
     {
       "datasource": {
@@ -2007,9 +2033,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 29
+        "w": 17,
+        "x": 0,
+        "y": 37
       },
       "id": 144,
       "interval": "60s",
@@ -2048,6 +2074,31 @@
       ],
       "title": "Network Policy Violations per minute",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "\n",
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 17,
+        "y": 37
+      },
+      "id": 146,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Description\n\nThis graph shows the occurences per minute of Network Policy ACL denials on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that network traffic was prevented due to a Kubernetes Network Policy.\nAs an example, a violation could indicate that communication between RHACS tenant namespaces\nwas attempted, which is strictly forbidden.\n\n### Drill-Down\n\nLog into the cluster's AWS account. All CloudWwatch related resources are located in the `us-east-1` region.\nNavigate to `CloudWatch / Log Insights` and use a query similar to the following on the log group named `acs-<cluster name>.audit`:\n\n```\nfields @timestamp, @message, @logStream, @log\n| filter @message like /acl_log(.*).*\\sverdict=drop/\n| filter @logStream like /.*ovn-audit\\.log/\n| sort @timestamp desc\n| limit 1000\n\n```\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.2.0",
+      "type": "text"
     }
   ],
   "refresh": "",
