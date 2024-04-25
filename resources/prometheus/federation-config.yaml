@@ -18,7 +18,13 @@ match[]:
   - cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{job!~"central|scanner"}
   - cluster:node_cpu:ratio_rate5m{job!~"central|scanner"}
   - cluster_autoscaler_cluster_safe_to_autoscale{job!~"central|scanner"}
+  - cluster_autoscaler_evicted_pods_total{job!~"central|scanner"}
+  - cluster_autoscaler_last_activity{job!~"central|scanner"}
+  - cluster_autoscaler_nodes_count{job!~"central|scanner"}
+  - cluster_autoscaler_scaled_down_nodes_total{job!~"central|scanner"}
+  - cluster_autoscaler_scaled_up_nodes_total{job!~"central|scanner"}
   - cluster_autoscaler_skipped_scale_events_count{job!~"central|scanner"}
+  - cluster_autoscaler_unneeded_nodes_count{job!~"central|scanner"}
   - cluster_autoscaler_unschedulable_pods_count{job!~"central|scanner"}
   - cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile{job!~"central|scanner"}
   - code_resource:apiserver_request_total:rate5m{job!~"central|scanner"}
