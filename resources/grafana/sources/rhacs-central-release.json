@@ -196,7 +196,7 @@
   "refresh": "",
   "revision": 1,
   "schemaVersion": 38,
-  "tags": [],
+  "tags": ["rhacs"],
   "templating": {
     "list": [
       {

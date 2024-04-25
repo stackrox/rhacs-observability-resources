@@ -1042,7 +1042,7 @@
   "refresh": false,
   "schemaVersion": 25,
   "style": "dark",
-  "tags": ["prometheus"],
+  "tags": ["rhacs"],
   "templating": {
     "list": [
       {
@@ -1079,7 +1079,7 @@
     "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
   },
   "timezone": "browser",
-  "title": "Kubernetes Cluster Autoscaler",
+  "title": "RHACS Dataplane - Kubernetes Cluster Autoscaler",
   "uid": "qLaYXlDZk",
   "version": 1
 }

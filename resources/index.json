@@ -43,7 +43,7 @@
         "grafana/mixins/kubernetes/proxy.yaml",
         "grafana/mixins/kubernetes/scheduler.yaml",
         "grafana/mixins/kubernetes/workload-total.yaml",
-        "grafana/generated/dashboards/rhacs-autoscaler-dashboard.json",
+        "grafana/generated/dashboards/rhacs-autoscaler-dashboard.yaml",
         "grafana/generated/dashboards/rhacs-central-dashboard.yaml",
         "grafana/generated/dashboards/rhacs-central-release-dashboard.yaml",
         "grafana/generated/dashboards/rhacs-central-slo-dashboard.yaml",
