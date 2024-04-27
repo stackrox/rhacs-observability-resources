@@ -16,4 +16,4 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "stage"
           TO_BRANCH: "production"
-          LABELS: ["automerge"]
+          LABELS: '["automerge"]'
