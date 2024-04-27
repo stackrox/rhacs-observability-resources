@@ -12,7 +12,7 @@ update-jb:
 .PHONY: alerts
 alerts:
 	@jsonnet -J vendor -S -e 'std.manifestYamlDoc((import "mixin.libsonnet").prometheusAlerts)' > generated/alerts.yml
-	@yq '.spec += load("generated/alerts.yml")' templates/alerts.yaml > ../../prometheus/kubernetes-mixin-alerts.yaml
+	@yq '.spec += load("generated/alerts.yml")' templates/alerts.yaml > ../../prometheus/generated/kubernetes-mixin-alerts.yaml
 
 .PHONY:
 dashboards: templates/dashboards/*
