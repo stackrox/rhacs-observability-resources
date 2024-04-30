@@ -39,4 +39,4 @@ tests:
               description: "The number of total cores in the cluster has exceeded the maximum number set on the
   cluster autoscaler. This is calculated by summing the cpu capacity for all nodes in the cluster and comparing that number against the maximum cores value set for the
   cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-041-modify-cluster-autoscaler.md"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-042-modify-cluster-autoscaler.md"
