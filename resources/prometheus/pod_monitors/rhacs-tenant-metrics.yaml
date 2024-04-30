@@ -1,13 +1,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: rhacs-scanner-metrics
+  name: rhacs-tenant-metrics
   labels:
     app: rhacs
 spec:
   selector:
     matchLabels:
-      app: "scanner"
+      app.kubernetes.io/name: stackrox
   namespaceSelector:
     any: true
   podMetricsEndpoints:
