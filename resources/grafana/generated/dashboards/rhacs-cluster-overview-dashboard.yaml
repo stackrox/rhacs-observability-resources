@@ -35,7 +35,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 27,
+      "id": 23,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -721,7 +721,7 @@ spec:
                   }
                 ]
               },
-              "unit": "percentunit"
+              "unit": "Bps"
             },
             "overrides": []
           },
@@ -731,7 +731,7 @@ spec:
             "x": 0,
             "y": 26
           },
-          "id": 6,
+          "id": 4,
           "options": {
             "legend": {
               "calcs": [],
@@ -741,7 +741,7 @@ spec:
             },
             "tooltip": {
               "mode": "single",
-              "sort": "desc"
+              "sort": "none"
             }
           },
           "pluginVersion": "9.1.0",
@@ -752,15 +752,14 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
-              "format": "time_series",
+              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
               "interval": "",
               "legendFormat": "{{namespace}}",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "Central Memory Usage",
+          "title": "Network Received",
           "type": "timeseries"
         },
         {
@@ -916,7 +915,7 @@ spec:
                   }
                 ]
               },
-              "unit": "Bps"
+              "unit": "percentunit"
             },
             "overrides": []
           },
@@ -926,7 +925,7 @@ spec:
             "x": 0,
             "y": 34
           },
-          "id": 4,
+          "id": 6,
           "options": {
             "legend": {
               "calcs": [],
@@ -936,7 +935,7 @@ spec:
             },
             "tooltip": {
               "mode": "single",
-              "sort": "none"
+              "sort": "desc"
             }
           },
           "pluginVersion": "9.1.0",
@@ -947,14 +946,15 @@ spec:
                 "uid": "PBFA97CFB590B2093"
               },
               "editorMode": "code",
-              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
+              "format": "time_series",
               "interval": "",
               "legendFormat": "{{namespace}}",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "Network Received",
+          "title": "Central Memory Usage",
           "type": "timeseries"
         },
         {
@@ -964,6 +964,279 @@ spec:
             "w": 24,
             "x": 0,
             "y": 42
+          },
+          "id": 140,
+          "panels": [],
+          "title": "Cluster Violations",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Shows the SELinux AVC Denials per minute, as logged to CloudWatch.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 17,
+            "x": 0,
+            "y": 43
+          },
+          "id": 141,
+          "interval": "60s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "disableTextWrap": false,
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "selinux_denials_sample_count",
+              "fullMetaSearch": false,
+              "hide": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "selinux_denials_sample_count per minute",
+              "useBackend": false
+            }
+          ],
+          "title": "SELinux Violations per minute",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "\n",
+          "gridPos": {
+            "h": 8,
+            "w": 7,
+            "x": 17,
+            "y": 43
+          },
+          "id": 145,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "### Description\n\nThis graph shows the occurences per minute of **SELinux AVC denials** on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that the cluster node's SELinux policy prevented a process' actions.\nAs an example, a violation could indicate that a process on the cluster tried to access a file which is SELinux-protected.\n\n### Drill-Down\n\nLog into the cluster's AWS account and use a [Log Insights query](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D~(end~0~start~-3600~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*2c*20*40logStream*2c*20*40log*0a*7c*20filter*20*40logStream*20like*20*2flinux-audit*2f*0a*7c*20filter*20*40message*20like*20*2fAVC*2f*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*201000~source~(~))) similar to this one:\n```\nfields @timestamp, @message, @logStream, @log\n| filter @logStream like /linux-audit/\n| filter @message like /AVC/\n| sort @timestamp desc\n| limit 1000\n```\n\n**Note:**\n* all CloudWatch related resources are located in the `us-east-1` region.\n* the log group containing the violation logs are called `acs-<cluster name>.audit`.\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "10.2.0",
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Shows the Network Policy ACL Denials per minute, as logged to CloudWatch.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 17,
+            "x": 0,
+            "y": 51
+          },
+          "id": 144,
+          "interval": "60s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "disableTextWrap": false,
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "network_policy_denials_sample_count",
+              "fullMetaSearch": false,
+              "hide": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "network_policy_denials_sample_count per minute",
+              "useBackend": false
+            }
+          ],
+          "title": "Network Policy Violations per minute",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "\n",
+          "gridPos": {
+            "h": 8,
+            "w": 7,
+            "x": 17,
+            "y": 51
+          },
+          "id": 146,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "### Description\n\nThis graph shows the occurences per minute of Network Policy ACL denials on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that network traffic was prevented due to a Kubernetes Network Policy.\nAs an example, a violation could indicate that communication between RHACS tenant namespaces\nwas attempted, which is strictly forbidden.\n\n### Drill-Down\n\nLog into the cluster's AWS account and use a [Log Insights query](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D~(end~0~start~-3600~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*2c*20*40logStream*2c*20*40log*0a*7c*20filter*20*40message*20like*20*2facl_log*28.*2a*29.*2a*5csverdict*3ddrop*2f*0a*7c*20filter*20*40logStream*20like*20*2f.*2aovn-audit*5c.log*2f*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*201000~source~(~))) similar to this one:\n```\nfields @timestamp, @message, @logStream, @log\n| filter @message like /acl_log(.*).*\\sverdict=drop/\n| filter @logStream like /.*ovn-audit\\.log/\n| sort @timestamp desc\n| limit 1000\n```\n\n**Note:**\n* all CloudWatch related resources are located in the `us-east-1` region.\n* the log group containing the violation logs are called `acs-<cluster name>.audit`.\n\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "10.2.0",
+          "type": "text"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 59
           },
           "id": 23,
           "panels": [],
@@ -1167,7 +1440,7 @@ spec:
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 43
+            "y": 60
           },
           "id": 19,
           "options": {
@@ -1638,7 +1911,7 @@ spec:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 55
+            "y": 72
           },
           "id": 21,
           "options": {
@@ -1966,6 +2239,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }
