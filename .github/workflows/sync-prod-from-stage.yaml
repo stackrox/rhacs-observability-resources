@@ -10,9 +10,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Opening pull request
         id: pull
-        uses: tretuna/sync-branches@1.4.0
+        # Need master for LABELS option.
+        uses: tretuna/sync-branches@master
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "stage"
           TO_BRANCH: "production"
-          LABELS: automerge
+          LABELS: '["automerge"]'
