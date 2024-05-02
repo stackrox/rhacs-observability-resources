@@ -4,10 +4,9 @@
     "prometheus": {
       "pod_monitors": [
         "prometheus/pod_monitors/prometheus-self-metrics.yaml",
-        "prometheus/pod_monitors/rhacs-central-metrics.yaml",
         "prometheus/pod_monitors/rhacs-cloudwatch-exporter.yaml",
         "prometheus/pod_monitors/rhacs-fleetshard-sync-metrics.yaml",
-        "prometheus/pod_monitors/rhacs-scanner-metrics.yaml"
+        "prometheus/pod_monitors/rhacs-tenant-metrics.yaml"
       ],
       "rules": [
         "prometheus/billing-rules.yaml",
