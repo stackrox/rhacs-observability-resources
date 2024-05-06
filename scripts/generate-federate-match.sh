@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
-shopt -s inherit_errexit
+
+# only if not OSX
+if [[ $(uname) != "Darwin" ]]; then
+    shopt -s inherit_errexit
+fi
 
 function log() {
     echo "$@" >&2

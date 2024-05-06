@@ -29,6 +29,17 @@ data:
               "type": "dashboard"
             },
             "type": "dashboard"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "PBFA97CFB590B2093"
+            },
+            "enable": true,
+            "expr": "count by(cluster) (count by (git_version, cluster) (label_replace(kubernetes_build_info{job!~\"kube-dns|coredns\"}, \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+            "iconColor": "purple",
+            "name": "Upgrade",
+            "textFormat": "Kubernetes Upgrade"
           }
         ]
       },
