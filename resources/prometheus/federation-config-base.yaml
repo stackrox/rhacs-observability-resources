@@ -3,3 +3,4 @@
 match[]:
   # This is an example.
   - up{job!~"central|scanner"}
+  - openshift_apiserver_build_info
