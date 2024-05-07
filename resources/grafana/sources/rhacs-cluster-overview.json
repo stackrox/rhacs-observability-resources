@@ -25,10 +25,21 @@
           "uid": "PBFA97CFB590B2093"
         },
         "enable": true,
-        "expr": "count (count by (git_version) (label_replace(kubernetes_build_info{job!~\"kube-dns|coredns\"}, \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
         "iconColor": "purple",
-        "name": "Upgrade",
+        "expr": "count (count by (git_version) (label_replace(kubernetes_build_info{job!~\"kube-dns|coredns\"}, \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+        "name": "Kubernetes Upgrade",
         "textFormat": "Kubernetes Upgrade"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "enable": true,
+        "iconColor": "purple",
+        "expr": "count (count by (gitVersion) (openshift_apiserver_build_info)) > 1",
+        "name": "Openshift Upgrade",
+        "textFormat": "Openshift Upgrade"
       }
     ]
   },
