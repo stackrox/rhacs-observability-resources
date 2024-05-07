@@ -47,10 +47,10 @@ data:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "purple",
+            "iconColor": "red",
             "expr": "count (count by (gitVersion) (openshift_apiserver_build_info)) > 1",
-            "name": "Openshift Upgrade",
-            "textFormat": "Openshift Upgrade"
+            "name": "OpenShift Upgrade",
+            "textFormat": "OpenShift Upgrade"
           }
         ]
       },
