@@ -154,6 +154,7 @@ match[]:
   - node_netstat_Tcp_RetransSegs{job!~"central|scanner"}
   - node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile{job!~"central|scanner"}
   - obs_operator:prometheus_remote_storage_succeeded_samples:ratio_rate1h{job!~"central|scanner"}
+  - openshift_apiserver_build_info
   - process_cpu_seconds_total{job!~"central|scanner"}
   - process_resident_memory_bytes{job!~"central|scanner"}
   - prometheus_remote_storage_samples_failed_total{job!~"central|scanner"}
