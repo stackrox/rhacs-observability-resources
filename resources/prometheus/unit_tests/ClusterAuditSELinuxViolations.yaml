@@ -1,0 +1,23 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: selinux_denials_sample_count{namespace="rhacs-cloudwatch"}
+        values: "1x5"
+    alert_rule_test:
+      - eval_time: 70s
+        alertname: ClusterAuditSELinuxViolations
+        exp_alerts:
+          - exp_labels:
+              alertname: ClusterAuditSELinuxViolations
+              namespace: rhacs-cloudwatch
+              severity: info
+            exp_annotations:
+              summary: "SELinux Violations occuring on cluster."
+              description: |
+                A cluster node logged 1 SELinux AVC denial(s) per minute to the audit log.
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-043-selinux-violation.md"

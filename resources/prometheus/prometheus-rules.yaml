@@ -756,3 +756,13 @@ cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler c
 the cluster autoscaler. This is calculated by summing the memory capacity for all nodes in the cluster and comparing that number against the maximum memory bytes value set
 for the cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-042-modify-cluster-autoscaler.md"
+        - alert: ClusterAuditSELinuxViolations
+          expr: |
+            selinux_denials_sample_count > 0
+          labels:
+            severity: info
+          annotations:
+            summary: "SELinux Violations occuring on cluster."
+            description: |
+              A cluster node logged {{ $value }} SELinux AVC denial(s) per minute to the audit log.
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-043-selinux-violation.md"
