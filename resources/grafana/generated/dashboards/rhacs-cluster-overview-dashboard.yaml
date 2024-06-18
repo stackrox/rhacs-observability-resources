@@ -37,7 +37,7 @@ spec:
             },
             "enable": true,
             "iconColor": "purple",
-            "expr": "count (count by (git_version) (label_replace(kubernetes_build_info{job!~\"kube-dns|coredns\"}, \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+            "expr": "count (count by (git_version) (label_replace(count_over_time(kubernetes_build_info{job!~\"kube-dns|coredns\"}[${__interval}]), \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
             "name": "Kubernetes Upgrade",
             "textFormat": "Kubernetes Upgrade"
           },
@@ -48,7 +48,7 @@ spec:
             },
             "enable": true,
             "iconColor": "red",
-            "expr": "count (count by (gitVersion) (openshift_apiserver_build_info)) > 1",
+            "expr": "count (count by (gitVersion) (count_over_time (openshift_apiserver_build_info[${__interval}]))) > 1",
             "name": "OpenShift Upgrade",
             "textFormat": "OpenShift Upgrade"
           }
