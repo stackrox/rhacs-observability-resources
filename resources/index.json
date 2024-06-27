@@ -49,7 +49,7 @@
         "grafana/generated/dashboards/rhacs-cluster-overview.yaml",
         "grafana/generated/dashboards/rhacs-cluster-resource-adjustment.yaml"
       ],
-      "grafanaVersion": "10.4.0"
+      "grafanaVersion": "11.1.0"
     },
     "promtail": {
       "enabled": false,
