@@ -5,7 +5,6 @@ metadata:
     app: rhacs
     monitoring-key: middleware
   name: kubernetes-mixin-controller-manager
-  namespace: <namespace>
 spec:
   name: kubernetes-mixin-controller-manager.json
   json: |
