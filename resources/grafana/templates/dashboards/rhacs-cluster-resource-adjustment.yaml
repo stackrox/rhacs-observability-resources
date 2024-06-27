@@ -4,8 +4,7 @@ metadata:
   labels:
     app: rhacs
     monitoring-key: middleware
-  name: rhacs-central-slo-dashboard
-  namespace: <namespace>
+  name: rhacs-cluster-resource-adjustment
 spec:
-  name: rhacs-central-slo.json
+  name: rhacs-cluster-resource-adjustment.json
   json: |

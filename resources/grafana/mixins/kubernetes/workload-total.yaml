@@ -5,7 +5,6 @@ metadata:
     app: rhacs
     monitoring-key: middleware
   name: kubernetes-mixin-workload-total
-  namespace: <namespace>
 spec:
   name: kubernetes-mixin-workload-total.json
   json: |
