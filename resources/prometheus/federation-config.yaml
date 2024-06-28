@@ -26,7 +26,7 @@ match[]:
   - cluster_autoscaler_skipped_scale_events_count{job!~"central|scanner"}
   - cluster_autoscaler_unneeded_nodes_count{job!~"central|scanner"}
   - cluster_autoscaler_unschedulable_pods_count{job!~"central|scanner"}
-  - cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile{job!~"central|scanner"}
+  - cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{job!~"central|scanner"}
   - code_resource:apiserver_request_total:rate5m{job!~"central|scanner"}
   - container_cpu_cfs_periods_total{job!~"central|scanner"}
   - container_cpu_cfs_throttled_periods_total{job!~"central|scanner"}
@@ -118,9 +118,7 @@ match[]:
   - kubelet_pod_start_duration_seconds_count{job!~"central|scanner"}
   - kubelet_pod_worker_duration_seconds_bucket{job!~"central|scanner"}
   - kubelet_pod_worker_duration_seconds_count{job!~"central|scanner"}
-  - kubelet_running_container_count{job!~"central|scanner"}
   - kubelet_running_containers{job!~"central|scanner"}
-  - kubelet_running_pod_count{job!~"central|scanner"}
   - kubelet_running_pods{job!~"central|scanner"}
   - kubelet_runtime_operations_duration_seconds_bucket{job!~"central|scanner"}
   - kubelet_runtime_operations_errors_total{job!~"central|scanner"}
