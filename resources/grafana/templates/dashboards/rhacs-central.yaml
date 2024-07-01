@@ -4,8 +4,7 @@ metadata:
   labels:
     app: rhacs
     monitoring-key: middleware
-  name: rhacs-cluster-overview-dashboard
-  namespace: <namespace>
+  name: rhacs-central
 spec:
-  name: rhacs-cluster-overview.json
+  name: rhacs-central.json
   json: |
