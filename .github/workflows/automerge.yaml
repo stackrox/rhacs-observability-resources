@@ -31,3 +31,6 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_METHOD: merge
           MERGE_FILTER_AUTHOR: github-actions[bot]
+          MERGE_FORKS: false
+          MERGE_REQUIRED_APPROVALS: 1
+          UPDATE_METHOD: rebase
