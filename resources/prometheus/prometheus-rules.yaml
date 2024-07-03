@@ -816,18 +816,7 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-043-selinux-violation.md"
         - alert: ClusterAuditNetworkPolicyViolations
           expr: |
-            network_policy_denials_sample_count > 0
-          for: 10m
-          labels:
-            severity: info
-          annotations:
-            summary: "Network Policy Violations occuring on cluster."
-            description: |
-              A cluster node logged Network Policy ACL denial(s) for 10 minutes.
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-044-network-policy-violation.md"
-        - alert: ClusterAuditNetworkPolicyViolations
-          expr: |
-            network_policy_denials_sample_count >= 15
+            network_policy_denials_sample_count >= 25
           for: 1m
           labels:
             severity: info
