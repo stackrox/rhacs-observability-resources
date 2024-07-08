@@ -7,7 +7,7 @@ tests:
   - interval: 1m
     input_series:
       - series: network_policy_denials_sample_count{namespace="rhacs-cloudwatch"}
-        values: "15x1"
+        values: "25x1"
     alert_rule_test:
       - eval_time: 70s
         alertname: ClusterAuditNetworkPolicyViolations
@@ -19,25 +19,7 @@ tests:
             exp_annotations:
               summary: "Network Policy Violations occuring on cluster."
               description: |
-                A cluster node logged at least 15 Network Policy ACL denial(s) per minute.
-              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-044-network-policy-violation.md"
-
-  - interval: 1m
-    input_series:
-      - series: network_policy_denials_sample_count{namespace="rhacs-cloudwatch"}
-        values: "1x10"
-    alert_rule_test:
-      - eval_time: 610s
-        alertname: ClusterAuditNetworkPolicyViolations
-        exp_alerts:
-          - exp_labels:
-              alertname: ClusterAuditNetworkPolicyViolations
-              namespace: rhacs-cloudwatch
-              severity: info
-            exp_annotations:
-              summary: "Network Policy Violations occuring on cluster."
-              description: |
-                A cluster node logged Network Policy ACL denial(s) for 10 minutes.
+                A cluster node logged at least 25 Network Policy ACL denial(s) per minute.
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-044-network-policy-violation.md"
 
   - interval: 1m
@@ -52,7 +34,7 @@ tests:
   - interval: 1m
     input_series:
       - series: network_policy_denials_sample_count{namespace="rhacs-cloudwatch"}
-        values: "14x1"
+        values: "24x1"
     alert_rule_test:
       - eval_time: 70s
         alertname: ClusterAuditNetworkPolicyViolations

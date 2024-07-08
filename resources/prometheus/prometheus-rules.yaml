@@ -597,6 +597,18 @@ spec:
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
 
+        - alert: Central availability weekly exhaustion
+          annotations:
+            message: "Availability error budget exhaustion has increased by {{ $value | humanizePercentage }} over the last week."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          expr: |
+            central:slo:availability:error_budget_exhaustion - central:slo:availability:error_budget_exhaustion offset 1w > 0.1
+          labels:
+            service: central
+            severity: warning
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+
         - alert: Central high availability burn rate
           annotations:
             message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
@@ -768,18 +780,7 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-043-selinux-violation.md"
         - alert: ClusterAuditNetworkPolicyViolations
           expr: |
-            network_policy_denials_sample_count > 0
-          for: 10m
-          labels:
-            severity: info
-          annotations:
-            summary: "Network Policy Violations occuring on cluster."
-            description: |
-              A cluster node logged Network Policy ACL denial(s) for 10 minutes.
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-044-network-policy-violation.md"
-        - alert: ClusterAuditNetworkPolicyViolations
-          expr: |
-            network_policy_denials_sample_count >= 15
+            network_policy_denials_sample_count >= 25
           for: 1m
           labels:
             severity: info
