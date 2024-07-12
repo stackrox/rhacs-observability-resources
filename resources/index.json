@@ -6,7 +6,8 @@
         "prometheus/pod_monitors/prometheus-self-metrics.yaml",
         "prometheus/pod_monitors/rhacs-cloudwatch-exporter.yaml",
         "prometheus/pod_monitors/rhacs-fleetshard-sync-metrics.yaml",
-        "prometheus/pod_monitors/rhacs-tenant-metrics.yaml"
+        "prometheus/pod_monitors/rhacs-tenant-metrics.yaml",
+        "prometheus/pod_monitors/rhacs-emailsender-metrics.yaml"
       ],
       "rules": [
         "prometheus/billing-rules.yaml",

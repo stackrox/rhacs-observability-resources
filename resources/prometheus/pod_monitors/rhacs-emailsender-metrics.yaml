@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: rhacs-emailsender-metrics
+  labels:
+    app: rhacs
+spec:
+  selector:
+    matchLabels:
+      app: "emailsender"
+  namespaceSelector:
+    any: true
+  podMetricsEndpoints:
+    - path: /metrics
+      port: monitoring
+      relabelings:
+        - action: labeldrop
+          regex: endpoint
+
+        - sourceLabels: [container]
+          action: replace
+          targetLabel: job
+
+        - action: labelmap
+          regex: __meta_kubernetes_pod_annotation_rhacs_redhat_com_(.+)
+          replacement: rhacs_${1}
+
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_rhacs_redhat_com_(.+)
+          replacement: rhacs_${1}
