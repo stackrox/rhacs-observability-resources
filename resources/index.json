@@ -48,7 +48,8 @@
         "grafana/generated/dashboards/rhacs-central-release.yaml",
         "grafana/generated/dashboards/rhacs-central-slo.yaml",
         "grafana/generated/dashboards/rhacs-cluster-overview.yaml",
-        "grafana/generated/dashboards/rhacs-cluster-resource-adjustment.yaml"
+        "grafana/generated/dashboards/rhacs-cluster-resource-adjustment.yaml",
+        "grafana/generated/dashboards/rhacs-emailsender.yaml"
       ],
       "grafanaVersion": "11.1.0"
     },
