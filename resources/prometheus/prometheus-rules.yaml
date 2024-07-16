@@ -39,7 +39,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSCentralPostgresConnectionDown
           expr: avg_over_time(rox_central_postgres_connected{container="central"}[10m]) < 0.5
-          for: 20m
+          for: 10m
           labels:
             severity: critical
           annotations:
