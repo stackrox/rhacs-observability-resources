@@ -7,7 +7,7 @@ tests:
   - interval: 1m
     input_series:
       - series: acs_emailsender_throttled_send_email_total{namespace="rhacs", pod="emailsender-123", container="emailsender", tenant_id="centralid"}
-        values: "0+0x10 2+0x50"
+        values: "0+0x10 2+1x60"
     alert_rule_test:
       - eval_time: 15m
         alertname: RHACSEmailsenderThrottledSend
@@ -24,5 +24,5 @@ tests:
               severity: warning
             exp_annotations:
               summary: "Email Sender throttled sending for `centralid` Central instance"
-              description: "Email Sender is throttled 2 times for `centralid` Central"
+              description: "Email Sender throttled `centralid` Central 1 time(s) per minute over the last 10 minutes."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-048-emailsender-ses-send-throttled.md"
