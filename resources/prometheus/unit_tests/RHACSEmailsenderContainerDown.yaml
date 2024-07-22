@@ -1,0 +1,27 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: kube_pod_container_status_ready{namespace="rhacs", pod="emailsender-123", container="emailsender"}
+        values: "1+0x10 0+0x50"
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: RHACSEmailsenderContainerDown
+        exp_alerts: []
+      - eval_time: 40m
+        alertname: RHACSEmailsenderContainerDown
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSEmailsenderContainerDown
+              container: emailsender
+              namespace: rhacs
+              pod: emailsender-123
+              severity: warning
+            exp_annotations:
+              summary: "Email Sender container `emailsender-123/emailsender` in namespace `rhacs` is down or in a CrashLoopBackOff status."
+              description: "Email Sender container `emailsender-123/emailsender` in namespace `rhacs` has been down or in a CrashLoopBackOff status for at least 10 minutes."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-046-emailsender-unavailable.md"
