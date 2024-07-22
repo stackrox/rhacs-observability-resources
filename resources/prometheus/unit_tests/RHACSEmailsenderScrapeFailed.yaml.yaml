@@ -1,0 +1,29 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: up{namespace="rhacs", pod="emailsender-123", instance="1.2.3.4:9090"}
+        values: "0+0x20 1+0x20"
+      - series: kube_pod_container_status_ready{namespace="rhacs", pod="emailsender-123"}
+        values: "1+0x40"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: RHACSEmailsenderScrapeFailed
+        exp_alerts: []
+      - eval_time: 25m
+        alertname: RHACSEmailsenderScrapeFailed
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSEmailsenderScrapeFailed
+              instance: 1.2.3.4:9090
+              namespace: rhacs
+              pod: emailsender-123
+              severity: warning
+            exp_annotations:
+              summary: "Prometheus unable to scrape metrics from target `emailsender-123` in namespace `rhacs`."
+              description: "During the last 10 minutes, only `45.45%` of scrapes of target `emailsender-123` in namespace `rhacs` were successful. This alert is raised when less than 50% of scrapes are successful."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-046-emailsender-unavailable.md"
