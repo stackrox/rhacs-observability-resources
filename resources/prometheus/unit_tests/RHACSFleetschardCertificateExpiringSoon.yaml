@@ -1,0 +1,28 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: acs_fleetshard_certificate_expiration_timestamp{namespace="rhacs", secret="secret-1", data_key="key-1"}
+        values: "700000" #future
+      - series: acs_fleetshard_certificate_expiration_timestamp{namespace="rhacs", secret="secret-warning", data_key="key-warning"}
+        values:  '400000' #less than 7 days
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACSFleetshardCertificateExpiringSoon
+        exp_alerts: []
+      - eval_time: 15m
+        alertname: RHACSFleetshardCertificateExpiringSoon
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSFleetshardCertificateExpiringSoon
+              namespace: rhacs
+              secret: secret-warning
+              data_key: key-warning
+              severity: warning
+            exp_annotations:
+              summary: "Certificate Expiring soon in namespace 'rhacs' for secret 'secret-warning'."
+              description: "Certificate `key-warning` in namespace `rhacs` is expiring in less than 7 days."
