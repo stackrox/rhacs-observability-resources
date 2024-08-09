@@ -35,8 +35,8 @@ tests:
               data_key: key
               severity: critical
             exp_annotations:
-              summary: "Certificate Expiring very soon in namespace `rhacs` for secret 'secret'."
-              description: "Certificate 'key` in namespace `rhacs` expires in '{{ $value | time.Unix | time.Since | humanizeDuration }}'."
+              summary: "Certificate expiring very soon: 'rhacs/secret/key`."
+              description: "Certificate 'rhacs/secret/key` expires on '1970-01-07'."
       - eval_time: 10d
         alertname: RHACSFleetshardCertificateExpiringCritical
         exp_alerts:
@@ -47,6 +47,6 @@ tests:
               data_key: key
               severity: critical
             exp_annotations:
-              summary: "Certificate Expiring very soon in namespace `rhacs` for secret 'secret'."
-              description: "Certificate 'key` in namespace `rhacs` expires in '{{ $value | time.Unix | time.Since | humanizeDuration }}'."
+              summary: "Certificate expiring very soon: 'rhacs/secret/key`."
+              description: "Certificate 'rhacs/secret/key` expires on '1970-01-11'."
 
