@@ -130,12 +130,12 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardCertificateExpiringCritical
           expr: |
-            ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<1
+            ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<=1
           labels:
             severity: critical
           annotations:
             summary: "Certificate Expiring very soon in namespace `{{ $labels.namespace }}` for secret '{{ $labels.secret}}'."
-            description: "Certificate `{{ $labels.data_key }}` in namespace `{{ $labels.namespace }}` is expiring in less than a day."
+            description: "Certificate '{{ $labels.data_key }}` in namespace `{{ $labels.namespace }}` expires in '{{ $value | time.Unix | time.Since | humanizeDuration }}'."
         - alert: RHACSFleetshardCertificateExpiringSoon
           expr: |
             ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<7
