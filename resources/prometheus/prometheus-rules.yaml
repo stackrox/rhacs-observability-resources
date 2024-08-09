@@ -134,8 +134,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Certificate Expiring very soon in namespace `{{ $labels.namespace }}` for secret '{{ $labels.secret}}'."
-            description: "Certificate '{{ $labels.data_key }}` in namespace `{{ $labels.namespace }}` expires in '{{ $value | time.Unix | time.Since | humanizeDuration }}'."
+            summary: "Certificate expiring very soon: '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
+            description: "Certificate '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on '{{ ($value | toTime).UTC().Format \"2006-02-01\" }}'."
         - alert: RHACSFleetshardCertificateExpiringSoon
           expr: |
             ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<7
