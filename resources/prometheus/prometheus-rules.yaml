@@ -135,7 +135,7 @@ spec:
             severity: critical
           annotations:
             summary: "Certificate expiring very soon: '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
-            description: "Certificate '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on '{{ ($value | toTime).UTC().Format \"2006-02-01\" }}'."
+            description: "Certificate '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on '{{ ($value | toTime).UTC.Format \"2006-01-02T15:04:05Z07:00\" }}'."
         - alert: RHACSFleetshardCertificateExpiringSoon
           expr: |
             ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<7
