@@ -130,7 +130,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
         - alert: RHACSFleetshardCertificateExpiringCritical
           expr: |
-            ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<=1
+            acs_fleetshard_certificate_expiration_timestamp <= 1 * 24 * 60 * 60 + time()
           labels:
             severity: critical
           annotations:
@@ -138,12 +138,12 @@ spec:
             description: "Certificate '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on '{{ ($value | toTime).UTC.Format \"2006-01-02T15:04:05Z07:00\" }}'."
         - alert: RHACSFleetshardCertificateExpiringSoon
           expr: |
-            ((acs_fleetshard_certificate_expiration_timestamp-time())/60/60/24)<7
+            acs_fleetshard_certificate_expiration_timestamp <= 7* 24 * 60 * 60 + time()
           labels:
             severity: warning
           annotations:
             summary: "Certificate Expiring soon in namespace `{{ $labels.namespace }}` for secret '{{ $labels.secret}}'."
-            description: "Certificate `{{ $labels.data_key }}` in namespace `{{ $labels.namespace }}` is expiring in less than 7 days."
+            description: "Certificate `{{ $labels.data_key }}` in namespace `{{ $labels.namespace }}` is expiring in less than 7 days, on '{{ ($value | toTime).UTC.Format \"2006-01-02T15:04:05Z07:00\" }}'."
         - alert: CentralInstanceLimitCriticalCapacity
           expr: |
             acs_fleet_manager_cluster_status_capacity_max-acs_fleet_manager_cluster_status_capacity_used<=2
