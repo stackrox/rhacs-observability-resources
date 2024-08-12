@@ -49,4 +49,3 @@ tests:
             exp_annotations:
               summary: "Certificate expiring very soon: 'rhacs/secret/key`."
               description: "Certificate 'rhacs/secret/key` expires on '1970-01-09T00:00:00Z'."
-
