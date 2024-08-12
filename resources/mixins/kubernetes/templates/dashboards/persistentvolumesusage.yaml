@@ -5,7 +5,6 @@ metadata:
     app: rhacs
     monitoring-key: middleware
   name: kubernetes-mixin-persistentvolumesusage
-  namespace: <namespace>
 spec:
   name: kubernetes-mixin-persistentvolumesusage.json
   json: |

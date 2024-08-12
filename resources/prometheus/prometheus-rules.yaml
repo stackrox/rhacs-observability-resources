@@ -175,6 +175,59 @@ spec:
             description: "Fleetshard synchronizer manages `{{ $value }}` centrals. The number of Centrals should always be larger than zero in a working system. If it drops to or below zero, fleetshard synchronizer is assumed to be in a failed state."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
 
+    - name: rhacs-emailsender
+      rules:
+        - alert: RHACSEmailsenderScrapeFailed
+          expr: |
+            (avg_over_time(up{pod=~"emailsender-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"emailsender-.*"} == 1) or absent(up{pod=~"emailsender-.*"})
+          for: 20m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
+            description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-046-emailsender-unavailable.md"
+        - alert: RHACSEmailsenderContainerDown
+          expr: |
+            avg_over_time(kube_pod_container_status_ready{pod=~"emailsender-.*"}[10m]) < 0.5
+          for: 20m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Email Sender container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
+            description: "Email Sender container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-046-emailsender-unavailable.md"
+        - alert: RHACSEmailsenderContainerFrequentlyRestarting
+          expr: increase(kube_pod_container_status_restarts_total{pod=~"emailsender-.*"}[30m]) > 3
+          labels:
+            severity: warning
+          annotations:
+            summary: "Email Sender container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
+            description: "Email Sender container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-046-emailsender-unavailable.md"
+        - alert: RHACSEmailsenderSendErrors
+          expr: |2
+              (rate(acs_emailsender_failed_send_email_total[10m])
+            /
+              rate(acs_emailsender_send_email_total[10m])) > 0.10
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Email Sender container failing sending emails"
+            description: "Email Sender has a send email error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-047-emailsender-ses-send-error.md"
+        - alert: RHACSEmailsenderThrottledSend
+          expr: |
+            rate(acs_emailsender_throttled_send_email_total[10m]) * 60 > 0
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Email Sender throttled sending for `{{ $labels.tenant_id }}` Central instance"
+            description: "Email Sender throttled `{{ $labels.tenant_id }}` Central {{ $value | humanize }} time(s) per minute over the last 10 minutes."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-048-emailsender-ses-send-throttled.md"
+
     - name: tenant-resources
       rules:
         - expr: |
@@ -613,6 +666,18 @@ spec:
             namespace: "{{ $labels.namespace }}"
             rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
 
+        - alert: Central availability weekly exhaustion
+          annotations:
+            message: "Availability error budget exhaustion has increased by {{ $value | humanizePercentage }} over the last week."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          expr: |
+            central:slo:availability:error_budget_exhaustion - central:slo:availability:error_budget_exhaustion offset 1w > 0.1
+          labels:
+            service: central
+            severity: warning
+            namespace: "{{ $labels.namespace }}"
+            rhacs_instance_id: "{{ $labels.rhacs_instance_id }}"
+
         - alert: Central high availability burn rate
           annotations:
             message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
@@ -784,18 +849,7 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-043-selinux-violation.md"
         - alert: ClusterAuditNetworkPolicyViolations
           expr: |
-            network_policy_denials_sample_count > 0
-          for: 10m
-          labels:
-            severity: info
-          annotations:
-            summary: "Network Policy Violations occuring on cluster."
-            description: |
-              A cluster node logged Network Policy ACL denial(s) for 10 minutes.
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-044-network-policy-violation.md"
-        - alert: ClusterAuditNetworkPolicyViolations
-          expr: |
-            network_policy_denials_sample_count >= 15
+            network_policy_denials_sample_count >= 25
           for: 1m
           labels:
             severity: info

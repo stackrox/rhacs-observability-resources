@@ -4,8 +4,7 @@ metadata:
   labels:
     app: rhacs
     monitoring-key: middleware
-  name: rhacs-central-dashboard
-  namespace: <namespace>
+  name: rhacs-central
 spec:
   name: rhacs-central.json
   json: |
@@ -523,6 +522,7 @@ spec:
                     "axisPlacement": "auto",
                     "barAlignment": 0,
                     "drawStyle": "line",
+                    "axisBorderShow": false,
                     "fillOpacity": 10,
                     "gradientMode": "none",
                     "hideFrom": {
@@ -532,6 +532,7 @@ spec:
                     },
                     "lineInterpolation": "stepAfter",
                     "lineWidth": 1,
+                    "insertNulls": false,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
@@ -584,7 +585,6 @@ spec:
                 "y": 7
               },
               "id": 110,
-              "links": [],
               "options": {
                 "legend": {
                   "calcs": [],
@@ -623,6 +623,62 @@ spec:
                   "legendFormat": "scanner",
                   "range": true,
                   "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"rhacs-$instance_id\", container=\"db\", pod=~\"scanner-db-.*\", job=~\"kube-state-metrics\"}[5m]))",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "scanner-db",
+                  "range": true,
+                  "refId": "F"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"rhacs-$instance_id\", container=\"matcher\", job=~\"kube-state-metrics\"}[5m]))",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "scanner-v4-matcher",
+                  "range": true,
+                  "refId": "C"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"rhacs-$instance_id\", container=\"indexer\", job=~\"kube-state-metrics\"}[5m]))",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "scanner-v4-indexer",
+                  "range": true,
+                  "refId": "D"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"rhacs-$instance_id\", container=\"db\", pod=~\"scanner-v4-db-.*\", job=~\"kube-state-metrics\"}[5m]))",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "scanner-v4-db",
+                  "range": true,
+                  "refId": "E"
                 }
               ],
               "title": "Container Restarts",

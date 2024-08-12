@@ -4,8 +4,7 @@ metadata:
   labels:
     app: rhacs
     monitoring-key: middleware
-  name: rhacs-cluster-resource-adjustment-dashboard
-  namespace: <namespace>
+  name: rhacs-emailsender
 spec:
-  name: rhacs-cluster-resource-adjustment.json
+  name: rhacs-emailsender.json
   json: |

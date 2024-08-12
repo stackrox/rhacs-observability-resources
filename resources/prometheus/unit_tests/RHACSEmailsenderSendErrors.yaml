@@ -1,0 +1,29 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: acs_emailsender_failed_send_email_total{namespace="rhacs", pod="emailsender-123", container="emailsender"}
+        values: "0+0x10 1+1x50"
+      - series: acs_emailsender_send_email_total{namespace="rhacs", pod="emailsender-123", container="emailsender"}
+        values: "1+1x10 1+2x50"
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: RHACSEmailsenderSendErrors
+        exp_alerts: []
+      - eval_time: 40m
+        alertname: RHACSEmailsenderSendErrors
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSEmailsenderSendErrors
+              container: emailsender
+              namespace: rhacs
+              pod: emailsender-123
+              severity: warning
+            exp_annotations:
+              summary: "Email Sender container failing sending emails"
+              description: "Email Sender has a send email error rate of 50% over the last 10 minutes."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-047-emailsender-ses-send-error.md"

@@ -4,8 +4,7 @@ metadata:
   labels:
     app: rhacs
     monitoring-key: middleware
-  name: rhacs-central-dashboard
-  namespace: <namespace>
+  name: rhacs-central-release
 spec:
-  name: rhacs-central.json
+  name: rhacs-central-release.json
   json: |
