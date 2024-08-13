@@ -134,16 +134,16 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Certificate expiring very soon: '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
-            description: "Certificate '{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on '{{ humanizeTimestamp $value}}'."
+            summary: "Certificate expiring very soon: `{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
+            description: "Certificate `{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on {{ humanizeTimestamp $value}}."
         - alert: RHACSFleetshardCertificateExpiringSoon
           expr: |
             acs_fleetshard_certificate_expiration_timestamp <=7* 24 * 60 * 60 + time()
           labels:
             severity: warning
           annotations:
-            summary: "Certificate Expiring soon in namespace `{{ $labels.namespace }}` for secret '{{ $labels.secret}}'."
-            description: "Certificate `{{ $labels.data_key }}` in namespace `{{ $labels.namespace }}` is expiring in less than 7 days, on '{{ humanizeTimestamp $value}}'."
+            summary: "Certificate expiring soon: `{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
+            description: "Certificate `{{ $labels.namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on {{ humanizeTimestamp $value}}."
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
             acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10
