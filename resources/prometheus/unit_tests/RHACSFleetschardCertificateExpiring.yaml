@@ -23,8 +23,8 @@ tests:
               data_key: key
               severity: warning
             exp_annotations:
-              summary: "Certificate Expiring soon in namespace `rhacs` for secret 'secret'."
-              description: "Certificate `key` in namespace `rhacs` is expiring in less than 7 days, on '1970-01-09 00:00:00 +0000 UTC'."
+              summary: "Certificate expiring soon: `rhacs/secret/key`."
+              description: "Certificate `rhacs/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
       - eval_time: 7d
         alertname: RHACSFleetshardCertificateExpiringCritical
         exp_alerts:
@@ -35,8 +35,8 @@ tests:
               data_key: key
               severity: critical
             exp_annotations:
-              summary: "Certificate expiring very soon: 'rhacs/secret/key`."
-              description: "Certificate 'rhacs/secret/key` expires on '1970-01-09 00:00:00 +0000 UTC'."
+              summary: "Certificate expiring very soon: `rhacs/secret/key`."
+              description: "Certificate `rhacs/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
       - eval_time: 10d
         alertname: RHACSFleetshardCertificateExpiringCritical
         exp_alerts:
@@ -47,5 +47,5 @@ tests:
               data_key: key
               severity: critical
             exp_annotations:
-              summary: "Certificate expiring very soon: 'rhacs/secret/key`."
-              description: "Certificate 'rhacs/secret/key` expires on '1970-01-09 00:00:00 +0000 UTC'."
+              summary: "Certificate expiring very soon: `rhacs/secret/key`."
+              description: "Certificate `rhacs/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
