@@ -10,6 +10,10 @@ tests:
         values: 10 #critical
       - series: acs_fleet_manager_cluster_status_capacity_used{clusterID="cluster-1"}
         values: 8 #critical
+      - series: acs_fleet_manager_cluster_status_capacity_max{clusterID="cluster-2"}
+        values: 15 #warning
+      - series: acs_fleet_manager_cluster_status_capacity_used{clusterID="cluster-2"}
+        values: 5 #warning
     alert_rule_test:
       - eval_time: 5m
         alertname:  CentralInstanceLimitCriticalCapacity
@@ -40,3 +44,4 @@ tests:
               summary: "Cluster ID: 'cluster-2' is reaching its instance limit."
               description: "Cluster 'cluster-2' has '10' instances left before reaching limit"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
+
