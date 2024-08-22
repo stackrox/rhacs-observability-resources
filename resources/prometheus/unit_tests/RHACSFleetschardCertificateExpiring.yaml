@@ -6,7 +6,7 @@ evaluation_interval: 1m
 tests:
   - interval: 1d
     input_series:
-      - series: acs_fleetshard_certificate_expiration_timestamp{exported_namespace="rhacs", secret="secret", data_key="key"}
+      - series: acs_fleetshard_certificate_expiration_timestamp{exported_namespace="rhacs-00000000000000000000", secret="secret", data_key="key"}
         values: "691200+0x15" # equals to 8 days
 
     alert_rule_test:
@@ -18,34 +18,34 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname: RHACSFleetshardCertificateExpiringSoon
-              exported_namespace: rhacs
+              exported_namespace: rhacs-00000000000000000000
               secret: secret
               data_key: key
               severity: warning
             exp_annotations:
-              summary: "Certificate expiring soon: `rhacs/secret/key`."
-              description: "Certificate `rhacs/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
+              summary: "Certificate expiring soon: `rhacs-00000000000000000000/secret/key`."
+              description: "Certificate `rhacs-00000000000000000000/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
       - eval_time: 7d
         alertname: RHACSFleetshardCertificateExpiringCritical
         exp_alerts:
           - exp_labels:
               alertname: RHACSFleetshardCertificateExpiringCritical
-              exported_namespace: rhacs
+              exported_namespace: rhacs-00000000000000000000
               secret: secret
               data_key: key
               severity: critical
             exp_annotations:
-              summary: "Certificate expiring very soon: `rhacs/secret/key`."
-              description: "Certificate `rhacs/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
+              summary: "Certificate expiring very soon: `rhacs-00000000000000000000/secret/key`."
+              description: "Certificate `rhacs-00000000000000000000/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
       - eval_time: 10d
         alertname: RHACSFleetshardCertificateExpiringCritical
         exp_alerts:
           - exp_labels:
               alertname: RHACSFleetshardCertificateExpiringCritical
-              exported_namespace: rhacs
+              exported_namespace: rhacs-00000000000000000000
               secret: secret
               data_key: key
               severity: critical
             exp_annotations:
-              summary: "Certificate expiring very soon: `rhacs/secret/key`."
-              description: "Certificate `rhacs/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
+              summary: "Certificate expiring very soon: `rhacs-00000000000000000000/secret/key`."
+              description: "Certificate `rhacs-00000000000000000000/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
