@@ -6,7 +6,7 @@ evaluation_interval: 1m
 tests:
   - interval: 1d
     input_series:
-      - series: acs_fleetshard_certificate_expiration_timestamp{namespace="rhacs", secret="secret", data_key="key"}
+      - series: acs_fleetshard_certificate_expiration_timestamp{exported_namespace="rhacs", secret="secret", data_key="key"}
         values: "691200+0x15" # equals to 8 days
 
     alert_rule_test:
@@ -18,7 +18,7 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname: RHACSFleetshardCertificateExpiringSoon
-              namespace: rhacs
+              exported_namespace: rhacs
               secret: secret
               data_key: key
               severity: warning
@@ -30,7 +30,7 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname: RHACSFleetshardCertificateExpiringCritical
-              namespace: rhacs
+              exported_namespace: rhacs
               secret: secret
               data_key: key
               severity: critical
@@ -42,7 +42,7 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname: RHACSFleetshardCertificateExpiringCritical
-              namespace: rhacs
+              exported_namespace: rhacs
               secret: secret
               data_key: key
               severity: critical
