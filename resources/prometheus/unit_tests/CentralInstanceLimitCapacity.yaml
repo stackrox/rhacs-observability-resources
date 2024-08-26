@@ -21,3 +21,20 @@ tests:
             exp_annotations:
               summary: "Cluster ID: 'cluster-1' is at a critical instance limit."
               description: "Cluster 'cluster-1' has '2' instances left before reaching limit"
+  - interval: 15s
+    input_series:
+      - series: acs_fleet_manager_cluster_status_capacity_max{clusterID="cluster-2"}
+        values: 15 #warning
+      - series: acs_fleet_manager_cluster_status_capacity_used{clusterID="cluster-2"}
+        values: 5 #warning
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: CentralInstanceLimitWarningCapacity
+        exp_alerts:
+          - exp_labels:
+              alertname: CentralInstanceLimitWarningCapacity
+              clusterID: cluster-2
+              severity: warning
+            exp_annotations:
+              summary: "Cluster ID: 'cluster-2' is reaching its instance limit."
+              description: "Cluster 'cluster-2' has '10' instances left before reaching limit"
