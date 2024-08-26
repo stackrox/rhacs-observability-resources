@@ -11,13 +11,13 @@ tests:
 
     alert_rule_test:
       - eval_time: 0
-        alertname: RHACSFleetshardCertificateExpiringSoon
+        alertname: RHACSFleetshardCertificateExpiryWarning
         exp_alerts: [ ]
       - eval_time: 3d
-        alertname: RHACSFleetshardCertificateExpiringSoon
+        alertname: RHACSFleetshardCertificateExpiryWarning
         exp_alerts:
           - exp_labels:
-              alertname: RHACSFleetshardCertificateExpiringSoon
+              alertname: RHACSFleetshardCertificateExpiryWarning
               exported_namespace: rhacs-00000000000000000000
               secret: secret
               data_key: key
@@ -26,10 +26,10 @@ tests:
               summary: "Certificate expiring soon: `rhacs-00000000000000000000/secret/key`."
               description: "Certificate `rhacs-00000000000000000000/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
       - eval_time: 7d
-        alertname: RHACSFleetshardCertificateExpiringCritical
+        alertname: RHACSFleetshardCertificateExpiryCritical
         exp_alerts:
           - exp_labels:
-              alertname: RHACSFleetshardCertificateExpiringCritical
+              alertname: RHACSFleetshardCertificateExpiryCritical
               exported_namespace: rhacs-00000000000000000000
               secret: secret
               data_key: key
@@ -38,10 +38,10 @@ tests:
               summary: "Certificate expiring very soon: `rhacs-00000000000000000000/secret/key`."
               description: "Certificate `rhacs-00000000000000000000/secret/key` expires on 1970-01-09 00:00:00 +0000 UTC."
       - eval_time: 10d
-        alertname: RHACSFleetshardCertificateExpiringCritical
+        alertname: RHACSFleetshardCertificateExpiryCritical
         exp_alerts:
           - exp_labels:
-              alertname: RHACSFleetshardCertificateExpiringCritical
+              alertname: RHACSFleetshardCertificateExpiryCritical
               exported_namespace: rhacs-00000000000000000000
               secret: secret
               data_key: key
