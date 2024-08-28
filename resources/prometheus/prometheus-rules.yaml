@@ -137,6 +137,7 @@ spec:
           annotations:
             summary: "Cluster ID: '{{ $labels.clusterID }}' is at a critical instance limit."
             description: "Cluster '{{ $labels.clusterID }}' has '{{ $value }}' instances left before reaching limit"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
         - alert: CentralInstanceLimitWarningCapacity
           expr: |
             acs_fleet_manager_cluster_status_capacity_max-acs_fleet_manager_cluster_status_capacity_used<=10
@@ -146,6 +147,7 @@ spec:
           annotations:
             summary: "Cluster ID: '{{ $labels.clusterID }}' is reaching its instance limit."
             description: "Cluster '{{ $labels.clusterID }}' has '{{ $value }}' instances left before reaching limit"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
             acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10

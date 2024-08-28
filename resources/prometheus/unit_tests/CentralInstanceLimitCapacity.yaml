@@ -21,6 +21,7 @@ tests:
             exp_annotations:
               summary: "Cluster ID: 'cluster-1' is at a critical instance limit."
               description: "Cluster 'cluster-1' has '2' instances left before reaching limit"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
   - interval: 15s
     input_series:
       - series: acs_fleet_manager_cluster_status_capacity_max{clusterID="cluster-2"}
@@ -38,3 +39,4 @@ tests:
             exp_annotations:
               summary: "Cluster ID: 'cluster-2' is reaching its instance limit."
               description: "Cluster 'cluster-2' has '10' instances left before reaching limit"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
