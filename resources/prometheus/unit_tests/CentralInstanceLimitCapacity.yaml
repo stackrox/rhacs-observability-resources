@@ -6,9 +6,9 @@ evaluation_interval: 1m
 tests:
   - interval: 15s
     input_series:
-      - series: acs_fleet_manager_cluster_status_capacity_max{clusterID="cluster-1"}
+      - series: acs_fleet_manager_cluster_status_capacity_max{clusterID="cluster1"}
         values: 10 #critical
-      - series: acs_fleet_manager_cluster_status_capacity_used{clusterID="cluster-1"}
+      - series: acs_fleet_manager_cluster_status_capacity_used{clusterID="cluster1"}
         values: 8 #critical
       - series: acs_fleet_manager_cluster_status_capacity_max{clusterID="cluster-2"}
         values: 15 #warning
@@ -20,11 +20,11 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname:  CentralInstanceLimitCriticalCapacity
-              clusterID: cluster-1
+              clusterID: cluster1
               severity: critical
             exp_annotations:
-              summary: "Cluster ID: 'cluster-1' is at a critical instance limit."
-              description: "Cluster 'cluster-1' has '2' instances left before reaching limit"
+              summary: "Cluster ID: 'cluster1' is at a critical instance limit."
+              description: "Cluster 'cluster1' has '2' instances left before reaching limit"
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
   - interval: 15s
     input_series:
