@@ -136,6 +136,16 @@ spec:
           annotations:
             summary: "Certificate expiring very soon: `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
             description: "Certificate `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on {{ humanizeTimestamp $value}}."
+        - alert: CentralInstanceLimitCriticalCapacity
+          expr: |
+            acs_fleet_manager_cluster_status_capacity_max-acs_fleet_manager_cluster_status_capacity_used<=2
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Cluster ID: '{{ $labels.clusterID }}' is at a critical instance limit."
+            description: "Cluster '{{ $labels.clusterID }}' has '{{ $value }}' instances left before reaching limit"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
         - alert: RHACSFleetshardCertificateExpiryWarning
           expr: |
             acs_fleetshard_certificate_expiration_timestamp <= 7* 24 * 60 * 60 + time()
@@ -144,6 +154,16 @@ spec:
           annotations:
             summary: "Certificate expiring soon: `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
             description: "Certificate `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on {{ humanizeTimestamp $value}}."
+        - alert: CentralInstanceLimitWarningCapacity
+          expr: |
+            acs_fleet_manager_cluster_status_capacity_max-acs_fleet_manager_cluster_status_capacity_used<=10
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Cluster ID: '{{ $labels.clusterID }}' is reaching its instance limit."
+            description: "Cluster '{{ $labels.clusterID }}' has '{{ $value }}' instances left before reaching limit"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-031-central-instance-limit-reached.md"
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
             acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10
