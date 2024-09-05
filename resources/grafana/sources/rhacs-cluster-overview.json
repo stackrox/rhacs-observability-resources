@@ -51,140 +51,12 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Monitoring + Alerting for certificate expiration, tracking and managing of digital certificates expiration dates. Extracts timestamps from certificates.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 147,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "acs_fleetshard_certificate_expiration_timestamp",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Certificate Expiry",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Value": true,
-              "__name__": true,
-              "container": true,
-              "instance": true,
-              "job": true,
-              "namespace": true,
-              "pod": true,
-              "rhacs_cluster_name": true,
-              "rhacs_environment": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 3,
-              "Value": 12,
-              "__name__": 4,
-              "container": 5,
-              "data_key": 2,
-              "exported_namespace": 0,
-              "instance": 6,
-              "job": 7,
-              "namespace": 8,
-              "pod": 9,
-              "rhacs_cluster_name": 10,
-              "rhacs_environment": 11,
-              "secret": 1
-            },
-            "renameByName": {
-              "Time": "Expiration",
-              "data_key": "Key",
-              "exported_namespace": "Namespace",
-              "secret": "Secret"
-            }
-          }
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "field": "Expiration"
-              }
-            ]
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 0
       },
       "id": 14,
       "panels": [],
@@ -256,7 +128,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 1
       },
       "id": 9,
       "options": {
@@ -354,7 +226,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 1
       },
       "id": 17,
       "options": {
@@ -452,7 +324,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 9
       },
       "id": 11,
       "options": {
@@ -562,7 +434,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 9
       },
       "id": 10,
       "options": {
@@ -660,7 +532,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 17
       },
       "id": 24,
       "options": {
@@ -758,7 +630,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 17
       },
       "id": 25,
       "options": {
@@ -797,7 +669,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 25
       },
       "id": 16,
       "panels": [],
@@ -868,7 +740,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 34
+        "y": 26
       },
       "id": 4,
       "options": {
@@ -965,7 +837,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 34
+        "y": 26
       },
       "id": 5,
       "options": {
@@ -1062,7 +934,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 34
       },
       "id": 6,
       "options": {
@@ -1102,7 +974,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 42
       },
       "id": 140,
       "panels": [],
@@ -1174,7 +1046,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 51
+        "y": 43
       },
       "id": 141,
       "interval": "60s",
@@ -1224,7 +1096,7 @@
         "h": 8,
         "w": 7,
         "x": 17,
-        "y": 51
+        "y": 43
       },
       "id": 145,
       "options": {
@@ -1287,7 +1159,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1303,7 +1176,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 59
+        "y": 51
       },
       "id": 144,
       "interval": "60s",
@@ -1353,7 +1226,7 @@
         "h": 8,
         "w": 7,
         "x": 17,
-        "y": 59
+        "y": 51
       },
       "id": 146,
       "options": {
@@ -1374,7 +1247,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 59
       },
       "id": 23,
       "panels": [],
@@ -1406,7 +1279,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1443,7 +1317,8 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "orange",
@@ -1576,7 +1451,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 60
       },
       "id": 19,
       "options": {
@@ -1585,7 +1460,9 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -1781,7 +1658,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1846,7 +1724,8 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -1920,7 +1799,8 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "yellow",
@@ -1994,7 +1874,8 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -2043,7 +1924,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 72
       },
       "id": 21,
       "options": {
@@ -2052,7 +1933,9 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -2241,19 +2124,151 @@
         }
       ],
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Monitoring + Alerting for certificate expiration, tracking and managing of digital certificates expiration dates. Extracts timestamps from certificates.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 85
+      },
+      "id": 147,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "acs_fleetshard_certificate_expiration_timestamp",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Certificate Expiry",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Value": true,
+              "__name__": true,
+              "container": true,
+              "instance": true,
+              "job": true,
+              "namespace": true,
+              "pod": true,
+              "rhacs_cluster_name": true,
+              "rhacs_environment": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 3,
+              "Value": 12,
+              "__name__": 4,
+              "container": 5,
+              "data_key": 2,
+              "exported_namespace": 0,
+              "instance": 6,
+              "job": 7,
+              "namespace": 8,
+              "pod": 9,
+              "rhacs_cluster_name": 10,
+              "rhacs_environment": 11,
+              "secret": 1
+            },
+            "renameByName": {
+              "Time": "Expiration",
+              "data_key": "Key",
+              "exported_namespace": "Namespace",
+              "secret": "Secret"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Expiration"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "refresh": "",
   "revision": 1,
   "schemaVersion": 39,
-  "tags": ["rhacs"],
+  "tags": [],
   "templating": {
     "list": [
       {
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "prometheus",
@@ -2280,8 +2295,12 @@
       {
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "prometheus",
@@ -2308,8 +2327,12 @@
       {
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "prometheus",
