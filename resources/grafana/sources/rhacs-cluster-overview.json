@@ -25,8 +25,8 @@
           "uid": "PBFA97CFB590B2093"
         },
         "enable": true,
-        "iconColor": "purple",
         "expr": "count (count by (git_version) (label_replace(count_over_time(kubernetes_build_info{job!~\"kube-dns|coredns\"}[${__interval}]), \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+        "iconColor": "purple",
         "name": "Kubernetes Upgrade",
         "textFormat": "Kubernetes Upgrade"
       },
@@ -36,8 +36,8 @@
           "uid": "PBFA97CFB590B2093"
         },
         "enable": true,
-        "iconColor": "red",
         "expr": "count (count by (gitVersion) (count_over_time (openshift_apiserver_build_info[${__interval}]))) > 1",
+        "iconColor": "red",
         "name": "OpenShift Upgrade",
         "textFormat": "OpenShift Upgrade"
       }
@@ -46,17 +46,145 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 23,
+  "id": 26,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Monitoring + Alerting for certificate expiration, tracking and managing of digital certificates expiration dates. Extracts timestamps from certificates.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 147,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "acs_fleetshard_certificate_expiration_timestamp",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Certificate Expiry",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Value": true,
+              "__name__": true,
+              "container": true,
+              "instance": true,
+              "job": true,
+              "namespace": true,
+              "pod": true,
+              "rhacs_cluster_name": true,
+              "rhacs_environment": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 3,
+              "Value": 12,
+              "__name__": 4,
+              "container": 5,
+              "data_key": 2,
+              "exported_namespace": 0,
+              "instance": 6,
+              "job": 7,
+              "namespace": 8,
+              "pod": 9,
+              "rhacs_cluster_name": 10,
+              "rhacs_environment": 11,
+              "secret": 1
+            },
+            "renameByName": {
+              "Time": "Expiration",
+              "data_key": "Key",
+              "exported_namespace": "Namespace",
+              "secret": "Secret"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Expiration"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 14,
       "panels": [],
@@ -128,7 +256,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 1
+        "y": 9
       },
       "id": 9,
       "options": {
@@ -226,7 +354,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 1
+        "y": 9
       },
       "id": 17,
       "options": {
@@ -324,7 +452,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 11,
       "options": {
@@ -434,7 +562,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 17
       },
       "id": 10,
       "options": {
@@ -532,7 +660,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "id": 24,
       "options": {
@@ -630,7 +758,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 25
       },
       "id": 25,
       "options": {
@@ -669,7 +797,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 33
       },
       "id": 16,
       "panels": [],
@@ -740,7 +868,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 34
       },
       "id": 4,
       "options": {
@@ -837,7 +965,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 34
       },
       "id": 5,
       "options": {
@@ -934,7 +1062,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 34
+        "y": 42
       },
       "id": 6,
       "options": {
@@ -974,7 +1102,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 50
       },
       "id": 140,
       "panels": [],
@@ -1046,7 +1174,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 43
+        "y": 51
       },
       "id": 141,
       "interval": "60s",
@@ -1096,7 +1224,7 @@
         "h": 8,
         "w": 7,
         "x": 17,
-        "y": 43
+        "y": 51
       },
       "id": 145,
       "options": {
@@ -1108,7 +1236,7 @@
         "content": "### Description\n\nThis graph shows the occurences per minute of **SELinux AVC denials** on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that the cluster node's SELinux policy prevented a process' actions.\nAs an example, a violation could indicate that a process on the cluster tried to access a file which is SELinux-protected.\n\n### Drill-Down\n\nLog into the cluster's AWS account and use a [Log Insights query](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D~(end~0~start~-3600~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*2c*20*40logStream*2c*20*40log*0a*7c*20filter*20*40logStream*20like*20*2flinux-audit*2f*0a*7c*20filter*20*40message*20like*20*2fAVC*2f*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*201000~source~(~))) similar to this one:\n```\nfields @timestamp, @message, @logStream, @log\n| filter @logStream like /linux-audit/\n| filter @message like /AVC/\n| sort @timestamp desc\n| limit 1000\n```\n\n**Note:**\n* all CloudWatch related resources are located in the `us-east-1` region.\n* the log group containing the violation logs are called `acs-<cluster name>.audit`.\n",
         "mode": "markdown"
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "11.1.0",
       "type": "text"
     },
     {
@@ -1159,8 +1287,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1176,7 +1303,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 51
+        "y": 59
       },
       "id": 144,
       "interval": "60s",
@@ -1226,7 +1353,7 @@
         "h": 8,
         "w": 7,
         "x": 17,
-        "y": 51
+        "y": 59
       },
       "id": 146,
       "options": {
@@ -1238,7 +1365,7 @@
         "content": "### Description\n\nThis graph shows the occurences per minute of Network Policy ACL denials on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that network traffic was prevented due to a Kubernetes Network Policy.\nAs an example, a violation could indicate that communication between RHACS tenant namespaces\nwas attempted, which is strictly forbidden.\n\n### Drill-Down\n\nLog into the cluster's AWS account and use a [Log Insights query](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D~(end~0~start~-3600~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*2c*20*40logStream*2c*20*40log*0a*7c*20filter*20*40message*20like*20*2facl_log*28.*2a*29.*2a*5csverdict*3ddrop*2f*0a*7c*20filter*20*40logStream*20like*20*2f.*2aovn-audit*5c.log*2f*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*201000~source~(~))) similar to this one:\n```\nfields @timestamp, @message, @logStream, @log\n| filter @message like /acl_log(.*).*\\sverdict=drop/\n| filter @logStream like /.*ovn-audit\\.log/\n| sort @timestamp desc\n| limit 1000\n```\n\n**Note:**\n* all CloudWatch related resources are located in the `us-east-1` region.\n* the log group containing the violation logs are called `acs-<cluster name>.audit`.\n\n",
         "mode": "markdown"
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "11.1.0",
       "type": "text"
     },
     {
@@ -1247,7 +1374,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 67
       },
       "id": 23,
       "panels": [],
@@ -1279,8 +1406,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1317,8 +1443,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "orange",
@@ -1451,7 +1576,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 68
       },
       "id": 19,
       "options": {
@@ -1471,7 +1596,7 @@
           }
         ]
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "11.1.0",
       "targets": [
         {
           "datasource": {
@@ -1656,8 +1781,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1722,8 +1846,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -1797,8 +1920,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "yellow",
@@ -1872,8 +1994,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -1922,7 +2043,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 80
       },
       "id": 21,
       "options": {
@@ -1942,7 +2063,7 @@
           }
         ]
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "11.1.0",
       "targets": [
         {
           "datasource": {
@@ -2124,7 +2245,7 @@
   ],
   "refresh": "",
   "revision": 1,
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": ["rhacs"],
   "templating": {
     "list": [
