@@ -35,8 +35,8 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "purple",
             "expr": "count (count by (git_version) (label_replace(count_over_time(kubernetes_build_info{job!~\"kube-dns|coredns\"}[${__interval}]), \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+            "iconColor": "purple",
             "name": "Kubernetes Upgrade",
             "textFormat": "Kubernetes Upgrade"
           },
@@ -46,8 +46,8 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "red",
             "expr": "count (count by (gitVersion) (count_over_time (openshift_apiserver_build_info[${__interval}]))) > 1",
+            "iconColor": "red",
             "name": "OpenShift Upgrade",
             "textFormat": "OpenShift Upgrade"
           }
@@ -56,7 +56,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 23,
+      "id": 11,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -733,8 +733,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -830,8 +829,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -927,8 +925,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1039,8 +1036,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1169,8 +1165,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1289,8 +1284,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1327,8 +1321,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "orange",
@@ -1470,7 +1463,9 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": ["sum"],
+              "reducer": [
+                "sum"
+              ],
               "show": false
             },
             "showHeader": true,
@@ -1666,8 +1661,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1732,8 +1726,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "#EAB839",
@@ -1807,8 +1800,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "yellow",
@@ -1882,8 +1874,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "#EAB839",
@@ -1941,7 +1932,9 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": ["sum"],
+              "reducer": [
+                "sum"
+              ],
               "show": false
             },
             "showHeader": true,
@@ -2130,19 +2123,153 @@ spec:
             }
           ],
           "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Monitoring + Alerting for certificate expiration, tracking and managing of digital certificates expiration dates. Extracts timestamps from certificates.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 85
+          },
+          "id": 147,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "disableTextWrap": false,
+              "editorMode": "builder",
+              "expr": "acs_fleetshard_certificate_expiration_timestamp",
+              "format": "table",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A",
+              "useBackend": false
+            }
+          ],
+          "title": "Certificate Expiry",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Value": true,
+                  "__name__": true,
+                  "container": true,
+                  "instance": true,
+                  "job": true,
+                  "namespace": true,
+                  "pod": true,
+                  "rhacs_cluster_name": true,
+                  "rhacs_environment": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Time": 3,
+                  "Value": 12,
+                  "__name__": 4,
+                  "container": 5,
+                  "data_key": 2,
+                  "exported_namespace": 0,
+                  "instance": 6,
+                  "job": 7,
+                  "namespace": 8,
+                  "pod": 9,
+                  "rhacs_cluster_name": 10,
+                  "rhacs_environment": 11,
+                  "secret": 1
+                },
+                "renameByName": {
+                  "Time": "Expiration",
+                  "data_key": "Key",
+                  "exported_namespace": "Namespace",
+                  "secret": "Secret"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Expiration"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
       "refresh": "",
       "revision": 1,
-      "schemaVersion": 38,
-      "tags": ["rhacs"],
+      "schemaVersion": 39,
+      "tags": [
+        "rhacs"
+      ],
       "templating": {
         "list": [
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -2169,8 +2296,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -2197,8 +2328,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -2260,6 +2395,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Cluster Metrics",
       "uid": "4032f3c17643119901e107a0a1786d5b9e4c9565",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
