@@ -1470,9 +1470,7 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -1943,9 +1941,7 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -2182,9 +2178,7 @@ spec:
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true
@@ -2267,20 +2261,14 @@ spec:
       "refresh": "",
       "revision": 1,
       "schemaVersion": 39,
-      "tags": [
-        "rhacs"
-      ],
+      "tags": ["rhacs"],
       "templating": {
         "list": [
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -2307,12 +2295,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -2339,12 +2323,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
