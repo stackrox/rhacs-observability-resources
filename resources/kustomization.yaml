@@ -4,3 +4,13 @@ secretGenerator:
       disableNameSuffixHash: true
     files:
       - prometheus/federation-config.yaml
+resources:
+  - prometheus/pod_monitors/prometheus-self-metrics.yaml
+  - prometheus/pod_monitors/rhacs-cloudwatch-exporter.yaml
+  - prometheus/pod_monitors/rhacs-fleetshard-sync-metrics.yaml
+  - prometheus/pod_monitors/rhacs-tenant-metrics.yaml
+  - prometheus/pod_monitors/rhacs-emailsender-metrics.yaml
+  - prometheus/billing-rules.yaml
+  - prometheus/generated/kubernetes-mixin-alerts.yaml
+  - prometheus/prometheus-rules.yaml
+  - prometheus/rhacs-recording-rules.yaml
