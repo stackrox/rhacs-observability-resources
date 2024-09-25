@@ -82,11 +82,17 @@ function main() {
 
     # Filter metrics (exclude metrics that are collected by observability Prometheus or created by recording rules)
     sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" | awk '{ print $1 "{job!~\"central|scanner\"}" }' > "${metrics_list_file}.filter"
-
-    # Create federation-config.yaml
-    local yq_expression='. *+ load("'"${repo_dir}/resources/prometheus/federation-config-base.yaml"'")."match[]" | unique | sort | { "match[]": . }'
-    sed -e 's/^/- /'  "${metrics_list_file}.filter" | yq "${yq_expression}" > "${repo_dir}/resources/prometheus/federation-config.yaml"
-
+    local yq_expression
+    yq_expression=$(printf '%s' \
+        '(load_str("'"${metrics_list_file}.filter"'") |' \
+        'sub("\n$","") |' \
+        'split("\n")) as $f |' \
+        '.[0].params."match[]" += $f |' \
+        '.[0].params."match[]" |= unique |' \
+        '.[0].params."match[]" |= sort |' \
+        '... comments=""' \
+    )
+    yq "${yq_expression}" "${repo_dir}/resources/prometheus/federation-config-base.yaml" > "${repo_dir}/resources/prometheus/federation-config.yaml"
     # Clean up the temp directory with all transient files
     rm -rf "${working_tmp_dir}"
     log "Deleted temp dir: '${working_tmp_dir}'"

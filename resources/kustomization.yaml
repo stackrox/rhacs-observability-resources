@@ -1,0 +1,6 @@
+secretGenerator:
+  - name: additional-scrape-configs
+    options:
+      disableNameSuffixHash: true
+    files:
+      - prometheus/federation-config.yaml
