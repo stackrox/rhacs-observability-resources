@@ -1,8 +1,9 @@
-apiVersion: monitoring.coreos.com/v1
+apiVersion: monitoring.rhobs/v1
 kind: PrometheusRule
 metadata:
   labels:
     app: rhacs
+    app.kubernetes.io/managed-by: observability-operator
   name: rhacs-recording-rules
 spec:
   groups:
