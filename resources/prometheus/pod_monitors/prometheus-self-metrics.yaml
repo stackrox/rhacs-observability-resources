@@ -13,4 +13,4 @@ spec:
       port: web
   selector:
     matchLabels:
-      prometheus: obs-prometheus
+      prometheus: rhacs-prometheus
