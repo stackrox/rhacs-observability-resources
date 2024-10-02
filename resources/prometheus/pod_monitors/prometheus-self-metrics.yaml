@@ -1,9 +1,10 @@
-apiVersion: monitoring.coreos.com/v1
+apiVersion: monitoring.rhobs/v1
 kind: PodMonitor
 metadata:
   name: prometheus-self-metrics
   labels:
     app: rhacs
+    app.kubernetes.io/managed-by: observability-operator
 spec:
   namespaceSelector:
     any: true
