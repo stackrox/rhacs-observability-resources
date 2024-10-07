@@ -9,5 +9,4 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: "rhacs"
-  name: kubernetes-mixin-namespace-by-workload.json
   json: |
