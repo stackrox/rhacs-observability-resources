@@ -22,3 +22,7 @@
       # This is an example.
       - up{job!~"central|scanner"}
       - openshift_apiserver_build_info
+  scheme: https
+  bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  tls_config:
+      insecure_skip_verify: true

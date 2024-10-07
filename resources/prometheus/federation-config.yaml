@@ -195,3 +195,7 @@
       - workqueue_adds_total{job!~"central|scanner"}
       - workqueue_depth{job!~"central|scanner"}
       - workqueue_queue_duration_seconds_bucket{job!~"central|scanner"}
+  scheme: https
+  bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  tls_config:
+    insecure_skip_verify: true
