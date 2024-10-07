@@ -9,7 +9,6 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: "rhacs"
-  name: kubernetes-mixin-workload-total.json
   json: |
     {
        "editable": false,

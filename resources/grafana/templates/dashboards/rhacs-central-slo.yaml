@@ -9,5 +9,4 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: "rhacs"
-  name: rhacs-central-slo.json
   json: |

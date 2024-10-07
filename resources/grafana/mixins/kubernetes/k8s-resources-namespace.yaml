@@ -9,7 +9,6 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: "rhacs"
-  name: kubernetes-mixin-k8s-resources-namespace.json
   json: |
     {
        "editable": false,
