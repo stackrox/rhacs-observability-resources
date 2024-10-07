@@ -1,4 +1,4 @@
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   labels:
@@ -6,5 +6,8 @@ metadata:
     monitoring-key: middleware
   name: kubernetes-mixin-workload-total
 spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: "rhacs"
   name: kubernetes-mixin-workload-total.json
   json: |
