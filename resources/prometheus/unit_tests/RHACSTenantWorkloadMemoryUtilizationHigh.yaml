@@ -7,14 +7,15 @@ tests:
   - interval: 1m
     input_series:
       - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa", pod="mypod", container="central"}
-        values: "50+0x10 85+0x10"
+        # first 10 minutes no alert and then 85% CPU usage for 40 minutes
+        values: "50+0x10 85+0x40"
       - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod", container="central"}
-        values: "100+0x20"
+        values: "100+0x40"
     alert_rule_test:
       - eval_time: 1m
         alertname: RHACSTenantWorkloadMemoryUtilizationHigh
         exp_alerts: []
-      - eval_time: 21m
+      - eval_time: 41m
         alertname: RHACSTenantWorkloadMemoryUtilizationHigh
         exp_alerts:
           - exp_labels:
