@@ -242,7 +242,7 @@ spec:
         - alert: RHACSTenantWorkloadMemoryUtilizationHigh
           expr: |
             rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.85
-          for: 10m
+          for: 30m
           labels:
             severity: warning
           annotations:
