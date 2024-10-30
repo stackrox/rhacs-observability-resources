@@ -68,185 +68,6 @@ spec:
             "x": 0,
             "y": 0
           },
-          "id": 149,
-          "panels": [],
-          "title": "Certificates Expiry",
-          "type": "row"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "description": "Monitoring, tracking and managing of digital certificates expiration dates, by extracting timestamps from certificates and exposing metrics to Prometheus.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": true,
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 1
-          },
-          "id": 148,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "enablePagination": true,
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": false,
-                "displayName": "Expiration"
-              }
-            ]
-          },
-          "pluginVersion": "11.1.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "disableTextWrap": false,
-              "editorMode": "builder",
-              "exemplar": true,
-              "expr": "acs_fleetshard_certificate_expiration_timestamp",
-              "format": "table",
-              "fullMetaSearch": false,
-              "includeNullMetadata": true,
-              "instant": false,
-              "interval": "",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A",
-              "useBackend": false
-            }
-          ],
-          "title": "Certificates Expiry",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "Value": false,
-                  "__name__": true,
-                  "container": true,
-                  "instance": true,
-                  "job": true,
-                  "namespace": true,
-                  "pod": true,
-                  "rhacs_cluster_name": true,
-                  "rhacs_environment": true
-                },
-                "includeByName": {},
-                "indexByName": {
-                  "Time": 4,
-                  "Value": 12,
-                  "__name__": 5,
-                  "container": 6,
-                  "data_key": 3,
-                  "exported_namespace": 0,
-                  "instance": 7,
-                  "job": 8,
-                  "namespace": 1,
-                  "pod": 9,
-                  "rhacs_cluster_name": 10,
-                  "rhacs_environment": 11,
-                  "secret": 2
-                },
-                "renameByName": {
-                  "Time": "Expiration",
-                  "Value": "",
-                  "container": "",
-                  "data_key": "Key",
-                  "exported_namespace": "Namespace",
-                  "secret": "Secret"
-                }
-              }
-            },
-            {
-              "id": "calculateField",
-              "options": {
-                "alias": "Expiration",
-                "binary": {
-                  "left": "Value",
-                  "operator": "*",
-                  "right": "1000"
-                },
-                "mode": "binary",
-                "reduce": {
-                  "reducer": "sum"
-                }
-              }
-            },
-            {
-              "id": "convertFieldType",
-              "options": {
-                "conversions": [
-                  {
-                    "destinationType": "time",
-                    "targetField": "Expiration"
-                  }
-                ],
-                "fields": {}
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Value": true
-                },
-                "includeByName": {},
-                "indexByName": {},
-                "renameByName": {}
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "collapsed": false,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 9
-          },
           "id": 14,
           "panels": [],
           "title": "Instances",
@@ -317,7 +138,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 10
+            "y": 1
           },
           "id": 9,
           "options": {
@@ -415,7 +236,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 10
+            "y": 1
           },
           "id": 17,
           "options": {
@@ -513,7 +334,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 18
+            "y": 9
           },
           "id": 11,
           "options": {
@@ -623,7 +444,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 18
+            "y": 9
           },
           "id": 10,
           "options": {
@@ -720,7 +541,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 26
+            "y": 17
           },
           "id": 24,
           "options": {
@@ -817,7 +638,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 26
+            "y": 17
           },
           "id": 25,
           "options": {
@@ -849,19 +670,6 @@ spec:
           ],
           "title": "Secured Clusters",
           "type": "timeseries"
-        },
-        {
-          "collapsed": false,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 34
-          },
-          "id": 16,
-          "panels": [],
-          "title": "Resources",
-          "type": "row"
         },
         {
           "datasource": {
@@ -926,7 +734,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 35
+            "y": 25
           },
           "id": 4,
           "options": {
@@ -957,6 +765,116 @@ spec:
             }
           ],
           "title": "Network Received",
+          "type": "timeseries"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 33
+          },
+          "id": 16,
+          "panels": [],
+          "title": "Resources",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 34
+          },
+          "id": 6,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
+              "format": "time_series",
+              "interval": "",
+              "legendFormat": "{{namespace}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Central Memory Usage",
           "type": "timeseries"
         },
         {
@@ -1022,7 +940,7 @@ spec:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 35
+            "y": 34
           },
           "id": 5,
           "options": {
@@ -1056,109 +974,12 @@ spec:
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "percentunit"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 43
-          },
-          "id": 6,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "9.1.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "expr": "sum(container_memory_working_set_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace) / sum(container_spec_memory_limit_bytes{namespace=~\"rhacs-$instance_id\", container=\"central\", job=~\"kubelet\"}) by (namespace)",
-              "format": "time_series",
-              "interval": "",
-              "legendFormat": "{{namespace}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Central Memory Usage",
-          "type": "timeseries"
-        },
-        {
           "collapsed": false,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 51
+            "y": 42
           },
           "id": 140,
           "panels": [],
@@ -1229,7 +1050,7 @@ spec:
             "h": 8,
             "w": 17,
             "x": 0,
-            "y": 52
+            "y": 43
           },
           "id": 141,
           "interval": "60s",
@@ -1279,7 +1100,7 @@ spec:
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 52
+            "y": 43
           },
           "id": 145,
           "options": {
@@ -1358,7 +1179,7 @@ spec:
             "h": 8,
             "w": 17,
             "x": 0,
-            "y": 60
+            "y": 51
           },
           "id": 144,
           "interval": "60s",
@@ -1408,7 +1229,7 @@ spec:
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 60
+            "y": 51
           },
           "id": 146,
           "options": {
@@ -1429,7 +1250,7 @@ spec:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 68
+            "y": 59
           },
           "id": 23,
           "panels": [],
@@ -1631,7 +1452,7 @@ spec:
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 69
+            "y": 60
           },
           "id": 19,
           "options": {
@@ -2098,7 +1919,7 @@ spec:
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 81
+            "y": 72
           },
           "id": 21,
           "options": {
@@ -2291,6 +2112,226 @@ spec:
                   "rhacs_org_id": "Organization ID",
                   "rhacs_org_name": "Organization",
                   "rhacs_version": "Version"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 85
+          },
+          "id": 149,
+          "panels": [],
+          "title": "Certificate Expiry",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Expiration dates for central and scanner TLS certificates.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 86
+          },
+          "id": 148,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "disableTextWrap": false,
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "acs_fleetshard_certificate_expiration_timestamp{exported_namespace=~\"rhacs-$instance_id\"}",
+              "format": "table",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A",
+              "useBackend": false
+            }
+          ],
+          "title": "Certificates Expiry",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "Value": false,
+                  "__name__": true,
+                  "container": true,
+                  "instance": true,
+                  "job": true,
+                  "namespace": true,
+                  "pod": true,
+                  "rhacs_cluster_name": true,
+                  "rhacs_environment": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Time": 4,
+                  "Value": 12,
+                  "__name__": 5,
+                  "container": 6,
+                  "data_key": 3,
+                  "exported_namespace": 0,
+                  "instance": 7,
+                  "job": 8,
+                  "namespace": 1,
+                  "pod": 9,
+                  "rhacs_cluster_name": 10,
+                  "rhacs_environment": 11,
+                  "secret": 2
+                },
+                "renameByName": {
+                  "Time": "Expiration",
+                  "Value": "",
+                  "container": "",
+                  "data_key": "Key",
+                  "exported_namespace": "Namespace",
+                  "secret": "Secret"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Expiration",
+                "binary": {
+                  "left": "Value",
+                  "operator": "*",
+                  "right": "1000"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "time",
+                    "targetField": "Expiration"
+                  }
+                ],
+                "fields": {}
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Value": true
+                },
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {}
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Expiration": {
+                    "aggregations": [
+                      "last"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Key": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Namespace": {
+                    "aggregations": [
+                      "last"
+                    ],
+                    "operation": "groupby"
+                  },
+                  "Secret": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {
+                  "Expiration (last)": 3,
+                  "Key": 2,
+                  "Namespace": 0,
+                  "Secret": 1
+                },
+                "renameByName": {
+                  "Expiration (last)": "Expiration",
+                  "Namespace (last)": "Namespace"
                 }
               }
             }
