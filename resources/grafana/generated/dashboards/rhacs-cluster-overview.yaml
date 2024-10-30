@@ -2180,9 +2180,7 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -2296,9 +2294,7 @@ spec:
               "options": {
                 "fields": {
                   "Expiration": {
-                    "aggregations": [
-                      "last"
-                    ],
+                    "aggregations": ["last"],
                     "operation": "aggregate"
                   },
                   "Key": {
@@ -2306,9 +2302,7 @@ spec:
                     "operation": "groupby"
                   },
                   "Namespace": {
-                    "aggregations": [
-                      "last"
-                    ],
+                    "aggregations": ["last"],
                     "operation": "groupby"
                   },
                   "Secret": {
