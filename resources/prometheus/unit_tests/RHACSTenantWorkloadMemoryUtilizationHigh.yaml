@@ -7,14 +7,15 @@ tests:
   - interval: 1m
     input_series:
       - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa", pod="mypod", container="central"}
-        values: "50+0x10 85+0x10"
+        # first 10 minutes no alert and then 90% CPU usage for 40 minutes
+        values: "50+0x10 90+0x40"
       - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod", container="central"}
-        values: "100+0x20"
+        values: "100+0x40"
     alert_rule_test:
       - eval_time: 1m
         alertname: RHACSTenantWorkloadMemoryUtilizationHigh
         exp_alerts: []
-      - eval_time: 21m
+      - eval_time: 41m
         alertname: RHACSTenantWorkloadMemoryUtilizationHigh
         exp_alerts:
           - exp_labels:
@@ -25,7 +26,7 @@ tests:
               container: central
             exp_annotations:
               summary: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'central' in pod 'mypod' is reaching its memory limit.
-              description: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'central' in pod 'mypod' reached 85% of its memory limit and is at risk of being OOM killed.
+              description: tenant 'rhacs-aaaaaaaaaaaaaaaaaaaa' container 'central' in pod 'mypod' reached 90% of its memory limit and is at risk of being OOM killed.
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"
   - interval: 1m
     input_series:

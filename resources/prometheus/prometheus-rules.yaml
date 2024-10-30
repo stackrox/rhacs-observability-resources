@@ -128,6 +128,22 @@ spec:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-005-fleetshard-sync-unavailable.md"
+        - alert: RHACSFleetshardCertificateExpiryCritical
+          expr: |
+            acs_fleetshard_certificate_expiration_timestamp <= 1 * 24 * 60 * 60 + time()
+          labels:
+            severity: critical
+          annotations:
+            summary: "Certificate expiring very soon: `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
+            description: "Certificate `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on {{ humanizeTimestamp $value}}."
+        - alert: RHACSFleetshardCertificateExpiryWarning
+          expr: |
+            acs_fleetshard_certificate_expiration_timestamp <= 7* 24 * 60 * 60 + time()
+          labels:
+            severity: warning
+          annotations:
+            summary: "Certificate expiring soon: `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}`."
+            description: "Certificate `{{ $labels.exported_namespace }}/{{ $labels.secret }}/{{ $labels.data_key }}` expires on {{ humanizeTimestamp $value}}."
         - alert: RHACSFleetshardSyncReconciliationErrors
           expr: |
             acs_fleetshard_central_errors_per_reconciliations:ratio_rate10m > 0.10
@@ -225,8 +241,8 @@ spec:
           record: rhacs_tenants:namespace:pod:container:max_memory_usage_ratio
         - alert: RHACSTenantWorkloadMemoryUtilizationHigh
           expr: |
-            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.85
-          for: 10m
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.9
+          for: 30m
           labels:
             severity: warning
           annotations:
