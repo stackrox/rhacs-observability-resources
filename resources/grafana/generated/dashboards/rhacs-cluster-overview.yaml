@@ -2184,7 +2184,12 @@ spec:
               "show": false
             },
             "showHeader": true,
-            "sortBy": []
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Expiration"
+              }
+            ]
           },
           "pluginVersion": "11.1.0",
           "targets": [
@@ -2196,7 +2201,7 @@ spec:
               "disableTextWrap": false,
               "editorMode": "code",
               "exemplar": true,
-              "expr": "acs_fleetshard_certificate_expiration_timestamp{exported_namespace=~\"rhacs-$instance_id\"}",
+              "expr": "acs_fleetshard_certificate_expiration_timestamp * on (exported_namespace) group_left(rhacs_org_name) label_replace(rox_central_info, \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\")",
               "format": "table",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
@@ -2206,6 +2211,19 @@ spec:
               "range": true,
               "refId": "A",
               "useBackend": false
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "B"
             }
           ],
           "title": "Certificates Expiry",
@@ -2223,7 +2241,8 @@ spec:
                   "namespace": true,
                   "pod": true,
                   "rhacs_cluster_name": true,
-                  "rhacs_environment": true
+                  "rhacs_environment": true,
+                  "rhacs_org_name": false
                 },
                 "includeByName": {},
                 "indexByName": {
@@ -2308,6 +2327,10 @@ spec:
                   "Secret": {
                     "aggregations": [],
                     "operation": "groupby"
+                  },
+                  "rhacs_org_name": {
+                    "aggregations": [],
+                    "operation": "groupby"
                   }
                 }
               }
@@ -2318,14 +2341,16 @@ spec:
                 "excludeByName": {},
                 "includeByName": {},
                 "indexByName": {
-                  "Expiration (last)": 3,
-                  "Key": 2,
+                  "Expiration (last)": 1,
+                  "Key": 4,
                   "Namespace": 0,
-                  "Secret": 1
+                  "Secret": 3,
+                  "rhacs_org_name": 2
                 },
                 "renameByName": {
                   "Expiration (last)": "Expiration",
-                  "Namespace (last)": "Namespace"
+                  "Namespace (last)": "Namespace",
+                  "rhacs_org_name": "Organization"
                 }
               }
             }
@@ -2424,7 +2449,7 @@ spec:
           },
           {
             "current": {
-              "selected": false,
+              "selected": true,
               "text": "All",
               "value": "$__all"
             },
