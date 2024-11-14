@@ -2350,7 +2350,7 @@
   ],
   "revision": 1,
   "schemaVersion": 39,
-  "tags": [],
+  "tags": ["rhacs"],
   "templating": {
     "list": [
       {
@@ -2439,7 +2439,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
