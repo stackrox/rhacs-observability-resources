@@ -75,7 +75,7 @@ function main() {
 
     # Get metrics used in recording rules and alerts
     local rules_files
-    rules_files=$(jq '.config.prometheus.rules[]' "${repo_dir}/resources/index.json" --raw-output)
+    rules_files=$(yq '.resources[] | select(. | match("^prometheus\/")) | select(load("resources/"+ .) | .kind == "PrometheusRule")' "${repo_dir}/resources/kustomization.yaml")
     while IFS= read -r rules_file; do
         get_rules_metrics "${repo_dir}/resources/${rules_file}" "${metrics_list_file}"
     done <<< "${rules_files}"
