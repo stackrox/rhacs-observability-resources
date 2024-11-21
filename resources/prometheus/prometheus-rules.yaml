@@ -404,6 +404,7 @@ spec:
           expr: vector(1)
           labels:
             name: DeadMansSwitchAlert
+            observability: managed-rhacs
 
     - name: federation
       rules:
