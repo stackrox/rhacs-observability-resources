@@ -83,6 +83,8 @@ function main() {
     # Filter metrics (exclude metrics that are collected by observability Prometheus or created by recording rules)
     sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" | awk '{ print $1 "{job!~\"central|scanner\"}" }' > "${metrics_list_file}.filter"
     local yq_expression
+    # shellcheck disable=SC2016
+    # $f is not a shell variable, but a yq variable, so it should not be surrounded by double quotes
     yq_expression=$(printf '%s' \
         '(load_str("'"${metrics_list_file}.filter"'") |' \
         'sub("\n$","") |' \
