@@ -1,6 +1,28 @@
-# Use this list to add any required federated metrics that are not used by Rules, Alerts, or Grafana dashboards.
-# Listed metrics will be merged with metrics used in Rules, Alerts, and Grafana dashboards.
-match[]:
-  # This is an example.
-  - up{job!~"central|scanner"}
-  - openshift_apiserver_build_info
+- job_name: openshift-monitoring-federation
+  honor_labels: true
+  kubernetes_sd_configs:
+    - role: service
+      namespaces:
+        names:
+          - openshift-monitoring
+  scrape_interval: 120s
+  scrape_timeout: 60s
+  metrics_path: /federate
+  relabel_configs:
+    - action: keep
+      source_labels: [ '__meta_kubernetes_service_name' ]
+      regex: prometheus-k8s
+    - action: keep
+      source_labels: [ '__meta_kubernetes_service_port_name' ]
+      regex: web
+  params:
+    # Use this list to add any required federated metrics that are not used by Rules, Alerts, or Grafana dashboards.
+    # Listed metrics will be merged with metrics used in Rules, Alerts, and Grafana dashboards.
+    match[]:
+      # This is an example.
+      - up{job!~"central|scanner"}
+      - openshift_apiserver_build_info
+  scheme: https
+  bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  tls_config:
+      insecure_skip_verify: true
