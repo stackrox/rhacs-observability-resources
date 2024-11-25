@@ -75,18 +75,26 @@ function main() {
 
     # Get metrics used in recording rules and alerts
     local rules_files
-    rules_files=$(jq '.config.prometheus.rules[]' "${repo_dir}/resources/index.json" --raw-output)
+    rules_files=$(yq '.resources[] | select(. | match("^prometheus\/")) | select(load("resources/"+ .) | .kind == "PrometheusRule")' "${repo_dir}/resources/kustomization.yaml")
     while IFS= read -r rules_file; do
         get_rules_metrics "${repo_dir}/resources/${rules_file}" "${metrics_list_file}"
     done <<< "${rules_files}"
 
     # Filter metrics (exclude metrics that are collected by observability Prometheus or created by recording rules)
     sort "${metrics_list_file}" | uniq | grep -v -E "^acs|^rox|^aws|^central:|acscs_worker_nodes" | awk '{ print $1 "{job!~\"central|scanner\"}" }' > "${metrics_list_file}.filter"
-
-    # Create federation-config.yaml
-    local yq_expression='. *+ load("'"${repo_dir}/resources/prometheus/federation-config-base.yaml"'")."match[]" | unique | sort | { "match[]": . }'
-    sed -e 's/^/- /'  "${metrics_list_file}.filter" | yq "${yq_expression}" > "${repo_dir}/resources/prometheus/federation-config.yaml"
-
+    local yq_expression
+    # shellcheck disable=SC2016
+    # $f is not a shell variable, but a yq variable, so it should not be surrounded by double quotes
+    yq_expression=$(printf '%s' \
+        '(load_str("'"${metrics_list_file}.filter"'") |' \
+        'sub("\n$","") |' \
+        'split("\n")) as $f |' \
+        '.[0].params."match[]" += $f |' \
+        '.[0].params."match[]" |= unique |' \
+        '.[0].params."match[]" |= sort |' \
+        '... comments=""' \
+    )
+    yq "${yq_expression}" "${repo_dir}/resources/prometheus/federation-config-base.yaml" > "${repo_dir}/resources/prometheus/federation-config.yaml"
     # Clean up the temp directory with all transient files
     rm -rf "${working_tmp_dir}"
     log "Deleted temp dir: '${working_tmp_dir}'"

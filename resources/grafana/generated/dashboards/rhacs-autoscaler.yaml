@@ -1,4 +1,4 @@
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   labels:
@@ -6,7 +6,9 @@ metadata:
     monitoring-key: middleware
   name: rhacs-autoscaler
 spec:
-  name: rhacs-autoscaler.json
+  instanceSelector:
+    matchLabels:
+      dashboards: "rhacs"
   json: |
     {
       "__inputs": [],
