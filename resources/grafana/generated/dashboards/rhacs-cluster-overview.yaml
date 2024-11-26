@@ -1,4 +1,4 @@
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   labels:
@@ -6,7 +6,9 @@ metadata:
     monitoring-key: middleware
   name: rhacs-cluster-overview
 spec:
-  name: rhacs-cluster-overview.json
+  instanceSelector:
+    matchLabels:
+      dashboards: "rhacs"
   json: |
     {
       "annotations": {
@@ -35,8 +37,8 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "purple",
             "expr": "count (count by (git_version) (label_replace(count_over_time(kubernetes_build_info{job!~\"kube-dns|coredns\"}[${__interval}]), \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+            "iconColor": "purple",
             "name": "Kubernetes Upgrade",
             "textFormat": "Kubernetes Upgrade"
           },
@@ -46,8 +48,8 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "red",
             "expr": "count (count by (gitVersion) (count_over_time (openshift_apiserver_build_info[${__interval}]))) > 1",
+            "iconColor": "red",
             "name": "OpenShift Upgrade",
             "textFormat": "OpenShift Upgrade"
           }
@@ -56,7 +58,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 23,
+      "id": 26,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -525,8 +527,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -623,8 +624,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -674,12 +674,108 @@ spec:
           "type": "timeseries"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 25
+          },
+          "id": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "interval": "",
+              "legendFormat": "{{namespace}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Network Received",
+          "type": "timeseries"
+        },
+        {
           "collapsed": false,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 25
+            "y": 33
           },
           "id": 16,
           "panels": [],
@@ -733,202 +829,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "Bps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 26
-          },
-          "id": 4,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.1.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "expr": "sum(rate(container_network_receive_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
-              "interval": "",
-              "legendFormat": "{{namespace}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Network Received",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "Bps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 26
-          },
-          "id": 5,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.1.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-              },
-              "editorMode": "code",
-              "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
-              "interval": "",
-              "legendFormat": "{{namespace}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Network Transmitted",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -976,6 +877,102 @@ spec:
             }
           ],
           "title": "Central Memory Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 34
+          },
+          "id": 5,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "sum(rate(container_network_transmit_bytes_total{namespace=~\"rhacs-$instance_id\", job=~\"kubelet\"}[5m])) by (namespace)",
+              "interval": "",
+              "legendFormat": "{{namespace}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Network Transmitted",
           "type": "timeseries"
         },
         {
@@ -1039,8 +1036,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1118,7 +1114,7 @@ spec:
             "content": "### Description\n\nThis graph shows the occurences per minute of **SELinux AVC denials** on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that the cluster node's SELinux policy prevented a process' actions.\nAs an example, a violation could indicate that a process on the cluster tried to access a file which is SELinux-protected.\n\n### Drill-Down\n\nLog into the cluster's AWS account and use a [Log Insights query](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D~(end~0~start~-3600~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*2c*20*40logStream*2c*20*40log*0a*7c*20filter*20*40logStream*20like*20*2flinux-audit*2f*0a*7c*20filter*20*40message*20like*20*2fAVC*2f*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*201000~source~(~))) similar to this one:\n```\nfields @timestamp, @message, @logStream, @log\n| filter @logStream like /linux-audit/\n| filter @message like /AVC/\n| sort @timestamp desc\n| limit 1000\n```\n\n**Note:**\n* all CloudWatch related resources are located in the `us-east-1` region.\n* the log group containing the violation logs are called `acs-<cluster name>.audit`.\n",
             "mode": "markdown"
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "type": "text"
         },
         {
@@ -1169,8 +1165,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1248,7 +1243,7 @@ spec:
             "content": "### Description\n\nThis graph shows the occurences per minute of Network Policy ACL denials on the cluster.\nThese violations are logged on the cluster, propagated to CloudWatch, aggregated by a log metric, retrieved by the cloudwatch-exporter and finally scraped by Prometheus.\n\n**Expected: 0 violations.**\n\nA violation means that network traffic was prevented due to a Kubernetes Network Policy.\nAs an example, a violation could indicate that communication between RHACS tenant namespaces\nwas attempted, which is strictly forbidden.\n\n### Drill-Down\n\nLog into the cluster's AWS account and use a [Log Insights query](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D~(end~0~start~-3600~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*2c*20*40logStream*2c*20*40log*0a*7c*20filter*20*40message*20like*20*2facl_log*28.*2a*29.*2a*5csverdict*3ddrop*2f*0a*7c*20filter*20*40logStream*20like*20*2f.*2aovn-audit*5c.log*2f*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*201000~source~(~))) similar to this one:\n```\nfields @timestamp, @message, @logStream, @log\n| filter @message like /acl_log(.*).*\\sverdict=drop/\n| filter @logStream like /.*ovn-audit\\.log/\n| sort @timestamp desc\n| limit 1000\n```\n\n**Note:**\n* all CloudWatch related resources are located in the `us-east-1` region.\n* the log group containing the violation logs are called `acs-<cluster name>.audit`.\n\n",
             "mode": "markdown"
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "type": "text"
         },
         {
@@ -1289,8 +1284,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1327,8 +1321,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "orange",
@@ -1481,7 +1474,7 @@ spec:
               }
             ]
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -1666,8 +1659,7 @@ spec:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1732,8 +1724,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "#EAB839",
@@ -1807,8 +1798,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "yellow",
@@ -1882,8 +1872,7 @@ spec:
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "#EAB839",
@@ -1952,7 +1941,7 @@ spec:
               }
             ]
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -2130,11 +2119,249 @@ spec:
             }
           ],
           "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 85
+          },
+          "id": 149,
+          "panels": [],
+          "title": "Certificate Expiry",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "Expiration dates for central and scanner TLS certificates.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 86
+          },
+          "id": 148,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": true,
+              "fields": "",
+              "reducer": ["sum"],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Expiration"
+              }
+            ]
+          },
+          "pluginVersion": "11.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "disableTextWrap": false,
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "acs_fleetshard_certificate_expiration_timestamp * on (exported_namespace) group_left(rhacs_org_name) label_replace(rox_central_info, \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\")",
+              "format": "table",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A",
+              "useBackend": false
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Certificates Expiry",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "Value": false,
+                  "__name__": true,
+                  "container": true,
+                  "instance": true,
+                  "job": true,
+                  "namespace": true,
+                  "pod": true,
+                  "rhacs_cluster_name": true,
+                  "rhacs_environment": true,
+                  "rhacs_org_name": false
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Time": 4,
+                  "Value": 12,
+                  "__name__": 5,
+                  "container": 6,
+                  "data_key": 3,
+                  "exported_namespace": 0,
+                  "instance": 7,
+                  "job": 8,
+                  "namespace": 1,
+                  "pod": 9,
+                  "rhacs_cluster_name": 10,
+                  "rhacs_environment": 11,
+                  "secret": 2
+                },
+                "renameByName": {
+                  "Time": "Expiration",
+                  "Value": "",
+                  "container": "",
+                  "data_key": "Key",
+                  "exported_namespace": "Namespace",
+                  "secret": "Secret"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Expiration",
+                "binary": {
+                  "left": "Value",
+                  "operator": "*",
+                  "right": "1000"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "time",
+                    "targetField": "Expiration"
+                  }
+                ],
+                "fields": {}
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Value": true
+                },
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {}
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Expiration": {
+                    "aggregations": ["last"],
+                    "operation": "aggregate"
+                  },
+                  "Key": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Namespace": {
+                    "aggregations": ["last"],
+                    "operation": "groupby"
+                  },
+                  "Secret": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "rhacs_org_name": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {
+                  "Expiration (last)": 1,
+                  "Key": 4,
+                  "Namespace": 0,
+                  "Secret": 3,
+                  "rhacs_org_name": 2
+                },
+                "renameByName": {
+                  "Expiration (last)": "Expiration",
+                  "Namespace (last)": "Namespace",
+                  "rhacs_org_name": "Organization"
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
-      "refresh": "",
       "revision": 1,
-      "schemaVersion": 38,
+      "schemaVersion": 39,
       "tags": ["rhacs"],
       "templating": {
         "list": [

@@ -2,7 +2,7 @@
 
 ## What is it?
 
-This repository contains resources & other information required by the [Observability Operator](https://github.com/redhat-developer/observability-operator)
+This repository contains resources & other information required by the [Observability Operator](https://github.com/rhobs/observability-operator)
 to configure the Observability stack for Managed Red Hat Advanced Cluster Security.
 
 Resources are maintained in the `/resources` folder. Sub folders contain the following:
@@ -13,8 +13,8 @@ Resources are maintained in the `/resources` folder. Sub folders contain the fol
 
 ## Install
 
-The observability stack is installed by the [data plane terraforming Helm chart](https://github.com/stackrox/acs-fleet-manager/tree/main/dp-terraform/helm/rhacs-terraform).
-Please follow the instructions in the fleet manager repository to install the Helm chart.
+The observability stack is installed by ArgoCD from the [gitops repo](https://github.com/stackrox/acscs-manifests).
+Please follow the instructions in the fleet manager repository to install ArgoCD.
 
 ## Branches
 
