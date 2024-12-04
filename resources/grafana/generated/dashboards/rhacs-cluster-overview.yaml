@@ -58,7 +58,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 26,
+      "id": 16,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -2203,7 +2203,7 @@ spec:
               "disableTextWrap": false,
               "editorMode": "code",
               "exemplar": true,
-              "expr": "acs_fleetshard_certificate_expiration_timestamp * on (exported_namespace) group_left(rhacs_org_name) label_replace(rox_central_info, \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\")",
+              "expr": "acs_fleetshard_certificate_expiration_timestamp *\non (exported_namespace)\ngroup_left(rhacs_org_name)\nlabel_replace((sum(rox_central_info) by (rhacs_org_name, namespace) * 0 + 1), \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\")",
               "format": "table",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
