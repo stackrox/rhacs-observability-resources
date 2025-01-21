@@ -539,11 +539,24 @@ spec:
             )
           record: central:success_rate10m
 
+        - expr: |
+            probe_success{app="rhacs", endpoint="central-ui"}
+          record: central:ui_health
+
+        - expr: |
+            probe_success{app="rhacs", endpoint="central-data"}
+          record: central:data_health
+
+        - expr: |
+            central:ui_health * on (namespace, rhacs_instance_id) central:data_health
+          record: central:health
+
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
 
-        # If no requests have been registered in the rate period, we default to `central:sli:pod_ready`.
+        # If no requests have been registered in the rate period, we default to `central:health`.
+        # If no health checks have been registered in the rate period, we default to `central:sli:pod_ready`.
         # The fallback mechanism helps to avoid undefined values in the metric series, which are otherwise simply
         # dropped by Prometheus, and would therefore mess up the aggregated `central:sli:availability` metric series.
         # We keep the `namespace` and `rhacs_instance_id` labels to be consistent with other SLI metrics and for
@@ -552,6 +565,7 @@ spec:
             max by (namespace, rhacs_instance_id) (
                 central:success_rate10m > bool 0.65
             )
+            or on (namespace, rhacs_instance_id) central:health
             or on (namespace, rhacs_instance_id) central:sli:pod_ready
           record: central:sli:error_rate
 
@@ -559,7 +573,9 @@ spec:
         # If any of the SLIs is violated, the service counts as unavailable.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            central:sli:pod_ready * on (namespace, rhacs_instance_id) central:sli:error_rate
+            central:sli:pod_ready 
+            * on (namespace, rhacs_instance_id) central:health
+            * on (namespace, rhacs_instance_id) central:sli:error_rate
           record: central:sli:availability
 
         - expr: |
