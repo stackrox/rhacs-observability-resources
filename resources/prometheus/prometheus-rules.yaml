@@ -860,3 +860,89 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
             description: |
               A cluster node logged at least {{ $value }} Network Policy ACL denial(s) per minute.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-044-network-policy-violation.md"
+
+    # Copied from https://github.com/adinhodovic/argo-cd-mixin
+    - name: argo-cd
+      rules:
+        - alert: "ArgoCdAppSyncFailed"
+          annotations:
+            description: "The application {{ $labels.dest_server }}/{{ $labels.project }}/{{ $labels.name }} has failed to sync with the status {{ $labels.phase }} the past 10m."
+            summary: "An ArgoCD Application has Failed to Sync."
+          expr: |
+            sum(
+              round(
+                increase(
+                  argocd_app_sync_total{
+                    job=~".*",
+                    phase!="Succeeded"
+                  }[10m]
+                )
+              )
+            ) by (job, dest_server, project, name, phase) > 0
+          for: "1m"
+          labels:
+            severity: "warning"
+        - alert: "ArgoCdAppUnhealthy"
+          annotations:
+            description: "The application {{ $labels.dest_server }}/{{ $labels.project }}/{{ $labels.name }} is unhealthy with the health status {{ $labels.health_status }} for the past 15m."
+            summary: "An ArgoCD Application is Unhealthy."
+          expr: |
+            sum(
+              argocd_app_info{
+                job=~".*",
+                health_status!~"Healthy|Progressing"
+              }
+            ) by (job, dest_server, project, name, health_status)
+            > 0
+          for: "15m"
+          labels:
+            severity: "warning"
+        - alert: "ArgoCdAppOutOfSync"
+          annotations:
+            description: "The application {{ $labels.dest_server }}/{{ $labels.project }}/{{ $labels.name }} is out of sync with the sync status {{ $labels.sync_status }} for the past 15m."
+            summary: "An ArgoCD Application is Out Of Sync."
+          expr: |
+            sum(
+              argocd_app_info{
+                job=~".*",
+                sync_status!="Synced"
+              }
+            ) by (job, dest_server, project, name, sync_status)
+            > 0
+          for: "15m"
+          labels:
+            severity: "warning"
+        - alert: "ArgoCdAppAutoSyncDisabled"
+          annotations:
+            description: "The application {{ $labels.dest_server }}/{{ $labels.project }}/{{ $labels.name }} has autosync disabled for the past 2h."
+            summary: "An ArgoCD Application has AutoSync Disabled."
+          expr: |
+            sum(
+              argocd_app_info{
+                job=~".*",
+                autosync_enabled!="true",
+                name!~""
+              }
+            ) by (job, dest_server, project, name, autosync_enabled)
+            > 0
+          for: "2h"
+          labels:
+            severity: "warning"
+        - alert: "ArgoCdNotificationDeliveryFailed"
+          annotations:
+            description: "The notification job {{ $labels.job }} has failed to deliver to {{ $labels.exported_service }} for the past 10m."
+            summary: "ArgoCD Notification Delivery Failed."
+          expr: |
+            sum(
+              round(
+                increase(
+                  argocd_notifications_deliveries_total{
+                    job=~".*",
+                    succeeded!="true"
+                  }[10m]
+                )
+              )
+            ) by (job, exported_service, succeeded) > 0
+          for: "1m"
+          labels:
+            severity: "warning"
