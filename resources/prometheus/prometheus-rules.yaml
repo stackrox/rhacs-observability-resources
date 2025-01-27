@@ -573,7 +573,7 @@ spec:
         # If any of the SLIs is violated, the service counts as unavailable.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            central:sli:pod_ready 
+            central:sli:pod_ready
             * on (namespace, rhacs_instance_id) central:health
             * on (namespace, rhacs_instance_id) central:sli:error_rate
           record: central:sli:availability
