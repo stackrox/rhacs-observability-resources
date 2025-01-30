@@ -539,7 +539,10 @@ spec:
             )
           record: central:success_rate10m
 
-        # probe_success is a metric that is exposed by blackbox-exporter that periodically calls Central endpoints (routes)
+        # probe_success is a metric that is exposed by blackbox-exporter that periodically calls Central endpoints (routes).
+        # The difference between blackbox-exporter checks and the pod readiness probe is the following:
+        # 1. The readiness probe checks the pod internally within the cluster, but blackbox-exporter checks also the public endpoint (route)
+        # 2. The readiness probe doesn't check TLS certificates.
         - expr: |
             probe_success{app="rhacs", endpoint="central-ui"}
           record: central:ui_health
