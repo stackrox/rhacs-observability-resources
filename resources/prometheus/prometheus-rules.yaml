@@ -539,6 +539,7 @@ spec:
             )
           record: central:success_rate10m
 
+        # probe_success is a metric that is exposed by blackbox-exporter that periodically calls Central endpoints (routes)
         - expr: |
             probe_success{app="rhacs", endpoint="central-ui"}
           record: central:ui_health
