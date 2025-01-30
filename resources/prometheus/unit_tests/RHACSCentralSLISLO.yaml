@@ -26,6 +26,26 @@ tests:
       - eval_time: 500m
         alertname: Central availability error budget exhaustion - 50%
         exp_alerts: []
+  # Ensure that a service with zero health checks doesn't fire an alert
+  - interval: 5m
+    input_series:
+      - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-aaaabbbbccccddddeeee"}
+        values: "1x400"
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="OK", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
+        values: "4+4x400"
+      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="2xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
+        values: "1x1000"
+      - series: grpc_server_handled_total{job="central", grpc_type="unary", grpc_code="Unavailable", namespace="rhacs-aaaabbbbccccddddeeee", rhacs_instance_id="aaaabbbbccccddddeeee"}
+        values: "0x1000"
+      - series: haproxy_backend_http_responses_total{job="router_internal_default", code="5xx", exported_namespace="rhacs-aaaabbbbccccddddeeee"}
+        values: "0x1000"
+    alert_rule_test:
+      - eval_time: 500m
+        alertname: Central availability error budget exhaustion - 50%
+        exp_alerts: []
+      - eval_time: 500m
+        alertname: Central availability error budget exhaustion - 90%
+        exp_alerts: [ ]
   # Ensure that a service with zero requests but the pod is down *does* fire an alert
   - interval: 5m
     input_series:
