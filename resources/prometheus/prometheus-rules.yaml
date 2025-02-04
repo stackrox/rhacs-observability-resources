@@ -84,7 +84,7 @@ spec:
       rules:
         - alert: RHACSFleetshardOperatorContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{pod=~"rhacs-operator-controller-manager-.*"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{pod=~"rhacs-operator-.*"}[10m]) < 0.5
           for: 20m
           labels:
             severity: critical
@@ -94,7 +94,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-011-rhacs-operator-unavailable.md"
         - alert: RHACSFleetshardOperatorContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-controller-manager-.*"}[30m]) > 3
+            increase(kube_pod_container_status_restarts_total{pod=~"rhacs-operator-.*"}[30m]) > 3
           labels:
             severity: critical
           annotations:
