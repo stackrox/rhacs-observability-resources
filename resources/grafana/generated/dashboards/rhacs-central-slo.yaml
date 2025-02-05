@@ -37,8 +37,8 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "purple",
             "expr": "count (count by (git_version) (label_replace(count_over_time(kubernetes_build_info{job!~\"kube-dns|coredns\"}[${__interval}]), \"git_version\", \"$1\", \"git_version\", \"(v[0-9]*.[0-9]*).*\"))) > 1",
+            "iconColor": "purple",
             "name": "Kubernetes Upgrade",
             "textFormat": "Kubernetes Upgrade"
           },
@@ -48,8 +48,8 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "iconColor": "red",
             "expr": "count (count by (gitVersion) (count_over_time (openshift_apiserver_build_info[${__interval}]))) > 1",
+            "iconColor": "red",
             "name": "OpenShift Upgrade",
             "textFormat": "OpenShift Upgrade"
           }
@@ -58,7 +58,7 @@ spec:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 15,
+      "id": 12,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -81,10 +81,10 @@ spec:
               "showLineNumbers": false,
               "showMiniMap": false
             },
-            "content": "## Definition\n\nThe availability of Central is defined as a combination of pod ready status and API error rate.\n\n`Availability SLI = Pod Ready SLI * Error Rate SLI`\n\nThe SLO target is 99% availability calculated over 28 day rolling intervals.",
+            "content": "## Definition\n\nThe availability of Central is defined as a combination of pod ready status and API error rate.\n\n`Availability SLI = Pod Ready SLI * Central Health SLI * Error Rate SLI`\n\nThe SLO target is 99% availability calculated over 28 day rolling intervals.",
             "mode": "markdown"
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "type": "text"
         },
         {
@@ -210,7 +210,6 @@ spec:
             }
           ],
           "title": "SLO count",
-          "transformations": [],
           "type": "timeseries"
         },
         {
@@ -319,7 +318,6 @@ spec:
             }
           ],
           "title": "Error Budget Exhaustion [28d]",
-          "transformations": [],
           "type": "piechart"
         },
         {
@@ -491,7 +489,7 @@ spec:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -674,7 +672,7 @@ spec:
             "content": "Select instances via the variables on top of the dashbord. If multiple Centrals are selected, the SLIs/SLOs are averaged.\n\nWe plot a proxy of the SLI based on the number of unavailability drops per hour (percentage gauges are exact). This renders better in Grafana for long ranges. Note that the actual down time may be shorter than is rendered. It might still be necessary to zoom in around burn rate spikes to get full resolution.",
             "mode": "markdown"
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "type": "text"
         },
         {
@@ -730,9 +728,10 @@ spec:
               "values": false
             },
             "showThresholdLabels": false,
-            "showThresholdMarkers": true
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -754,7 +753,7 @@ spec:
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "description": "`Pod Ready SLI * Error Rate SLI`\n\nWe show a proxy of the SLI based on the number of unavailability drops because it renders better in Grafana.",
+          "description": "`Pod Ready SLI * Central Health SLI * Error Rate SLI`\n\nWe show a proxy of the SLI based on the number of unavailability drops because it renders better in Grafana.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -910,7 +909,7 @@ spec:
           },
           "gridPos": {
             "h": 8,
-            "w": 6,
+            "w": 4,
             "x": 11,
             "y": 35
           },
@@ -941,6 +940,103 @@ spec:
             }
           ],
           "title": "Pod Ready SLI",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "description": "`1` if the Central Ping endpoint returned a successful result, `0` otherwise. Blackbox exporter periodically calls the central public endpoints end exposes a metric with a result. Public endpoints are represented by re-encrypt (ui) and passthrough (data, sensor) routes.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "max": 1,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 4,
+            "x": 15,
+            "y": 35
+          },
+          "id": 12,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "1 - clamp_max(avg(changes(central:health{namespace=~\"rhacs-$instance_id\"}[1h])), 1)",
+              "legendFormat": "{{label_name}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Central Health SLI",
           "type": "timeseries"
         },
         {
@@ -1007,11 +1103,11 @@ spec:
           },
           "gridPos": {
             "h": 8,
-            "w": 6,
-            "x": 17,
+            "w": 4,
+            "x": 19,
             "y": 35
           },
-          "id": 12,
+          "id": 26,
           "options": {
             "legend": {
               "calcs": [],
@@ -1098,9 +1194,10 @@ spec:
               "values": false
             },
             "showThresholdLabels": false,
-            "showThresholdMarkers": true
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "pluginVersion": "10.2.0",
+          "pluginVersion": "11.1.0",
           "targets": [
             {
               "datasource": {
@@ -1310,7 +1407,7 @@ spec:
       ],
       "refresh": false,
       "revision": 1,
-      "schemaVersion": 38,
+      "schemaVersion": 39,
       "tags": ["rhacs"],
       "templating": {
         "list": [
@@ -1449,6 +1546,6 @@ spec:
       "timezone": "",
       "title": "RHACS Dataplane - Central SLOs",
       "uid": "vH7ntMs4k",
-      "version": 1,
+      "version": 13,
       "weekStart": ""
     }
