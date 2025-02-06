@@ -192,7 +192,7 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "Fleetshard synchronizer manages {{ query \"sum(acs_fleetshard_total_centrals)\" | value }} centrals while the health of {{ query \"count(central:health)\" }} Centrals is checked."
+            summary: "Fleetshard synchronizer manages {{ query \"sum(acs_fleetshard_total_centrals)\" | first | value }} centrals while the health of {{ query \"count(central:health)\" | first | value }} Centrals is checked."
             description: "For the last 15 minutes, the number of Central returned from Fleet Manager in Fleetshard Sync is different from the number of Centrals, whose health is being checked. This may be an indication that the monitoring system is faulty and the Central SLI metrics may not match the actual status."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-052-central-healthcheck-issues.md"
 
