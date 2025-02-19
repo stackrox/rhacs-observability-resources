@@ -218,16 +218,6 @@ spec:
             summary: "Email Sender container failing sending emails"
             description: "Email Sender has a send email error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-047-emailsender-ses-send-error.md"
-        - alert: RHACSEmailsenderThrottledSend
-          expr: |
-            rate(acs_emailsender_throttled_send_email_total[10m]) * 60 > 0
-          for: 10m
-          labels:
-            severity: warning
-          annotations:
-            summary: "Email Sender throttled sending for `{{ $labels.tenant_id }}` Central instance"
-            description: "Email Sender throttled `{{ $labels.tenant_id }}` Central {{ $value | humanize }} time(s) per minute over the last 10 minutes."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-048-emailsender-ses-send-throttled.md"
 
     - name: tenant-resources
       rules:
