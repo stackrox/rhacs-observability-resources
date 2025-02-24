@@ -1,0 +1,116 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+
+  # ArgoCdAppSyncFailed
+  - interval: 1m
+    input_series:
+      - series: argocd_app_sync_total{phase="Failed",project="my-project",name="my-app"}
+        values: "0+1x50"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: ArgoCdAppSyncFailed
+        exp_alerts: []
+      - eval_time: 2m
+        alertname: ArgoCdAppSyncFailed
+        exp_alerts:
+          - exp_labels:
+              alertname: ArgoCdAppSyncFailed
+              project: my-project
+              name: my-app
+              severity: warning
+              phase: Failed
+            exp_annotations:
+              summary: "An ArgoCD Application has Failed to Sync."
+              description: "The application /my-project/my-app has failed to sync with the status Failed the past 10m."
+
+  # ArgoCdAppUnhealthy
+  - interval: 1m
+    input_series:
+      - series: argocd_app_info{health_status="Unhealthy",project="my-project",name="my-app"}
+        values: "0+1x50"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: ArgoCdAppUnhealthy
+        exp_alerts: []
+      - eval_time: 16m
+        alertname: ArgoCdAppUnhealthy
+        exp_alerts:
+          - exp_labels:
+              alertname: ArgoCdAppUnhealthy
+              project: my-project
+              name: my-app
+              severity: warning
+              health_status: Unhealthy
+            exp_annotations:
+              summary: "An ArgoCD Application is Unhealthy."
+              description: "The application /my-project/my-app is unhealthy with the health status Unhealthy for the past 15m."
+
+  # ArgoCdAppOutOfSync
+  - interval: 1m
+    input_series:
+      - series: argocd_app_info{sync_status="NotSynced",project="my-project",name="my-app"}
+        values: "0+1x50"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: ArgoCdAppOutOfSync
+        exp_alerts: []
+      - eval_time: 16m
+        alertname: ArgoCdAppOutOfSync
+        exp_alerts:
+          - exp_labels:
+              alertname: ArgoCdAppOutOfSync
+              project: my-project
+              name: my-app
+              severity: warning
+              sync_status: NotSynced
+            exp_annotations:
+              summary: "An ArgoCD Application is Out Of Sync."
+              description: "The application /my-project/my-app is out of sync with the sync status NotSynced for the past 15m."
+
+  # ArgoCdAppAutoSyncDisabled
+  - interval: 1m
+    input_series:
+      - series: argocd_app_info{autosync_enabled="false",project="my-project",name="my-app"}
+        values: "0+1x180"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: ArgoCdAppAutoSyncDisabled
+        exp_alerts: []
+      - eval_time: 121m
+        alertname: ArgoCdAppAutoSyncDisabled
+        exp_alerts:
+          - exp_labels:
+              alertname: ArgoCdAppAutoSyncDisabled
+              project: my-project
+              name: my-app
+              severity: warning
+              autosync_enabled: "false"
+            exp_annotations:
+              summary: "An ArgoCD Application has AutoSync Disabled."
+              description: "The application /my-project/my-app has autosync disabled for the past 2h."
+
+  # ArgoCdNotificationDeliveryFailed
+  - interval: 1m
+    input_series:
+      - series: argocd_notifications_deliveries_total{job="my-job",succeeded="false",exported_service="foo"}
+        values: "0+1x50"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: ArgoCdNotificationDeliveryFailed
+        exp_alerts: []
+      - eval_time: 2m
+        alertname: ArgoCdNotificationDeliveryFailed
+        exp_alerts:
+          - exp_labels:
+              alertname: ArgoCdNotificationDeliveryFailed
+              severity: warning
+              exported_service: foo
+              succeeded: "false"
+              job: my-job
+            exp_annotations:
+              summary: "ArgoCD Notification Delivery Failed."
+              description: "The notification job my-job has failed to deliver to foo for the past 10m."

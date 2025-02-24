@@ -30,6 +30,9 @@
       - apiserver_request:burnrate6h{job!~"central|scanner"}
       - apiserver_request_terminations_total{job!~"central|scanner"}
       - apiserver_request_total{job!~"central|scanner"}
+      - argocd_app_info{job!~"central|scanner"}
+      - argocd_app_sync_total{job!~"central|scanner"}
+      - argocd_notifications_deliveries_total{job!~"central|scanner"}
       - cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{job!~"central|scanner"}
       - cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{job!~"central|scanner"}
       - cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{job!~"central|scanner"}
