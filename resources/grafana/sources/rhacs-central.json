@@ -3096,7 +3096,7 @@
           "mode": "scheme",
           "reverse": true,
           "scale": "exponential",
-          "scheme": "Greens",
+          "scheme": "YlOrRd",
           "steps": 10
         },
         "exemplars": {
