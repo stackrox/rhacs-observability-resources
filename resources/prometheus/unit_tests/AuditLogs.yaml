@@ -1,0 +1,26 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+
+  # AuditLogsNotPushed
+  - interval: 1h
+    input_series:
+      - series: aws_logs_incoming_log_events_average{rhacs_cluster_name="my-cluster"}
+        values: "0+0x192"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: AuditLogsNotPushed
+        exp_alerts: []
+      - eval_time: 8d
+        alertname: AuditLogsNotPushed
+        exp_alerts:
+          - exp_labels:
+              alertname: AuditLogsNotPushed
+              rhacs_cluster_name: my-cluster
+              severity: warning
+            exp_annotations:
+              summary: "No new audit logs pushed to the Cloudwatch"
+              description: "There are no audit logs pushed on my-cluster cluster for the last 7 days."
