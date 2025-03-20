@@ -8,7 +8,7 @@ tests:
   # AuditLogsNotPushed
   - interval: 1h
     input_series:
-      - series: aws_logs_incoming_log_events_average{rhacs_cluster_name="my-cluster"}
+      - series: aws_logs_incoming_log_events_sample_count{rhacs_cluster_name="my-cluster"}
         values: "0+0x192"
     alert_rule_test:
       - eval_time: 0m

@@ -983,7 +983,7 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
           expr: |
             sum(
               increase(
-                aws_logs_incoming_log_events_average[1d]
+                aws_logs_incoming_log_events_sample_count[1d]
               )
             ) by (rhacs_cluster_name) <= 0
           for: "7d"
