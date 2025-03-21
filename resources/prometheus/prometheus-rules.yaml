@@ -973,3 +973,19 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
           for: "1m"
           labels:
             severity: "warning"
+
+    - name: audit-logs
+      rules:
+        - alert: "AuditLogsNotPushed"
+          annotations:
+            description: "There are no audit logs pushed on {{ $labels.rhacs_cluster_name }} cluster for the last 7 days."
+            summary: "No new audit logs pushed to the Cloudwatch"
+          expr: |
+            sum(
+              increase(
+                aws_logs_incoming_log_events_sample_count[1d]
+              )
+            ) by (rhacs_cluster_name) <= 0
+          for: "7d"
+          labels:
+            severity: "warning"
