@@ -14,7 +14,7 @@ tests:
       - eval_time: 10m
         alertname: RHACSEmailsenderScrapeFailed
         exp_alerts: []
-      - eval_time: 25m
+      - eval_time: 24m
         alertname: RHACSEmailsenderScrapeFailed
         exp_alerts:
           - exp_labels:
@@ -25,5 +25,5 @@ tests:
               severity: warning
             exp_annotations:
               summary: "Prometheus unable to scrape metrics from target `emailsender-123` in namespace `rhacs`."
-              description: "During the last 10 minutes, only `45.45%` of scrapes of target `emailsender-123` in namespace `rhacs` were successful. This alert is raised when less than 50% of scrapes are successful."
+              description: "During the last 10 minutes, only `40%` of scrapes of target `emailsender-123` in namespace `rhacs` were successful. This alert is raised when less than 50% of scrapes are successful."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-046-emailsender-unavailable.md"
