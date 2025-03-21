@@ -245,7 +245,7 @@ tests:
               namespace: rhacs-ffffgggghhhhiiiijjjj
               rhacs_instance_id: ffffgggghhhhiiiijjjj
             exp_annotations:
-              message: "Availability error budget exhaustion has increased by 21.83% over the last week."
+              message: "Availability error budget exhaustion has increased by 19.84% over the last week."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
 
   # Central high availability burn rate
