@@ -52,7 +52,7 @@ spec:
       rules:
         - alert: RHACSScannerScrapeFailed
           expr: |
-            avg_over_time(up{pod=~"scanner-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"} == 1
+            avg_over_time(up{pod=~"scanner-.*"}[10m]) < 0.5 and on (pod) kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db|matcher|indexer"} == 1
           for: 20m
           labels:
             severity: critical
@@ -62,7 +62,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSScannerContainerDown
           expr: |
-            avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db"}[10m]) < 0.5
+            avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db|matcher|indexer"}[10m]) < 0.5
           for: 20m
           labels:
             severity: critical
@@ -72,7 +72,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db"}[30m]) > 3
+            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db|matcher|indexer"}[30m]) > 3
           labels:
             severity: warning
           annotations:
@@ -232,7 +232,7 @@ spec:
           record: rhacs_tenants:namespace:pod:container:max_memory_usage_ratio
         - alert: RHACSTenantWorkloadMemoryUtilizationHigh
           expr: |
-            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.9
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio >= 0.9
           for: 30m
           labels:
             severity: warning
@@ -242,7 +242,7 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-039-tenant-workload-memory-utilization-high.md"
         - alert: RHACSTenantWorkloadMemoryUtilizationCritical
           expr: |
-            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container="central"} >= 0.95
+            rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container=~"central|scanner|db|indexer|matcher"} >= 0.95
           for: 10m
           labels:
             severity: critical
