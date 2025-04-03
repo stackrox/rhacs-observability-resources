@@ -218,16 +218,6 @@ spec:
             summary: "Email Sender container failing sending emails"
             description: "Email Sender has a send email error rate of {{ $value | humanizePercentage }} over the last 10 minutes."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-047-emailsender-ses-send-error.md"
-        - alert: RHACSEmailsenderThrottledSend
-          expr: |
-            rate(acs_emailsender_throttled_send_email_total[10m]) * 60 > 0
-          for: 10m
-          labels:
-            severity: warning
-          annotations:
-            summary: "Email Sender throttled sending for `{{ $labels.tenant_id }}` Central instance"
-            description: "Email Sender throttled `{{ $labels.tenant_id }}` Central {{ $value | humanize }} time(s) per minute over the last 10 minutes."
-            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-048-emailsender-ses-send-throttled.md"
 
     - name: tenant-resources
       rules:
@@ -406,6 +396,23 @@ spec:
             name: DeadMansSwitchAlert
             observability: managed-rhacs
 
+    - name: inhibit
+      rules:
+        - alert: InfoInhibitor
+          annotations:
+            description: |
+              This is an alert that is used to inhibit info alerts.
+              By themselves, the info-level alerts are sometimes very noisy, but they are relevant when combined with
+              other alerts.
+              This alert fires whenever there's a severity="info" alert, and stops firing when another alert with a
+              severity of 'warning' or 'critical' starts firing on the same namespace.
+              This alert should be routed to a null receiver and configured to inhibit alerts with severity="info".
+            sop_url: https://runbooks.prometheus-operator.dev/runbooks/general/infoinhibitor
+            summary: Info-level alert inhibition.
+          expr: ALERTS{severity = "info"} == 1 unless on(namespace) ALERTS{alertname != "InfoInhibitor", severity =~ "warning|critical", alertstate="firing"} == 1
+          labels:
+            severity: none
+
     - name: federation
       rules:
         - alert: OpenshiftMonitoringFederationScrapeTargetDown
@@ -539,11 +546,28 @@ spec:
             )
           record: central:success_rate10m
 
+        # probe_success is a metric that is exposed by blackbox-exporter that periodically calls Central endpoints (routes).
+        # The difference between blackbox-exporter checks and the pod readiness probe is the following:
+        # 1. The readiness probe checks the pod internally within the cluster, but blackbox-exporter checks also the public endpoint (route)
+        # 2. The readiness probe doesn't check TLS certificates.
+        - expr: |
+            probe_success{app="rhacs", endpoint="central-ui"}
+          record: central:ui_health
+
+        - expr: |
+            probe_success{app="rhacs", endpoint="central-data"}
+          record: central:data_health
+
+        - expr: |
+            central:ui_health * on (namespace, rhacs_instance_id) central:data_health
+          record: central:health
+
         # This is a time series of 0s (down) and 1s (up).
         # Success rate above 65% is floored to 1.
         # Success rate below 65% is floored to 0.
 
-        # If no requests have been registered in the rate period, we default to `central:sli:pod_ready`.
+        # If no requests have been registered in the rate period, we default to `central:health`.
+        # If no health checks have been registered in the rate period, we default to `central:sli:pod_ready`.
         # The fallback mechanism helps to avoid undefined values in the metric series, which are otherwise simply
         # dropped by Prometheus, and would therefore mess up the aggregated `central:sli:availability` metric series.
         # We keep the `namespace` and `rhacs_instance_id` labels to be consistent with other SLI metrics and for
@@ -552,6 +576,7 @@ spec:
             max by (namespace, rhacs_instance_id) (
                 central:success_rate10m > bool 0.65
             )
+            or on (namespace, rhacs_instance_id) central:health
             or on (namespace, rhacs_instance_id) central:sli:pod_ready
           record: central:sli:error_rate
 
@@ -559,7 +584,9 @@ spec:
         # If any of the SLIs is violated, the service counts as unavailable.
         # This is a time series of 0s (down) and 1s (up).
         - expr: |
-            central:sli:pod_ready * on (namespace, rhacs_instance_id) central:sli:error_rate
+            central:sli:pod_ready
+            * on (namespace, rhacs_instance_id) central:health
+            * on (namespace, rhacs_instance_id) central:sli:error_rate
           record: central:sli:availability
 
         - expr: |
@@ -944,5 +971,21 @@ for the cluster autoscaler. Limits can be adjusted by modifying the cluster auto
               )
             ) by (job, exported_service, succeeded) > 0
           for: "1m"
+          labels:
+            severity: "warning"
+
+    - name: audit-logs
+      rules:
+        - alert: "AuditLogsNotPushed"
+          annotations:
+            description: "There are no audit logs pushed on {{ $labels.rhacs_cluster_name }} cluster for the last 7 days."
+            summary: "No new audit logs pushed to the Cloudwatch"
+          expr: |
+            sum(
+              increase(
+                aws_logs_incoming_log_events_sample_count[1d]
+              )
+            ) by (rhacs_cluster_name) <= 0
+          for: "7d"
           labels:
             severity: "warning"
