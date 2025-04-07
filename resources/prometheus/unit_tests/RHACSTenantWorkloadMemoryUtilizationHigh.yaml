@@ -55,10 +55,10 @@ tests:
   - interval: 1m
     input_series:
       - series: container_memory_working_set_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="scanner"}
-        values: "50+0x10 95+0x10"
+        values: "50+0x10 95+0x20"
       - series: container_spec_memory_limit_bytes{namespace="rhacs-aaaaaaaaaaaaaaaaaaaa",pod="mypod",container="scanner"}
-        values: "100+0x20"
+        values: "100+0x40"
     alert_rule_test:
-      - eval_time: 21m
+      - eval_time: 25m
         alertname: RHACSTenantWorkloadMemoryUtilizationCritical
         exp_alerts: []
