@@ -7,20 +7,20 @@ tests:
   # Test new instance created but pod doesn't exist
   - interval: 1m
     input_series:
-      - series: acs_fleetshard_total_centrals
-        values: "3x5 4x25"
+      - series: acs_fleetshard_ready_centrals
+        values: "3x15 4x60"
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-co1cgv2hofac73cvpm5g"}
-        values: "1x30"
+        values: "1x75"
       # Count unready instances as well
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-cq1636iqbcns73fiki8g"}
-        values: "0x30"
+        values: "0x75"
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-cr2o56pjctnc739qmqv0"}
-        values: "0x5 1x25"
+        values: "0x15 1x60"
     alert_rule_test:
-      - eval_time: 10m
+      - eval_time: 30m
         alertname: RHACSFleetshardSyncCentralCountPodMismatch
         exp_alerts: []
-      - eval_time: 25m
+      - eval_time: 61m
         alertname: RHACSFleetshardSyncCentralCountPodMismatch
         exp_alerts:
           - exp_labels:
@@ -28,27 +28,27 @@ tests:
               severity: warning
             exp_annotations:
               summary: "Fleetshard synchronizer manages 4 centrals while the central pod count is 3."
-              description: "For the last 15 minutes, the number of Central returned from Fleet Manager in Fleetshard Sync is different from the number of Central pods on the cluster. This may be a sign of a reconciliation breakdown and the Central SLI metrics may not match the actual state."
+              description: "For the last 45 minutes, the number of ready Centrals returned from Fleet Manager in Fleetshard Sync is different from the number of Central pods on the cluster. This may be a sign of a reconciliation breakdown and the Central SLI metrics may not match the actual state."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"
   # Test an instance is deleted but the pod still exists
   - interval: 1m
     input_series:
-      - series: acs_fleetshard_total_centrals
-        values: "4x5 3x25"
+      - series: acs_fleetshard_ready_centrals
+        values: "4x15 3x60"
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-co1cgv2hofac73cvpm5g"}
-        values: "1x30"
+        values: "1x75"
       # Count unready instances as well
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-cq1636iqbcns73fiki8g"}
-        values: "0x30"
+        values: "0x75"
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-cr2o56pjctnc739qmqv0"}
-        values: "0x5 1x25"
+        values: "0x15 1x60"
       - series: kube_deployment_status_replicas_ready{deployment="central", namespace="rhacs-cu3nrb4qls9s73emtae0"}
-        values: "1x30"
+        values: "1x75"
     alert_rule_test:
-      - eval_time: 10m
+      - eval_time: 30m
         alertname: RHACSFleetshardSyncCentralCountPodMismatch
         exp_alerts: [ ]
-      - eval_time: 25m
+      - eval_time: 61m
         alertname: RHACSFleetshardSyncCentralCountPodMismatch
         exp_alerts:
           - exp_labels:
@@ -56,5 +56,5 @@ tests:
               severity: warning
             exp_annotations:
               summary: "Fleetshard synchronizer manages 3 centrals while the central pod count is 4."
-              description: "For the last 15 minutes, the number of Central returned from Fleet Manager in Fleetshard Sync is different from the number of Central pods on the cluster. This may be a sign of a reconciliation breakdown and the Central SLI metrics may not match the actual state."
+              description: "For the last 45 minutes, the number of ready Centrals returned from Fleet Manager in Fleetshard Sync is different from the number of Central pods on the cluster. This may be a sign of a reconciliation breakdown and the Central SLI metrics may not match the actual state."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-007-fleetshard-sync-reconciliation-error.md"

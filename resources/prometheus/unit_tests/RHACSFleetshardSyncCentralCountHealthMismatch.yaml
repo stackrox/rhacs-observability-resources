@@ -7,30 +7,30 @@ tests:
   # Test new instance created but pod doesn't exist
   - interval: 1m
     input_series:
-      - series: acs_fleetshard_total_centrals
-        values: "4x5 5x25"
+      - series: acs_fleetshard_ready_centrals
+        values: "4x15 5x60"
       - series: probe_success{app="rhacs", namespace="rhacs-co1cgv2hofac73cvpm5g", rhacs_instance_id="co1cgv2hofac73cvpm5g", endpoint="central-ui"}
-        values: "1x30"
+        values: "1x75"
       - series: probe_success{app="rhacs", namespace="rhacs-co1cgv2hofac73cvpm5g", rhacs_instance_id="co1cgv2hofac73cvpm5g", endpoint="central-data"}
-        values: "1x30"
+        values: "1x75"
       # Count unhealthy instances as well
       - series: probe_success{app="rhacs", namespace="rhacs-cq1636iqbcns73fiki8g", rhacs_instance_id="cq1636iqbcns73fiki8g", endpoint="central-ui"}
-        values: "0x30"
+        values: "0x75"
       - series: probe_success{app="rhacs", namespace="rhacs-cq1636iqbcns73fiki8g", rhacs_instance_id="cq1636iqbcns73fiki8g", endpoint="central-data"}
-        values: "0x30"
+        values: "0x75"
       - series: probe_success{app="rhacs", namespace="rhacs-cr2o56pjctnc739qmqv0", rhacs_instance_id="cr2o56pjctnc739qmqv0", endpoint="central-ui"}
-        values: "1x30"
+        values: "1x75"
       - series: probe_success{app="rhacs", namespace="rhacs-cr2o56pjctnc739qmqv0", rhacs_instance_id="cr2o56pjctnc739qmqv0", endpoint="central-data"}
-        values: "0x30"
+        values: "0x75"
       - series: probe_success{app="rhacs", namespace="rhacs-cu3nrb4qls9s73emtae0", rhacs_instance_id="cu3nrb4qls9s73emtae0", endpoint="central-ui"}
-        values: "0x30"
+        values: "0x75"
       - series: probe_success{app="rhacs", namespace="rhacs-cu3nrb4qls9s73emtae0", rhacs_instance_id="cu3nrb4qls9s73emtae0", endpoint="central-data"}
-        values: "1x30"
+        values: "1x75"
     alert_rule_test:
-      - eval_time: 10m
+      - eval_time: 30m
         alertname: RHACSFleetshardSyncCentralCountHealthMismatch
         exp_alerts: []
-      - eval_time: 25m
+      - eval_time: 61m
         alertname: RHACSFleetshardSyncCentralCountHealthMismatch
         exp_alerts:
           - exp_labels:
@@ -38,5 +38,5 @@ tests:
               severity: warning
             exp_annotations:
               summary: "Fleetshard synchronizer manages 5 centrals while the health of 4 Centrals is checked."
-              description: "For the last 15 minutes, the number of Central returned from Fleet Manager in Fleetshard Sync is different from the number of Centrals, whose health is being checked. This may be an indication that the monitoring system is faulty and the Central SLI metrics may not match the actual status."
+              description: "For the last 45 minutes, the number of ready Centrals returned from Fleet Manager in Fleetshard Sync is different from the number of Centrals, whose health is being checked. This may be an indication that the monitoring system is faulty and the Central SLI metrics may not match the actual status."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-052-central-healthcheck-issues.md"
