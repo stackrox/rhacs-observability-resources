@@ -14,15 +14,15 @@ jobs:
           python-version: '3.12'
       - uses: actions/setup-go@v5
         with:
-          go-version: ">=1.18.0"
+          go-version: "^1.23.0"
       - name: Install promtool
         run: |
-          curl -s -S -L -o /tmp/promtool https://github.com/prometheus/prometheus/releases/download/v2.36.0/prometheus-2.36.0.linux-amd64.tar.gz
+          curl -s -S -L -o /tmp/promtool https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.linux-amd64.tar.gz
           tar -zxf /tmp/promtool --strip-components=1 --directory /usr/local/bin &> /dev/null
       - name: Install mimirtool
         run: |
-          curl --silent --show-error --fail --location https://github.com/grafana/mimir/releases/download/mimir-2.10.5/mimirtool-linux-amd64 --output /usr/local/bin/mimirtool
-          echo "72f46c82c303c48566844612f83ab53d4b804c665644163ad7f0f8945caa0521 /usr/local/bin/mimirtool" | sha256sum --check --status
+          curl --silent --show-error --fail --location https://github.com/grafana/mimir/releases/download/mimir-2.15.1/mimirtool-linux-amd64 --output /usr/local/bin/mimirtool
+          echo "01893721dea5eb61866aad835740891b4859af8d87c522aec81167c0fed1ab52 /usr/local/bin/mimirtool" | sha256sum --check --status
           chmod +x /usr/local/bin/mimirtool
       - name: Patch PATH to include GOBIN
         run: echo "PATH=$(echo $PATH):/home/runner/go/bin" >> $GITHUB_ENV
