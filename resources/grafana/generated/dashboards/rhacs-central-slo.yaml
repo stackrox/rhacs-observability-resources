@@ -60,7 +60,7 @@ spec:
             },
             "enable": true,
             "expr": "count (count by (kernel_version) (count_over_time (kube_node_info[${__interval]))) > 1",
-            "iconColor": "red",
+            "iconColor": "blue",
             "name": "Kernel Upgrade",
             "textFormat": "Kernel Upgrade"
           }
