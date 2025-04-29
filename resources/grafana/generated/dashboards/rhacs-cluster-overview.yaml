@@ -59,7 +59,7 @@ spec:
               "uid": "PBFA97CFB590B2093"
             },
             "enable": true,
-            "expr": "count (count by (kernel_version) (count_over_time (kube_node_info[${__interval]))) > 1",
+            "expr": "count (count by (kernel_version) (count_over_time (kube_node_info[${__interval}]))) > 1",
             "iconColor": "blue",
             "name": "Kernel Upgrade",
             "textFormat": "Kernel Upgrade"
