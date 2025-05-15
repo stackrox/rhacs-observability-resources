@@ -16,21 +16,6 @@ Resources are maintained in the `/resources` folder. Sub folders contain the fol
 The observability stack is installed by ArgoCD from the [gitops repo](https://github.com/stackrox/acscs-manifests).
 Please follow the instructions in the fleet manager repository to install ArgoCD.
 
-## Branches
-
-The ACS cloud service data plane environments track the following branches:
-
-| Environment | Branch     |
-| ----------- | ---------- |
-| integration | master     |
-| stage       | stage      |
-| production  | production |
-
-New changes should propagate through the branches with sufficient soak time. Use the
-[Sync master -> stage action](https://github.com/stackrox/rhacs-observability-resources/actions/workflows/sync-stage-from-master.yaml)
-and [Sync stage -> production action](https://github.com/stackrox/rhacs-observability-resources/actions/workflows/sync-prod-from-stage.yaml)
-GitHub actions to trigger branch synchronization.
-
 ## Contributing
 
 ### Prerequisites
