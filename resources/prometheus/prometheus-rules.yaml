@@ -849,8 +849,9 @@ spec:
             severity: critical
           annotations:
             summary: "Cluster Autoscaler has {{ $value }} unschedulable pods."
-            description: "The cluster autoscaler is unable to scale up and is alerting that there are unschedulable pods because of this condition.
-This may be caused by the cluster autoscaler reaching its resources limits, or by Kubernetes waiting for new nodes to become ready."
+            description: |
+              The cluster autoscaler is unable to scale up and is alerting that there are unschedulable pods because of this condition.
+              This may be caused by the cluster autoscaler reaching its resources limits, or by Kubernetes waiting for new nodes to become ready.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-042-modify-cluster-autoscaler.md"
         - alert: ClusterAutoscalerNotSafeToScale
           expr: cluster_autoscaler_cluster_safe_to_autoscale{service="cluster-autoscaler-default"} != 1
@@ -859,10 +860,11 @@ This may be caused by the cluster autoscaler reaching its resources limits, or b
             severity: warning
           annotations:
             summary: "Cluster Autoscaler is reporting that the cluster is not ready for scaling."
-            description: "The cluster autoscaler has detected that the number of unready nodes is too high
-and it is not safe to continute scaling operations. It makes this determination by checking that the number of ready nodes is greater than the minimum ready count
-(default of 3) and the ratio of unready to ready nodes is less than the maximum unready node percentage (default of 45%). If either of those conditions are not
-true then the cluster autoscaler will enter an unsafe to scale state until the conditions change."
+            description: |
+              The cluster autoscaler has detected that the number of unready nodes is too high
+              and it is not safe to continute scaling operations. It makes this determination by checking that the number of ready nodes is greater than the minimum ready count
+              (default of 3) and the ratio of unready to ready nodes is less than the maximum unready node percentage (default of 45%). If either of those conditions are not
+              true then the cluster autoscaler will enter an unsafe to scale state until the conditions change.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-042-modify-cluster-autoscaler.md"
         - alert: ClusterAutoscalerUnableToScaleCPULimitReached
           expr: increase(cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="up",reason="CpuResourceLimit"}[15m]) > 0
@@ -871,9 +873,10 @@ true then the cluster autoscaler will enter an unsafe to scale state until the c
             severity: info
           annotations:
             summary: "Cluster Autoscaler has reached its maximum CPU core limit and is unable to scale out."
-            description: "The number of total cores in the cluster has exceeded the maximum number set on the
-cluster autoscaler. This is calculated by summing the cpu capacity for all nodes in the cluster and comparing that number against the maximum cores value set for the
-cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
+            description: |
+              The number of total cores in the cluster has exceeded the maximum number set on the cluster autoscaler.
+              This is calculated by summing the cpu capacity for all nodes in the cluster and comparing that number against the maximum cores value set for the
+              cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-042-modify-cluster-autoscaler.md"
         - alert: ClusterAutoscalerUnableToScaleMemoryLimitReached
           expr: increase(cluster_autoscaler_skipped_scale_events_count{service="cluster-autoscaler-default",direction="up",reason="MemoryResourceLimit"}[15m]) > 0
@@ -882,9 +885,10 @@ cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler c
             severity: info
           annotations:
             summary: "Cluster Autoscaler has reached its maximum Memory bytes limit and is unable to scale out."
-            description: "The number of total bytes of RAM in the cluster has exceeded the maximum number set on
-the cluster autoscaler. This is calculated by summing the memory capacity for all nodes in the cluster and comparing that number against the maximum memory bytes value set
-for the cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration."
+            description: |
+              The number of total bytes of RAM in the cluster has exceeded the maximum number set on
+              the cluster autoscaler. This is calculated by summing the memory capacity for all nodes in the cluster and comparing that number against the maximum memory bytes value set
+              for the cluster autoscaler. Limits can be adjusted by modifying the cluster autoscaler configuration.
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-042-modify-cluster-autoscaler.md"
         - alert: ClusterAuditSELinuxViolations
           expr: |
