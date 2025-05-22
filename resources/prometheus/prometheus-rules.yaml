@@ -1017,7 +1017,7 @@ spec:
       rules:
         - expr: |
             (max by (namespace)(rox_central_secured_clusters) /  max by (namespace)(max_over_time(rox_central_secured_clusters[72h])) < bool 0.8)
-            and on (namespace) (avg_over_time (rox_central_secured_clusters[1w]) >= 3)
+            and on (namespace) (avg_over_time (rox_central_secured_clusters[1w]) >= 5)
           record: rhacs_tenants:namespace:central:rhacs_secured_cluster_drop
         - alert: TenantSecuredClusterDrop
           expr: |
