@@ -1013,3 +1013,42 @@ spec:
           for: "7d"
           labels:
             severity: "warning"
+    - name: secured-cluster.alerts
+      rules:
+        - expr: |
+            (max by (namespace)(rox_central_secured_clusters) /  max by (namespace)(max_over_time(rox_central_secured_clusters[72h])) < bool 0.8)
+            and on (namespace) (avg_over_time (rox_central_secured_clusters[1w]) >= 3)
+          record: rhacs_tenants:namespace:central:rhacs_secured_cluster_drop
+        - alert: TenantSecuredClusterDrop
+          expr: |
+            rhacs_tenants:namespace:central:rhacs_secured_cluster_drop >= 1
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: Tenant '{{ $labels.namespace }}' lost at least 20% of its secured clusters
+            description: Tenant '{{ $labels.namespace }}' lost at least 20% of its secured clusters
+            sop_url: "TODO: SoP URL"
+        - expr: |
+              sum(rox_central_secured_clusters) / max_over_time(sum(rox_central_secured_clusters)[7d:])
+          record: rhacs:cluster:central:rhacs_secured_cluster_diff
+        - alert: DataPlaneSecuredClusterDrop
+          expr: |
+            rhacs:cluster:central:rhacs_secured_cluster_diff < 0.75
+          for: 2h
+          labels:
+            severity: warning
+          annotations:
+            summary: ACS CS data plane cluster lost 25% of secured clusters over all tenants
+            description: ACS CS data plane cluster lost 25% of secured clusters over all tenants
+            sop_url: "TODO: SoP URL"
+        - alert: DataPlaneCriticalSecuredClusterDrop
+          expr: |
+            rhacs:cluster:central:rhacs_secured_cluster_diff < 0.50
+          for: 2h
+          labels:
+            severity: critical
+          annotations:
+            summary: ACS CS data plane cluster lost 50% of secured clusters over all tenants
+            description: ACS CS data plane cluster lost 50% of secured clusters over all tenants
+            sop_url: "TODO: SoP URL"
