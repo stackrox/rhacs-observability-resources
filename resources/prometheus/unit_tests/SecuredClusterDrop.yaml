@@ -1,0 +1,103 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  # TenantSecuredClusterDrop
+  - interval: 1m
+    input_series:
+      - series: rhacs_tenants:namespace:central:rhacs_secured_cluster_drop{namespace="rhacs-test"}
+        values: "1+0x200"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: TenantSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 59m
+        alertname: TenantSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 1h1m
+        alertname: TenantSecuredClusterDrop
+        exp_alerts:
+          - exp_labels:
+              alertname: TenantSecuredClusterDrop
+              severity: warning
+              namespace: rhacs-test
+            exp_annotations:
+              summary: "Tenant 'rhacs-test' lost at least 20% of its secured clusters"
+              description: "Tenant 'rhacs-test' lost at least 20% of its secured clusters"
+              sop_url: "TODO: SoP URL"
+  # DataPlaneSecuredClusterDrop trigger for clusters > 5 overall cores
+  - interval: 1m
+    input_series:
+      - series: rox_central_secured_clusters
+        values: "30+0x200 20+0x600"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: DataPlaneSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 59m
+        alertname: DataPlaneSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: DataPlaneSecuredClusterDrop
+        exp_alerts:
+          - exp_labels:
+              alertname: DataPlaneSecuredClusterDrop
+              severity: warning
+            exp_annotations:
+              summary: ACS CS data plane cluster lost over 25% of secured clusters over all tenants
+              description: ACS CS data plane cluster lost over 25% of secured clusters over all tenants
+              sop_url: "TODO: SoP URL"
+    # DataPlaneSecuredClusterDrop does not trigger for clusters < 5 overall cores
+  - interval: 1m
+    input_series:
+      - series: rox_central_secured_clusters
+        values: "4+0x200 2+0x600"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: DataPlaneSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 59m
+        alertname: DataPlaneSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: DataPlaneSecuredClusterDrop
+        exp_alerts: []
+  # DataPlaneCriticalSecuredClusterDrop triggers for clusters > 5 overall cores
+  - interval: 1m
+    input_series:
+      - series: rox_central_secured_clusters
+        values: "30+0x200 12+0x600"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: DataPlaneCriticalSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 59m
+        alertname: DataPlaneCriticalSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: DataPlaneCriticalSecuredClusterDrop
+        exp_alerts:
+          - exp_labels:
+              alertname: DataPlaneCriticalSecuredClusterDrop
+              severity: critical
+            exp_annotations:
+              summary: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
+              description: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
+              sop_url: "TODO: SoP URL"
+  # DataPlaneCriticalSecuredClusterDrop does not trigger for clusters < 5 overall cores
+  - interval: 1m
+    input_series:
+      - series: rox_central_secured_clusters
+        values: "4+0x1000 1+0x2000"
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: DataPlaneCriticalSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 59m
+        alertname: DataPlaneCriticalSecuredClusterDrop
+        exp_alerts: []
+      - eval_time: 2h12m
+        alertname: DataPlaneCriticalSecuredClusterDrop
+        exp_alerts: []
