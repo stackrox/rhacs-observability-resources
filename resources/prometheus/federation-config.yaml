@@ -182,10 +182,12 @@
       - prometheus_remote_storage_samples_total{job!~"central|scanner"}
       - rest_client_request_duration_seconds_bucket{job!~"central|scanner"}
       - rest_client_requests_total{job!~"central|scanner"}
+      - rhacs:cluster:central:rhacs_secured_cluster_diff{job!~"central|scanner"}
       - rhacs_operator:namespace:workload:container:max_memory_usage_ratio{job!~"central|scanner"}
       - rhacs_operator:namespace:workload:pod:container:max_memory_usage_bytes{job!~"central|scanner"}
       - rhacs_operator:namespace:workload:pod:container:memory_limit_bytes{job!~"central|scanner"}
       - rhacs_operator:namespace:workload:pod:container{job!~"central|scanner"}
+      - rhacs_tenants:namespace:central:rhacs_secured_cluster_drop{job!~"central|scanner"}
       - rhacs_tenants:namespace:pod:container:max_memory_usage_bytes{job!~"central|scanner"}
       - rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{job!~"central|scanner"}
       - rhacs_tenants:namespace:pod:container:memory_limit_bytes{job!~"central|scanner"}
