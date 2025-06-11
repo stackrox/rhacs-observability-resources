@@ -81,7 +81,7 @@ tests:
         exp_alerts:
           - exp_labels:
               alertname: DataPlaneCriticalSecuredClusterDrop
-              severity: critical
+              severity: warning
             exp_annotations:
               summary: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
               description: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
