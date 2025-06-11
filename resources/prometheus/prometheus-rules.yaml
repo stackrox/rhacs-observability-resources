@@ -1045,11 +1045,11 @@ spec:
             sop_url: "TODO: SoP URL"
         - alert: DataPlaneCriticalSecuredClusterDrop
           expr: |
-            rhacs:cluster:central:rhacs_secured_cluster_diff < 50
+            rhacs:cluster:central:rhacs_secured_cluster_diff < 0.5
             and avg_over_time(sum(rox_central_secured_clusters)[7d:]) > 5
           for: 2h
           labels:
-            severity: critical
+            severity: warning # TODO: change to critical once we're confident this is not to sensitive
           annotations:
             summary: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
             description: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
