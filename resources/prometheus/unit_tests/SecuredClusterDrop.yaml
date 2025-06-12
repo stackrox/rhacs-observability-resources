@@ -26,7 +26,7 @@ tests:
             exp_annotations:
               summary: "Tenant 'rhacs-test' lost at least 20% of its secured clusters"
               description: "Tenant 'rhacs-test' lost at least 20% of its secured clusters"
-              sop_url: "TODO: SoP URL"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
   # DataPlaneSecuredClusterDrop trigger for clusters > 5 overall cores
   - interval: 1m
     input_series:
@@ -48,7 +48,7 @@ tests:
             exp_annotations:
               summary: ACS CS data plane cluster lost over 25% of secured clusters over all tenants
               description: ACS CS data plane cluster lost over 25% of secured clusters over all tenants
-              sop_url: "TODO: SoP URL"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
     # DataPlaneSecuredClusterDrop does not trigger for clusters < 5 overall cores
   - interval: 1m
     input_series:
@@ -85,7 +85,7 @@ tests:
             exp_annotations:
               summary: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
               description: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
-              sop_url: "TODO: SoP URL"
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
   # DataPlaneCriticalSecuredClusterDrop does not trigger for clusters < 5 overall cores
   - interval: 1m
     input_series:
