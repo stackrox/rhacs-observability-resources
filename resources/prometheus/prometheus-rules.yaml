@@ -1028,7 +1028,7 @@ spec:
           annotations:
             summary: Tenant '{{ $labels.namespace }}' lost at least 20% of its secured clusters
             description: Tenant '{{ $labels.namespace }}' lost at least 20% of its secured clusters
-            sop_url: "TODO: SoP URL"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
         - expr: |
               sum(rox_central_secured_clusters) / max_over_time(sum(rox_central_secured_clusters)[7d:])
           record: rhacs:cluster:central:rhacs_secured_cluster_diff
@@ -1042,7 +1042,7 @@ spec:
           annotations:
             summary: ACS CS data plane cluster lost over 25% of secured clusters over all tenants
             description: ACS CS data plane cluster lost over 25% of secured clusters over all tenants
-            sop_url: "TODO: SoP URL"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
         - alert: DataPlaneCriticalSecuredClusterDrop
           expr: |
             rhacs:cluster:central:rhacs_secured_cluster_diff < 0.5
@@ -1053,4 +1053,4 @@ spec:
           annotations:
             summary: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
             description: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
-            sop_url: "TODO: SoP URL"
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
