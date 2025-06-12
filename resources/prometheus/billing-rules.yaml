@@ -9,7 +9,21 @@ spec:
   groups:
     - name: rhacs-cluster-billing
       rules:
-        - expr: |
+        # Create a new rox_central_cluster_metrics_cpu_capacity metric for "csmotb2onih42jsdolvg" tenant because Central instance was previously deleted with AMS subscription and restored.
+        # AMS subscription cannot be restored and thus new subscription was issued for this tenant. AMS use tenant ID for billing by default but for this tenant a differernt ID (not tenant ID) is assigned.
+        # Thus ACSCS has to publish a new rox_central_cluster_metrics_cpu_capacity metrics for this tenant only
+        # Related to ROX-28461
+        - record: "rox_central_cluster_metrics_cpu_capacity"
+          expr: |
+            label_replace(
+              rox_central_cluster_metrics_cpu_capacity{rhacs_instance_id="csmotb2onih42jsdolvg"},
+              "rhacs_instance_id",
+              "2dGIIEyaffP4fBW6RCPEPWqyCoBcsmotb2onih42jsdolvg",
+              "rhacs_instance_id",
+              ".*"
+            )
+        - record: "rhacs:rox_central_cluster_metrics_cpu_capacity:avg_over_time1h"
+          expr: |
             label_replace(
               sum by (rhacs_instance_id) (
                 avg by (ClusterID, rhacs_instance_id) (
@@ -18,4 +32,3 @@ spec:
               ),
               "_id", "$1", "rhacs_instance_id", "(.*)"
             )
-          record: "rhacs:rox_central_cluster_metrics_cpu_capacity:avg_over_time1h"
