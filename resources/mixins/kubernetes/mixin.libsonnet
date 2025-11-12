@@ -22,6 +22,9 @@ kubernetes {
       KubeMemoryOvercommit: { severity: critical },
       // Our current HPA strategy schedules max replica for scanner without it indicating an issue.
       KubeHpaMaxedOut: { severity: info },
+      // Flapping alert since the upgrade to OCP 4.17. The incident has already been reported to SRE-P.
+      // see ROX-30184, OHSS-48182
+      KubeAPIErrorBudgetBurn: { severity: info },
     };
 
     local addExtraLabels(rule) = rule {

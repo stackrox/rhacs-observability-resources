@@ -513,7 +513,7 @@
     "for": "2m"
     "labels":
       "long": "1h"
-      "severity": "critical"
+      "severity": "info"
       "short": "5m"
       "source": "mixin/kubernetes"
   - "alert": "KubeAPIErrorBudgetBurn"
@@ -528,7 +528,7 @@
     "for": "15m"
     "labels":
       "long": "6h"
-      "severity": "critical"
+      "severity": "info"
       "short": "30m"
       "source": "mixin/kubernetes"
   - "alert": "KubeAPIErrorBudgetBurn"
@@ -543,7 +543,7 @@
     "for": "1h"
     "labels":
       "long": "1d"
-      "severity": "warning"
+      "severity": "info"
       "short": "2h"
       "source": "mixin/kubernetes"
   - "alert": "KubeAPIErrorBudgetBurn"
@@ -558,7 +558,7 @@
     "for": "3h"
     "labels":
       "long": "3d"
-      "severity": "warning"
+      "severity": "info"
       "short": "6h"
       "source": "mixin/kubernetes"
 - "name": "kubernetes-system-apiserver"
