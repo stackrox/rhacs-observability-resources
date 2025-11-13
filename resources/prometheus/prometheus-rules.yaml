@@ -265,7 +265,7 @@ spec:
             rhacs_tenants:namespace:pod:container:max_memory_usage_ratio{container=~"central|scanner|indexer|matcher"} >= 0.95
           for: 10m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' is critically reaching its memory limit.
             description: tenant '{{ $labels.namespace }}' container '{{ $labels.container }}' in pod '{{ $labels.pod }}' reached {{ $value | humanizePercentage }} of its memory limit and is at high risk of being OOM killed.
