@@ -24,9 +24,11 @@ spec:
 
         - action: labelmap
           regex: __meta_kubernetes_pod_annotation_rhacs_redhat_com_(.+)
+          replacement: rhacs_${1}
 
         - action: labelmap
           regex: __meta_kubernetes_pod_label_rhacs_redhat_com_(.+)
+          replacement: rhacs_${1}
 
         - sourceLabels: [rhacs_tenant]
           targetLabel: rhacs_instance_id
