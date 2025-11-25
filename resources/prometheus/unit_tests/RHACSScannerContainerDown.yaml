@@ -12,7 +12,7 @@ tests:
       - eval_time: 15m
         alertname: RHACSScannerContainerDown
         exp_alerts: []
-      - eval_time: 40m
+      - eval_time: 50m
         alertname: RHACSScannerContainerDown
         exp_alerts:
           - exp_labels:
