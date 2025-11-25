@@ -63,7 +63,7 @@ spec:
         - alert: RHACSScannerContainerDown
           expr: |
             avg_over_time(kube_pod_container_status_ready{pod=~"scanner.*", container=~"scanner|db|matcher|indexer"}[10m]) < 0.5
-          for: 20m
+          for: 30m
           labels:
             severity: critical
           annotations:
