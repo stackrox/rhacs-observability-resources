@@ -7,7 +7,7 @@ tests:
   - interval: 1m
     input_series:
       - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="scanner-1234-5678", container="scanner"}
-        values: "0+0x10 1+1x10 4+1x20"
+        values: "0+0x10 1+1x10 5+1x20"
     alert_rule_test:
       - eval_time: 10m
         alertname: RHACSScannerContainerFrequentlyRestarting
@@ -22,6 +22,6 @@ tests:
               pod: scanner-1234-5678
               severity: warning
             exp_annotations:
-              summary: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` restarted more than 3 times."
-              description: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` has restarted more than 3 times during the last 30 minutes."
+              summary: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` restarted more than 4 times."
+              description: "Scanner container `scanner-1234-5678/scanner` in namespace `rhacs-1234` has restarted more than 4 times during the last 30 minutes."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
