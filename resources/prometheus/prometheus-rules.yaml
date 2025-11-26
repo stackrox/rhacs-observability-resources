@@ -72,12 +72,12 @@ spec:
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
         - alert: RHACSScannerContainerFrequentlyRestarting
           expr: |
-            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db|matcher|indexer"}[30m]) > 3
+            increase(kube_pod_container_status_restarts_total{pod=~"scanner.*", container=~"scanner|db|matcher|indexer"}[30m]) > 4
           labels:
             severity: warning
           annotations:
-            summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
-            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."
+            summary: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 4 times."
+            description: "Scanner container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 4 times during the last 30 minutes."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
 
     - name: rhacs-fleetshard
