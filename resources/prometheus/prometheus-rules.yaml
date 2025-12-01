@@ -723,7 +723,7 @@ spec:
           # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
           # See recording rules for how burn rates relate to SLI and SLO in general.
           expr: |
-            central:slo:availability:burnrate1h >= 50 and min_over_time(central:sli:availability[1h])
+            central:slo:availability:burnrate1h >= 50 and min_over_time(central:sli:availability[1h]) == 0
           labels:
             service: central
             severity: critical
