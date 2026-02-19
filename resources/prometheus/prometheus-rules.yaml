@@ -720,10 +720,10 @@ spec:
           annotations:
             message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
-          # Corresponds to less than 50% up time over 1 hour assuming a 99% SLO target.
-          # See recording rules for how burn rates relate to SLI and SLO in general.
+          # Corresponds to less than 70% up time over 1 hour
+          # In other words for full service health failure this would fire after approximately 20min
           expr: |
-            central:slo:availability:burnrate1h >= 50 and min_over_time(central:sli:availability[1h]) == 0
+            central:slo:availability:burnrate1h >= 30 and min_over_time(central:sli:availability[1h]) == 0
           labels:
             service: central
             severity: critical
