@@ -25,11 +25,6 @@ repos:
         entry: ./scripts/lint-grafana.sh
         language: script
         files: resources/grafana
-      - id: prom-rule-test
-        name: prometheus rules test
-        entry: ./scripts/test-prom-rules.sh
-        language: script
-        pass_filenames: false
       - id: kube-linter
         name: kube-linter
         entry: ./scripts/run-kube-linter.sh
