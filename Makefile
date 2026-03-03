@@ -13,3 +13,7 @@ generate: generate-resources generate-federate
 .PHONY: update
 update:
 	$(MAKE) -C resources/mixins/kubernetes update
+
+.PHONY: test
+test:
+	@scripts/test-prom-rules.sh

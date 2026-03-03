@@ -27,3 +27,5 @@ jobs:
       - name: Patch PATH to include GOBIN
         run: echo "PATH=$(echo $PATH):/home/runner/go/bin" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.1
+      - name: Run tests
+        run: make test
