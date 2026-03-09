@@ -672,8 +672,13 @@ spec:
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          # The burn rate condition is set to trigger an alert if the service's uptime is below 85% over a 1-hour period.
+          # On one hand, this helps prevent the alert from lingering for a long period (up to 28 days).
+          # On the other hand, it prevents the alert from being triggered when the error budget has already been exhausted,
+          # and there are subsequent pod restarts due to, for example, OCP or Operator upgrades.
+          # central:sli:availability >= 0 filters deleted instances (equivalent to non-nil).
           expr: |
-            central:slo:availability:error_budget_exhaustion >= 0.9 and min_over_time(central:sli:availability[1h]) == 0
+            central:slo:availability:error_budget_exhaustion >= 0.9 and central:slo:availability:burnrate1h >= 15 and central:sli:availability >= 0
           labels:
             service: central
             severity: critical
@@ -684,8 +689,13 @@ spec:
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          # The burn rate condition is set to trigger an alert if the service's uptime is below 85% over a 1-hour period.
+          # On one hand, this helps prevent the alert from lingering for a long period (up to 28 days).
+          # On the other hand, it prevents the alert from being triggered when the error budget has already been exhausted,
+          # and there are subsequent pod restarts due to, for example, OCP or Operator upgrades.
+          # central:sli:availability >= 0 filters deleted instances (equivalent to non-nil).
           expr: |
-            central:slo:availability:error_budget_exhaustion >= 0.7 and min_over_time(central:sli:availability[1h]) == 0
+            central:slo:availability:error_budget_exhaustion >= 0.7 and central:slo:availability:burnrate1h >= 15 and central:sli:availability >= 0
           labels:
             service: central
             severity: warning
@@ -696,8 +706,13 @@ spec:
           annotations:
             message: "High availability error budget exhaustion for central. Current exhaustion: {{ $value | humanizePercentage }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
+          # The burn rate condition is set to trigger an alert if the service's uptime is below 85% over a 1-hour period.
+          # On one hand, this helps prevent the alert from lingering for a long period (up to 28 days).
+          # On the other hand, it prevents the alert from being triggered when the error budget has already been exhausted,
+          # and there are subsequent pod restarts due to, for example, OCP or Operator upgrades.
+          # central:sli:availability >= 0 filters deleted instances (equivalent to non-nil).
           expr: |
-            central:slo:availability:error_budget_exhaustion >= 0.5 and min_over_time(central:sli:availability[1h]) == 0
+            central:slo:availability:error_budget_exhaustion >= 0.5 and central:slo:availability:burnrate1h >= 15 and central:sli:availability >= 0
           labels:
             service: central
             severity: warning
@@ -720,10 +735,11 @@ spec:
           annotations:
             message: "High availability burn rate for central. Current burn rate per hour: {{ $value | humanize }}."
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-018-rhacs-central-slo-alerts.md"
-          # Corresponds to less than 70% up time over 1 hour
-          # In other words for full service health failure this would fire after approximately 20min
+          # Corresponds to less than 70% uptime over 1 hour.
+          # In other words for full service health failure this would fire after approximately 20min.
+          # central:sli:availability >= 0 filters deleted instances (equivalent to non-nil).
           expr: |
-            central:slo:availability:burnrate1h >= 30 and min_over_time(central:sli:availability[1h]) == 0
+            central:slo:availability:burnrate1h >= 30 and central:sli:availability >= 0
           labels:
             service: central
             severity: critical
