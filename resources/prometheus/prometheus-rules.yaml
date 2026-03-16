@@ -106,7 +106,7 @@ spec:
             (avg_over_time(up{pod=~"fleetshard-sync-.*"}[10m]) < 0.5 and ON(pod) kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"} == 1) or absent(up{pod=~"fleetshard-sync-.*"})
           for: 20m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Prometheus unable to scrape metrics from target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}`."
             description: "During the last 10 minutes, only `{{ $value | humanizePercentage }}` of scrapes of target `{{ $labels.pod }}` in namespace `{{ $labels.namespace }}` were successful. This alert is raised when less than 50% of scrapes are successful."
@@ -116,7 +116,7 @@ spec:
             avg_over_time(kube_pod_container_status_ready{pod=~"fleetshard-sync-.*"}[10m]) < 0.5
           for: 20m
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is down or in a CrashLoopBackOff status."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has been down or in a CrashLoopBackOff status for at least 10 minutes."
@@ -124,7 +124,7 @@ spec:
         - alert: RHACSFleetshardSyncContainerFrequentlyRestarting
           expr: increase(kube_pod_container_status_restarts_total{pod=~"fleetshard-sync-.*"}[30m]) > 3
           labels:
-            severity: critical
+            severity: warning
           annotations:
             summary: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` restarted more than 3 times."
             description: "Fleetshard synchronizer container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted more than 3 times during the last 30 minutes."

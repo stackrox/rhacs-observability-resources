@@ -20,7 +20,7 @@ tests:
               container: fleetshard-sync
               namespace: rhacs
               pod: fleetshard-sync-1234
-              severity: critical
+              severity: warning
             exp_annotations:
               summary: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` restarted more than 3 times."
               description: "Fleetshard synchronizer container `fleetshard-sync-1234/fleetshard-sync` in namespace `rhacs` has restarted more than 3 times during the last 30 minutes."
