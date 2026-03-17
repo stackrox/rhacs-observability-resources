@@ -313,7 +313,7 @@ spec:
                 "lineWidth": 1,
                 "pointSize": 5,
                 "scaleDistribution": {
-                  "type": "linear"
+                  "type": "log"
                 },
                 "showPoints": "never",
                 "spanNulls": false,
@@ -521,7 +521,7 @@ spec:
                 "lineWidth": 1,
                 "pointSize": 5,
                 "scaleDistribution": {
-                  "type": "linear"
+                  "type": "log"
                 },
                 "showPoints": "never",
                 "spanNulls": false,
