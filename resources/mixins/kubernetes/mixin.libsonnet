@@ -49,6 +49,20 @@ kubernetes {
                 group.rules
               ),
             }
+          else if group.name == 'kubernetes-resources' then
+            group {
+              rules: std.map(
+                function(rule)
+                  if rule.alert == 'CPUThrottlingHigh' then
+                    rule {
+                      // Exclude config-reloader in rhacs-observability namespace from false positive CPU throttling alerts.
+                      expr: std.rstripChars(rule.expr, '\n') + '\nunless on(%(clusterLabel)s, container, pod, namespace) container_cpu_cfs_throttled_periods_total{namespace="rhacs-observability", container="config-reloader"}\n' % $._config,
+                    }
+                  else
+                    rule,
+                group.rules
+              ),
+            }
           else if group.name == 'kubernetes-system-kubelet' then
             group {
               rules: std.filter(

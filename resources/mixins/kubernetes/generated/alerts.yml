@@ -367,6 +367,7 @@
         /
       sum(increase(container_cpu_cfs_periods_total{namespace!~"openshift-.*"}[5m])) by (cluster, container, pod, namespace)
         > ( 25 / 100 )
+      unless on(cluster, container, pod, namespace) container_cpu_cfs_throttled_periods_total{namespace="rhacs-observability", container="config-reloader"}
     "for": "15m"
     "labels":
       "severity": "info"
