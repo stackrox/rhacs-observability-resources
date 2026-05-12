@@ -3,7 +3,9 @@
 set -eu
 
 if ! [ -x "$(command -v dashboard-lint)" ]; then
-	go install github.com/grafana/dashboard-linter@latest
+	# using this specific commit as linter installation via go install broke
+	# because grafana started to use replace directive in their go.mod which does not support go install anymore
+	go install github.com/grafana/dashboard-linter@a088406
 fi
 
 ! [ -x "$(command -v yq)" ] && echo 'yq not installed, the hook requires it.' && exit 1
