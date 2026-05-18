@@ -1474,9 +1474,7 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -1943,9 +1941,7 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -2220,9 +2216,7 @@ spec:
             "cellHeight": "sm",
             "footer": {
               "show": false,
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "countRows": false,
               "fields": ""
             },
@@ -2336,9 +2330,7 @@ spec:
               "countRows": false,
               "enablePagination": true,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -2471,9 +2463,7 @@ spec:
               "options": {
                 "fields": {
                   "Expiration": {
-                    "aggregations": [
-                      "last"
-                    ],
+                    "aggregations": ["last"],
                     "operation": "aggregate"
                   },
                   "Key": {
@@ -2481,9 +2471,7 @@ spec:
                     "operation": "groupby"
                   },
                   "Namespace": {
-                    "aggregations": [
-                      "last"
-                    ],
+                    "aggregations": ["last"],
                     "operation": "groupby"
                   },
                   "Secret": {
@@ -2522,20 +2510,14 @@ spec:
       ],
       "revision": 1,
       "schemaVersion": 39,
-      "tags": [
-        "rhacs"
-      ],
+      "tags": ["rhacs"],
       "templating": {
         "list": [
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -2562,12 +2544,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",
@@ -2594,12 +2572,8 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": [
-                "All"
-              ],
-              "value": [
-                "$__all"
-              ]
+              "text": ["All"],
+              "value": ["$__all"]
             },
             "datasource": {
               "type": "prometheus",

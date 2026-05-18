@@ -1462,9 +1462,7 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -1931,9 +1929,7 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -2208,9 +2204,7 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
           "fields": ""
         },
@@ -2324,9 +2318,7 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -2459,9 +2451,7 @@
           "options": {
             "fields": {
               "Expiration": {
-                "aggregations": [
-                  "last"
-                ],
+                "aggregations": ["last"],
                 "operation": "aggregate"
               },
               "Key": {
@@ -2469,9 +2459,7 @@
                 "operation": "groupby"
               },
               "Namespace": {
-                "aggregations": [
-                  "last"
-                ],
+                "aggregations": ["last"],
                 "operation": "groupby"
               },
               "Secret": {
@@ -2510,20 +2498,14 @@
   ],
   "revision": 1,
   "schemaVersion": 39,
-  "tags": [
-    "rhacs"
-  ],
+  "tags": ["rhacs"],
   "templating": {
     "list": [
       {
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": {
           "type": "prometheus",
@@ -2550,12 +2532,8 @@
       {
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": {
           "type": "prometheus",
@@ -2582,12 +2560,8 @@
       {
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": {
           "type": "prometheus",
