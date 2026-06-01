@@ -414,7 +414,7 @@
       kube_persistentvolumeclaim_access_mode{namespace!~"openshift-kube.*|openshift-logging|openshift-marketplace|openshift-aws-vpce-operator|openshift-deployment.*|kube.*", access_mode="ReadOnlyMany"} == 1
       unless on(cluster, namespace, persistentvolumeclaim)
       kube_persistentvolumeclaim_labels{namespace!~"openshift-kube.*|openshift-logging|openshift-marketplace|openshift-aws-vpce-operator|openshift-deployment.*|kube.*",label_excluded_from_alerts="true"} == 1
-      unless on(cluster, namespace, persistentvolumeclaim) kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"scanner-db.*"}
+      unless on(cluster, namespace, persistentvolumeclaim) kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"scanner-db.*|prometheus-data-prometheus-k8s.*"}
     "for": "1h"
     "labels":
       "severity": "warning"
