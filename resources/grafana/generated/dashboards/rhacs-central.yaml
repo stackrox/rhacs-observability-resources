@@ -126,7 +126,9 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": ["lastNotNull"],
+              "calcs": [
+                "lastNotNull"
+              ],
               "fields": "",
               "values": false
             },
@@ -204,7 +206,9 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": ["lastNotNull"],
+              "calcs": [
+                "lastNotNull"
+              ],
               "fields": "",
               "values": false
             },
@@ -266,7 +270,9 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": ["lastNotNull"],
+              "calcs": [
+                "lastNotNull"
+              ],
               "fields": "",
               "values": false
             },
@@ -344,7 +350,9 @@ spec:
             "justifyMode": "auto",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": ["lastNotNull"],
+              "calcs": [
+                "lastNotNull"
+              ],
               "fields": "",
               "values": false
             },
@@ -1515,6 +1523,882 @@ spec:
                 }
               ],
               "title": "GC Duration",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green"
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "ops"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "alloc bytes/sec"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.axisPlacement",
+                        "value": "right"
+                      },
+                      {
+                        "id": "unit",
+                        "value": "Bps"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 24
+              },
+              "id": 200,
+              "links": [],
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "pluginVersion": "9.1.0",
+              "targets": [
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "rate(go_memstats_mallocs_total{namespace=\"rhacs-$instance_id\",job=\"central\"}[1m])",
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "mallocs/sec",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "rate(go_memstats_frees_total{namespace=\"rhacs-$instance_id\",job=\"central\"}[1m])",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "frees/sec",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "rate(go_memstats_alloc_bytes_total{namespace=\"rhacs-$instance_id\",job=\"central\"}[1m])",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "alloc bytes/sec",
+                  "range": true,
+                  "refId": "C"
+                }
+              ],
+              "title": "Allocation & Free Rate",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green"
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "avg object size"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.axisPlacement",
+                        "value": "right"
+                      },
+                      {
+                        "id": "unit",
+                        "value": "decbytes"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 24
+              },
+              "id": 201,
+              "links": [],
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "pluginVersion": "9.1.0",
+              "targets": [
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_objects{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "live objects",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_alloc_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"} / go_memstats_heap_objects{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "avg object size",
+                  "range": true,
+                  "refId": "B"
+                }
+              ],
+              "title": "Live Heap Objects",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 30,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "normal"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green"
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "decbytes"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "released to OS"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "light-green",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "idle (retained)"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "yellow",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "live heap"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-blue",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 32
+              },
+              "id": 202,
+              "links": [],
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "pluginVersion": "9.1.0",
+              "targets": [
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_alloc_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "live heap",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_idle_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"} - go_memstats_heap_released_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "idle (retained)",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_released_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "released to OS",
+                  "range": true,
+                  "refId": "C"
+                }
+              ],
+              "title": "Heap Memory Breakdown",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green"
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "decbytes"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "next GC threshold"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.lineStyle",
+                        "value": {
+                          "dash": [
+                            10,
+                            10
+                          ],
+                          "fill": "dash"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "GC cycles/sec"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.axisPlacement",
+                        "value": "right"
+                      },
+                      {
+                        "id": "unit",
+                        "value": "ops"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 32
+              },
+              "id": 203,
+              "links": [],
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "pluginVersion": "9.1.0",
+              "targets": [
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_alloc_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "heap alloc",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_next_gc_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "next GC threshold",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "rate(go_gc_duration_seconds_count{namespace=\"rhacs-$instance_id\",job=\"central\"}[1m])",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "GC cycles/sec",
+                  "range": true,
+                  "refId": "C"
+                }
+              ],
+              "title": "GC Pressure",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green"
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "decbytes"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 40
+              },
+              "id": 204,
+              "links": [],
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "pluginVersion": "9.1.0",
+              "targets": [
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_sys_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "heap sys",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_sys_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "go total sys",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "process_resident_memory_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "process RSS",
+                  "range": true,
+                  "refId": "C"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "container_memory_working_set_bytes{namespace=\"rhacs-$instance_id\",container=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "container working set",
+                  "range": true,
+                  "refId": "D"
+                }
+              ],
+              "title": "Go Heap vs Container Memory",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green"
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "decbytes"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "retained (idle - released)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.fillOpacity",
+                        "value": 30
+                      },
+                      {
+                        "id": "custom.drawStyle",
+                        "value": "line"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 40
+              },
+              "id": 205,
+              "links": [],
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "pluginVersion": "9.1.0",
+              "targets": [
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_idle_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "heap idle",
+                  "range": true,
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_released_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "heap released",
+                  "range": true,
+                  "refId": "B"
+                },
+                {
+                  "datasource": {
+                    "uid": "${datasource}"
+                  },
+                  "editorMode": "code",
+                  "exemplar": true,
+                  "expr": "go_memstats_heap_idle_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"} - go_memstats_heap_released_bytes{namespace=\"rhacs-$instance_id\",job=\"central\"}",
+                  "hide": false,
+                  "interval": "",
+                  "intervalFactor": 2,
+                  "legendFormat": "retained (idle - released)",
+                  "range": true,
+                  "refId": "C"
+                }
+              ],
+              "title": "Scavenger Effectiveness",
               "type": "timeseries"
             }
           ],
@@ -5159,7 +6043,9 @@ spec:
       "revision": 1,
       "schemaVersion": 38,
       "style": "dark",
-      "tags": ["rhacs"],
+      "tags": [
+        "rhacs"
+      ],
       "templating": {
         "list": [
           {
@@ -5184,8 +6070,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -5212,8 +6102,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -5268,8 +6162,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -5297,8 +6195,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -5326,8 +6228,12 @@ spec:
           {
             "current": {
               "selected": true,
-              "text": ["All"],
-              "value": ["$__all"]
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
             },
             "datasource": {
               "type": "prometheus",
@@ -5359,8 +6265,25 @@ spec:
       },
       "timepicker": {
         "hidden": false,
-        "refresh_intervals": ["15s", "30s", "1m", "5m", "10m", "15m"],
-        "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+        "refresh_intervals": [
+          "15s",
+          "30s",
+          "1m",
+          "5m",
+          "10m",
+          "15m"
+        ],
+        "time_options": [
+          "5m",
+          "15m",
+          "1h",
+          "6h",
+          "12h",
+          "24h",
+          "2d",
+          "7d",
+          "30d"
+        ]
       },
       "timezone": "",
       "title": "RHACS Dataplane - Central Metrics",
