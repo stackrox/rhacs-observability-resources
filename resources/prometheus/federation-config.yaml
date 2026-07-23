@@ -6,7 +6,7 @@
         names:
           - openshift-monitoring
   scrape_interval: 120s
-  scrape_timeout: 60s
+  scrape_timeout: 90s
   metrics_path: /federate
   relabel_configs:
     - action: keep
