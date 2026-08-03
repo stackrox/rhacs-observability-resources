@@ -2247,7 +2247,7 @@ spec:
           ],
           "timeFrom": "$_relativeTime/d",
           "timeShift": "$_timeShift/d",
-          "title": "Scans per Day by Namespace",
+          "title": "Scans per 24h by Namespace",
           "transformations": [
             {
               "id": "formatTime",
