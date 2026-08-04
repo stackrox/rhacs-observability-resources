@@ -10,7 +10,7 @@ kubernetes {
     kubeApiserverSelector: 'job="api"',
     kubeProxySelector: 'job="machine-config-daemon"',
     kubeSchedulerSelector: 'job="scheduler"',
-    namespaceSelector: 'namespace!~"openshift-kube.*|openshift-logging|openshift-marketplace|openshift-aws-vpce-operator|openshift-deployment.*|kube.*"',
+    namespaceSelector: 'namespace!~"openshift-kube.*|openshift-logging|openshift-custom-domains.*|openshift-marketplace|openshift-aws-vpce-operator|openshift-deployment.*|kube.*"',
   },
 } + {
   // Customize alert labels.
