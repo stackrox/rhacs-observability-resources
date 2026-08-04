@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/ebenshet/workspaces/rox-34665-grafana-display-scans-per-day/github.com/stackrox/rhacs-observability-resources/**)",
+      "Bash(jj status *)",
+      "Bash(jj rebase *)",
+      "Bash(rm -f resources/grafana/generated/dashboards/new-panel.yaml resources/grafana/sources/.claude/settings.local.json)",
+      "Bash(rmdir resources/grafana/sources/.claude)",
+      "Bash(jj commit -m 'ROX-34665: Add Scans per Day by Namespace panel to cluster overview dashboard *)"
+    ]
+  }
+}
