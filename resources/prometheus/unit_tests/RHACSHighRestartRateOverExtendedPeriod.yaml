@@ -1,0 +1,74 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  # ~2 restarts/day: neither alert should fire.
+  - interval: 1h
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="central-abc-123", container="central"}
+        values: "0+0.083333x60"
+    alert_rule_test:
+      - eval_time: 50h
+        alertname: RHACSHighRestartRateOverExtendedPeriod
+        exp_alerts: []
+      - eval_time: 50h
+        alertname: RHACSCriticalRestartRateOverExtendedPeriod
+        exp_alerts: []
+
+  # ~4 restarts/day: warning fires, critical does not.
+  - interval: 1h
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="central-abc-123", container="central"}
+        values: "0+0.166667x60"
+    alert_rule_test:
+      - eval_time: 50h
+        alertname: RHACSHighRestartRateOverExtendedPeriod
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSHighRestartRateOverExtendedPeriod
+              container: central
+              namespace: rhacs-1234
+              pod: central-abc-123
+              severity: warning
+            exp_annotations:
+              summary: "Container `central-abc-123/central` in namespace `rhacs-1234` is restarting frequently."
+              description: "Container `central-abc-123/central` in namespace `rhacs-1234` has restarted at a rate of 4 times per day averaged over the last 48 hours."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+      - eval_time: 50h
+        alertname: RHACSCriticalRestartRateOverExtendedPeriod
+        exp_alerts: []
+
+  # ~6 restarts/day: both alerts fire.
+  - interval: 1h
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="central-abc-123", container="central"}
+        values: "0+0.25x60"
+    alert_rule_test:
+      - eval_time: 50h
+        alertname: RHACSHighRestartRateOverExtendedPeriod
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSHighRestartRateOverExtendedPeriod
+              container: central
+              namespace: rhacs-1234
+              pod: central-abc-123
+              severity: warning
+            exp_annotations:
+              summary: "Container `central-abc-123/central` in namespace `rhacs-1234` is restarting frequently."
+              description: "Container `central-abc-123/central` in namespace `rhacs-1234` has restarted at a rate of 6 times per day averaged over the last 48 hours."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+      - eval_time: 50h
+        alertname: RHACSCriticalRestartRateOverExtendedPeriod
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSCriticalRestartRateOverExtendedPeriod
+              container: central
+              namespace: rhacs-1234
+              pod: central-abc-123
+              severity: critical
+            exp_annotations:
+              summary: "Container `central-abc-123/central` in namespace `rhacs-1234` is restarting very frequently."
+              description: "Container `central-abc-123/central` in namespace `rhacs-1234` has restarted at a rate of 6 times per day averaged over the last 48 hours."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
