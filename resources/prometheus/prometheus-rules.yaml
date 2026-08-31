@@ -1059,3 +1059,23 @@ spec:
             summary: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
             description: ACS CS data plane cluster lost over 50% of secured clusters over all tenants
             sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-cloud-service/runbooks/-/blob/master/sops/dp-060-secured-cluster-drop-alert.md"
+    - name: rhacs-pod-restarts
+      rules:
+        - alert: RHACSHighRestartRateOverExtendedPeriod
+          expr: |
+            rate(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*"}[48h]) * 86400 >= 3
+          labels:
+            severity: warning
+          annotations:
+            summary: "Container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is restarting frequently."
+            description: "Container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted at a rate of {{ $value | humanize }} times per day averaged over the last 48 hours."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+        - alert: RHACSCriticalRestartRateOverExtendedPeriod
+          expr: |
+            rate(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*"}[48h]) * 86400 > 5
+          labels:
+            severity: critical
+          annotations:
+            summary: "Container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` is restarting very frequently."
+            description: "Container `{{ $labels.pod }}/{{ $labels.container }}` in namespace `{{ $labels.namespace }}` has restarted at a rate of {{ $value | humanize }} times per day averaged over the last 48 hours."
+            sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
