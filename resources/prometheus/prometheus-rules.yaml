@@ -1064,6 +1064,7 @@ spec:
         - alert: RHACSHighRestartRateOverExtendedPeriod
           expr: |
             rate(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*"}[48h]) * 86400 >= 3
+            and on(namespace, pod, container) kube_pod_container_status_restarts_total{namespace=~"rhacs-.*"}
           labels:
             severity: warning
           annotations:
@@ -1073,6 +1074,7 @@ spec:
         - alert: RHACSCriticalRestartRateOverExtendedPeriod
           expr: |
             rate(kube_pod_container_status_restarts_total{namespace=~"rhacs-.*"}[48h]) * 86400 > 5
+            and on(namespace, pod, container) kube_pod_container_status_restarts_total{namespace=~"rhacs-.*"}
           labels:
             severity: critical
           annotations:
