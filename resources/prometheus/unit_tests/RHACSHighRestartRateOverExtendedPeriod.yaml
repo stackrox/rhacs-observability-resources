@@ -72,3 +72,17 @@ tests:
               summary: "Container `central-abc-123/central` in namespace `rhacs-1234` is restarting very frequently."
               description: "Container `central-abc-123/central` in namespace `rhacs-1234` has restarted at a rate of 6 times per day averaged over the last 48 hours."
               sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
+
+  # High restart rate but the pod is deleted (series stops): neither alert should
+  # fire once the series is stale, even though old samples remain in the rate window.
+  - interval: 1h
+    input_series:
+      - series: kube_pod_container_status_restarts_total{namespace="rhacs-1234", pod="central-abc-123", container="central"}
+        values: "0+0.25x40"
+    alert_rule_test:
+      - eval_time: 50h
+        alertname: RHACSHighRestartRateOverExtendedPeriod
+        exp_alerts: []
+      - eval_time: 50h
+        alertname: RHACSCriticalRestartRateOverExtendedPeriod
+        exp_alerts: []
