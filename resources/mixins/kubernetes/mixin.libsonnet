@@ -69,9 +69,9 @@ kubernetes {
                 function(rule)
                   if rule.alert == 'KubePersistentVolumeFillingUp' && rule.labels.severity == 'warning' then
                     rule {
-                      // Exclude scanner-db, scanner-v4-db, and prometheus PVCs from warning alerts.
-                      // scanner-db, scanner-v4-db, and prometheus PVC dynamically grow/shrink. They might fluctuate around warning threshold.
-                      expr: std.rstripChars(rule.expr, '\n') + '\nunless on(%(clusterLabel)s, namespace, persistentvolumeclaim) kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"scanner-db.*|scanner-v4-db.*|prometheus-data-prometheus-k8s.*"}\n' % $._config,
+                      // Exclude scanner-db and prometheus PVCs from warning alerts.
+                      // scanner-db and prometheus PVC dynamically grow/shrink. They might fluctuate around warning threshold.
+                      expr: std.rstripChars(rule.expr, '\n') + '\nunless on(%(clusterLabel)s, namespace, persistentvolumeclaim) kubelet_volume_stats_available_bytes{persistentvolumeclaim=~"scanner-db.*|prometheus-data-prometheus-k8s.*"}\n' % $._config,
                     }
                   else
                     rule,
