@@ -1,0 +1,29 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      # Counter increases by 20 per minute, so after 20 minutes = 400 total failures in 24h window
+      - series: grpc_server_handled_total{namespace="rhacs-testabc", job="central", grpc_code="Unauthenticated", grpc_service="v1.ImageService"}
+        values: "0+20x25"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: RHACSRegistryAuthenticationFailure
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: RHACSRegistryAuthenticationFailure
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSRegistryAuthenticationFailure
+              namespace: rhacs-testabc
+              job: central
+              grpc_code: Unauthenticated
+              grpc_service: v1.ImageService
+              severity: warning
+            exp_annotations:
+              summary: "Registry authentication failures detected in namespace `rhacs-testabc`."
+              description: "Central in namespace `rhacs-testabc` has experienced 400 registry authentication failures in the last 24 hours. This typically indicates incorrect registry credentials or expired tokens."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
