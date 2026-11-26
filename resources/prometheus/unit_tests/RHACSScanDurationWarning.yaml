@@ -1,0 +1,34 @@
+rule_files:
+  - /tmp/prometheus-rules-test.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      # Scan duration buckets - 50th percentile (median) at ~132 seconds
+      # Rate: 10 scans/min <= 60s, 15 scans/min <= 120s, 40 scans/min total
+      # This gives p50 between 120s and 180s, approximately 132s
+      - series: rox_central_scan_duration_bucket{namespace="rhacs-test123", le="60000"}
+        values: "0+10x30"
+      - series: rox_central_scan_duration_bucket{namespace="rhacs-test123", le="120000"}
+        values: "0+15x30"
+      - series: rox_central_scan_duration_bucket{namespace="rhacs-test123", le="180000"}
+        values: "0+40x30"
+      - series: rox_central_scan_duration_bucket{namespace="rhacs-test123", le="+Inf"}
+        values: "0+40x30"
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: RHACSScanDurationWarning
+        exp_alerts: []
+      - eval_time: 25m
+        alertname: RHACSScanDurationWarning
+        exp_alerts:
+          - exp_labels:
+              alertname: RHACSScanDurationWarning
+              namespace: rhacs-test123
+              severity: warning
+            exp_annotations:
+              summary: "Image scanning in namespace `rhacs-test123` is taking longer than expected."
+              description: "50% of image scans in namespace `rhacs-test123` are taking longer than 2 minutes (current 50th percentile: 2m 12s). This may indicate scanner performance issues or large/complex images being scanned."
+              sop_url: "https://gitlab.cee.redhat.com/stackrox/acs-managed-service-runbooks/blob/master/sops/dp-003-rhacs-instance-unavailable.md"
